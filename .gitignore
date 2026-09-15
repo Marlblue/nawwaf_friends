@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# file sumber menu (149MB, melebihi batas 100MB GitHub)
+*.pdf
