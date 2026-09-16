@@ -45,7 +45,15 @@ export default function Home() {
       <section className="pb-20 pt-10 sm:pt-16">
         <div className="container-x text-center">
           <p className="eyebrow hero-rise">
-            <Truck width={20} height={20} className="truck-drive text-brand" /> {site.tagline} · 100% halal
+            <span className="truck-wind text-brand">
+              <svg className="truck-wind-lines" width="16" height="20" viewBox="0 0 16 20" aria-hidden="true">
+                <path d="M5 6h10" />
+                <path d="M1 10.5h14" />
+                <path d="M6 15h9" />
+              </svg>
+              <Truck width={20} height={20} className="truck-drive" />
+            </span>{" "}
+            {site.tagline} · 100% halal
           </p>
           <h1 className="display-1 hero-rise mx-auto mt-4 max-w-4xl [--delay:.06s]">
             Aqiqah, nasi box &amp; <span className="text-brand">delivery</span> masakan Arab
