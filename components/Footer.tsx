@@ -22,7 +22,7 @@ export default function Footer() {
       <div data-reveal className="rounded-[32px] bg-brand-700 px-6 py-12 text-white sm:px-10 lg:px-16 lg:py-16">
         <div className="grid gap-12 lg:grid-cols-[1.1fr_1fr]">
           <div>
-            <Image src="/images/logo.png" alt={site.name} width={64} height={64} className="h-16 w-16 rounded-full bg-white object-cover" />
+            <Image src="/images/logo.webp" alt={site.name} width={64} height={64} className="h-16 w-16 rounded-full bg-white object-cover" />
             <p className="display-2 mt-6 max-w-md">
               Cita rasa Arabia, dimasak dengan <span className="text-accent">rempah pilihan.</span>
             </p>

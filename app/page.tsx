@@ -222,7 +222,7 @@ export default function Home() {
             </div>
           </div>
           <div className="lg:py-4">
-            <Image src="/images/logo.png" alt="" width={56} height={56} className="h-14 w-14 rounded-full object-cover" />
+            <Image src="/images/logo.webp" alt="" width={56} height={56} className="h-14 w-14 rounded-full object-cover" />
             <h2 className="display-2 mt-6">Tentang kami</h2>
             <p className="lead mt-4">
               {site.name} menghadirkan hidangan {site.tagline.toLowerCase()}: nasi mandhi dan nasi kebuli yang dimasak dengan rempah pilihan, ayam dan kambing yang empuk, serta minuman khas seperti arabian tea dan teh adeni.

@@ -232,7 +232,7 @@ export default function CheckoutForm() {
           {lines.map((l) => (
             <li key={l.optionId} className="flex gap-3 py-3">
               <div className="h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-cream">
-                <Image src={l.image ? thumb(l.image) : "/images/logo.png"} alt="" width={56} height={56} className="h-full w-full object-cover" />
+                <Image src={l.image ? thumb(l.image) : "/images/logo.webp"} alt="" width={56} height={56} className="h-full w-full object-cover" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-[15px] font-medium leading-snug">{l.itemName}</p>

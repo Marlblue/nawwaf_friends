@@ -66,7 +66,7 @@ export default function Header() {
     >
       <nav className="container-x flex h-[var(--header-h)] items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-          <Image src="/images/logo.png" alt="" width={44} height={44} className="h-11 w-11 rounded-full object-cover" priority />
+          <Image src="/images/logo.webp" alt="" width={44} height={44} className="h-11 w-11 rounded-full object-cover" priority />
           <span className="leading-tight">
             <span className="block text-base font-semibold">{site.name}</span>
             <span className="block text-xs text-muted">{site.tagline}</span>

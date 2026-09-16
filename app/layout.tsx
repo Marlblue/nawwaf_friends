@@ -4,6 +4,7 @@ import { CartProvider } from "@/components/CartProvider";
 import CartDrawer from "@/components/CartDrawer";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import ScrollReset from "@/components/ScrollReset";
 import ScrollReveal from "@/components/ScrollReveal";
 import { site } from "@/lib/site";
 import "./globals.css";
@@ -33,7 +34,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="id" className={`${poppins.variable} antialiased`}>
+    // data-scroll-behavior wajib sejak Next 16: tanpa ini, `scroll-behavior: smooth`
+    // milik kita ikut dipakai saat Next menggulir halaman sendiri (pindah halaman,
+    // pulihkan posisi setelah refresh). Gulirannya jadi beranimasi, bisa terpotong
+    // di tengah jalan, dan halaman berhenti di posisi nanggung, bukan di paling atas.
+    <html lang="id" data-scroll-behavior="smooth" className={`${poppins.variable} antialiased`}>
       <body className="flex min-h-screen flex-col font-sans">
         <CartProvider>
           <Header />
@@ -41,6 +46,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Footer />
           <CartDrawer />
           <ScrollReveal />
+          <ScrollReset />
         </CartProvider>
       </body>
     </html>
