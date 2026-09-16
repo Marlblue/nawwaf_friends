@@ -12,8 +12,6 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    // Template HTML asli (referensi desain)
-    "delfood-1.0.0/**",
   ]),
 ]);
 

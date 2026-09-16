@@ -65,7 +65,7 @@ export default function WhatsAppForm({ title, fields, submitLabel }: { title: st
         </button>
         {sent && (
           <span className="inline-flex items-center gap-1 text-sm font-medium text-ink-soft" role="status">
-            <Check width={16} height={16} /> WhatsApp dibuka — kirim pesannya ke admin.
+            <Check width={16} height={16} /> WhatsApp dibuka, kirim pesannya ke admin.
           </span>
         )}
       </div>

@@ -1,5 +1,5 @@
 // Katalog venue. Kapasitas, fasilitas, dan foto masih perlu dikonfirmasi
-// dengan tim outlet — ganti isinya sesuai kondisi ruangan sebenarnya.
+// dengan tim outlet; ganti isinya sesuai kondisi ruangan sebenarnya.
 // Set `enabled: false` untuk menyembunyikan ruang dari halaman venue.
 
 export type VenueRoom = {
@@ -20,7 +20,7 @@ export const rooms: VenueRoom[] = [
     name: "Ruang Meeting",
     tag: "Baru",
     summary:
-      "Ruang tertutup untuk rapat kantor, presentasi, atau diskusi komunitas — lengkap dengan hidangan Arabian food langsung dari dapur kami.",
+      "Ruang tertutup untuk rapat kantor, presentasi, atau diskusi komunitas, lengkap dengan hidangan Arabian food langsung dari dapur kami.",
     capacity: "Konfirmasi ke admin",
     facilities: ["Ruang ber-AC", "Meja & kursi meeting", "Colokan listrik", "Paket makan & minum"],
     idealFor: ["Rapat kantor", "Workshop kecil", "Arisan & komunitas"],

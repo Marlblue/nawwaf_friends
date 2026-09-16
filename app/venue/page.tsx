@@ -9,7 +9,7 @@ import { revealDelay } from "@/lib/motion";
 import { rooms, venuePackages } from "@/lib/venue";
 
 export const metadata: Metadata = {
-  title: "Venue — Ruang Meeting & Private Room",
+  title: "Venue - Ruang Meeting & Private Room",
   description: "Sewa ruang meeting dan private room di Nawwaf & Friends, lengkap dengan hidangan Arabian food.",
 };
 
@@ -95,7 +95,7 @@ export default function VenuePage() {
               <p className="lead mt-4">Isi form, admin kami akan mengonfirmasi ketersediaan ruang dan harga lewat WhatsApp.</p>
             </div>
             <WhatsAppForm
-              title="BOOKING VENUE — Nawwaf & Friends"
+              title="BOOKING VENUE - Nawwaf & Friends"
               submitLabel="Kirim booking via WhatsApp"
               fields={[
                 { name: "name", label: "Nama", required: true },
@@ -104,7 +104,7 @@ export default function VenuePage() {
                 { name: "package", label: "Paket", type: "select", required: true, options: venuePackages.map((p) => p.name) },
                 { name: "date", label: "Tanggal", type: "date", required: true },
                 { name: "time", label: "Jam mulai", type: "time", required: true },
-                { name: "duration", label: "Durasi", type: "select", options: ["1–2 jam", "2–4 jam", "Setengah hari", "Seharian"] },
+                { name: "duration", label: "Durasi", type: "select", options: ["1-2 jam", "2-4 jam", "Setengah hari", "Seharian"] },
                 { name: "guests", label: "Jumlah tamu", type: "number", required: true },
                 { name: "notes", label: "Kebutuhan / catatan", type: "textarea", placeholder: "mis. butuh proyektor, menu nampan kambing 2 porsi" },
               ]}

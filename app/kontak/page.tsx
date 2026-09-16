@@ -92,7 +92,7 @@ export default function KontakPage() {
             <h2 className="display-2">Kirim pesan</h2>
             <p className="lead mb-8 mt-3">Pesan akan diteruskan ke WhatsApp admin kami.</p>
             <WhatsAppForm
-              title="PESAN DARI WEBSITE — Nawwaf & Friends"
+              title="PESAN DARI WEBSITE - Nawwaf & Friends"
               submitLabel="Kirim via WhatsApp"
               fields={[
                 { name: "name", label: "Nama", required: true },

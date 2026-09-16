@@ -1,4 +1,4 @@
-// Katalog produk — disalin dari "Menu N&F_final_path_OKE.pdf".
+// Katalog produk, disalin dari "Menu N&F_final_path_OKE.pdf".
 // Harga kedua di menu (mis. 55k/60k) adalah harga paket + es teh.
 
 export type MenuOption = { id: string; label: string; price: number };
@@ -65,7 +65,7 @@ export const menu: MenuItem[] = [
   // Nampan kambing
   { id: "mandhi-half-kambing", name: "Nasi Mandhi ½ Nampan Kambing", description: "½ nampan nasi mandhi + 5 potong kambing", category: "nampan-kambing", image: "/images/menu/mandhi-half-kambing.webp", options: withTea("mandhi-half-kambing", 450000, 480000, "1 pitcher") },
   { id: "kebuli-half-kambing", name: "Nasi Kebuli ½ Nampan Kambing", description: "½ nampan nasi kebuli + 5 potong kambing", category: "nampan-kambing", image: "/images/menu/kebuli-half-kambing.webp", options: withTea("kebuli-half-kambing", 475000, 505000, "1 pitcher") },
-  // Di PDF tertulis "+ 10 potong Ayam" untuk dua item ini — diasumsikan typo (kambing).
+  // Di PDF tertulis "+ 10 potong Ayam" untuk dua item ini, diasumsikan typo (kambing).
   { id: "mandhi-full-kambing", name: "Nasi Mandhi 1 Nampan Kambing", description: "1 nampan nasi mandhi + 10 potong kambing", category: "nampan-kambing", image: "/images/menu/mandhi-full-kambing.webp", options: withTea("mandhi-full-kambing", 900000, 960000, "2 pitcher") },
   { id: "kebuli-full-kambing", name: "Nasi Kebuli 1 Nampan Kambing", description: "1 nampan nasi kebuli + 10 potong kambing", category: "nampan-kambing", image: "/images/menu/kebuli-full-kambing.webp", options: withTea("kebuli-full-kambing", 950000, 1010000, "2 pitcher") },
 

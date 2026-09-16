@@ -7,7 +7,7 @@ import { rupiah } from "@/lib/site";
 import { useCart } from "./CartProvider";
 import { Check, Plus } from "./Icons";
 
-// Baris menu bergaya daftar (nama — harga, deskripsi di bawahnya) seperti menu Latte.
+// Baris menu bergaya daftar (nama - harga, deskripsi di bawahnya) seperti menu Latte.
 export default function MenuItemRow({ item }: { item: MenuItem }) {
   const { add } = useCart();
   const [optionId, setOptionId] = useState(item.options[0].id);

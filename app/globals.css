@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
- * Design system — layout lapang ala template Latte (sudut 32px, Poppins),
+ * Design system: layout lapang ala template Latte (sudut 32px, Poppins),
  * palet diambil dari logo Nawwaf & Friends: putih, maroon, amber.
  */
 @theme {
@@ -30,12 +30,19 @@ html {
 :root {
   /* Kurva gerak yang dipakai semua animasi situs */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Tinggi header. Dipakai bersama oleh header itu sendiri, panel menu HP,
+     bilah filter yang menempel di bawahnya, dan perhitungan scroll di JS. */
+  --header-h: 72px;
 }
 
 body {
   color: var(--color-ink);
   background-color: var(--color-cream);
+  /* Jaring pengaman anti scroll ke samping di HP. `clip` lebih aman daripada
+     `hidden` karena tidak membuat body jadi kotak scroll (header sticky tetap jalan);
+     baris `hidden` di atasnya cuma cadangan buat browser lama. */
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 ::selection {
@@ -64,7 +71,7 @@ body {
 
   /* Elemen sticky di bawah header; ikut naik saat header disembunyikan waktu scroll */
   .sticky-below-header {
-    top: 72px;
+    top: var(--header-h);
     transition: top 0.3s ease-out;
   }
 
@@ -329,6 +336,27 @@ body {
     box-shadow: 0 0 0 3px rgb(0 0 0 / 0.06);
   }
 
+  /* Kolom cari katalog menu. .field polos berlatar putih di atas bilah filter
+     yang juga putih, jadi nyaris tak kelihatan; di sini diberi latar & border
+     lebih tegas supaya langsung terbaca sebagai kolom isian.
+     Harus diletakkan setelah .field: specificity-nya sama, urutan yang menang. */
+  .field-search {
+    min-height: 44px;
+    padding: 8px 16px 8px 44px;
+    border-radius: 999px;
+    border-color: rgb(0 0 0 / 0.18);
+    background-color: var(--color-sand-200);
+  }
+
+  .field-search::placeholder {
+    color: var(--color-muted);
+  }
+
+  /* Saat diketik, latarnya memutih supaya teks yang diketik paling menonjol */
+  .field-search:focus {
+    background-color: #fff;
+  }
+
   .label {
     display: block;
     font-size: 14px;
@@ -428,7 +456,10 @@ body {
     --scale: 1.025;
   }
 
+  /* Panah hanya muncul di layar lebar. Di HP navigasinya lewat swipe atau tap
+     kartu di samping, jadi panah cuma menutupi foto. */
   .hero-arrow {
+    display: none;
     position: absolute;
     top: 50%;
     z-index: 6;
@@ -444,8 +475,7 @@ body {
     --delay: 0.6s;
   }
 
-  .hero-arrow--prev { left: 19.7%; }
-  .hero-arrow--next { left: 80.3%; transform: rotate(180deg); }
+  .hero-arrow--next { transform: rotate(180deg); }
 
   .hero-arrow:hover {
     background-color: var(--color-sand);
@@ -494,6 +524,7 @@ body {
     .hero-card[data-slot="-3"] { --x: -22.4%; }
     .hero-card[data-slot="3"] { --x: 122.4%; }
 
+    .hero-arrow { display: block; }
     .hero-arrow--prev { left: 30.83%; }
     .hero-arrow--next { left: 69.17%; }
   }

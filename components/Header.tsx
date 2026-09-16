@@ -64,9 +64,9 @@ export default function Header() {
         open ? "border-black/8 bg-cream" : scrolled ? "border-black/8 bg-cream/90 backdrop-blur-md" : "border-transparent bg-cream"
       }`}
     >
-      <nav className="container-x flex h-[72px] items-center justify-between gap-4">
+      <nav className="container-x flex h-[var(--header-h)] items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-          <Image src="/images/logo.jpg" alt="" width={44} height={44} className="h-11 w-11 rounded-full object-cover" priority />
+          <Image src="/images/logo.png" alt="" width={44} height={44} className="h-11 w-11 rounded-full object-cover" priority />
           <span className="leading-tight">
             <span className="block text-base font-semibold">{site.name}</span>
             <span className="block text-xs text-muted">{site.tagline}</span>
@@ -128,7 +128,7 @@ export default function Header() {
 
       <div
         id="mobile-nav"
-        className={`fixed inset-x-0 bottom-0 top-[72px] bg-cream transition-[opacity,visibility] duration-300 lg:hidden ${
+        className={`fixed inset-x-0 bottom-0 top-[var(--header-h)] overflow-y-auto overflow-x-hidden bg-cream transition-[opacity,visibility] duration-300 lg:hidden ${
           open ? "visible opacity-100" : "invisible opacity-0"
         }`}
       >

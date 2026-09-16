@@ -14,17 +14,26 @@ export default function MenuCatalog({ initialQuery = "", initialCategory }: { in
   const trackRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLSpanElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
 
   const q = query.trim().toLowerCase();
   const groups = useMemo(() => {
     return categories
       .filter((c) => active === "all" || c.id === active)
-      .map((c) => ({
-        ...c,
-        items: menu.filter(
-          (m) => m.category === c.id && (!q || `${m.name} ${m.description ?? ""}`.toLowerCase().includes(q)),
-        ),
-      }))
+      .map((c) => {
+        // Nama kategori ikut dicari, supaya mengetik "porsian" atau "snack" menampilkan
+        // seluruh isi kategorinya. Tanpa ini hasilnya nol, karena tidak ada satu pun
+        // nama/deskripsi item yang memuat kata kategorinya.
+        const categoryMatch = !!q && c.name.toLowerCase().includes(q);
+        return {
+          ...c,
+          items: menu.filter(
+            (m) =>
+              m.category === c.id &&
+              (!q || categoryMatch || `${m.name} ${m.description ?? ""}`.toLowerCase().includes(q)),
+          ),
+        };
+      })
       .filter((g) => g.items.length > 0);
   }, [active, q]);
 
@@ -59,30 +68,43 @@ export default function MenuCatalog({ initialQuery = "", initialCategory }: { in
     return () => window.removeEventListener("resize", place);
   }, [active]);
 
+  // Bawa awal daftar ke bawah bilah filter supaya judul kategori pertama tidak ketutupan.
+  // Jaraknya diukur langsung, bukan angka tetap: tinggi bilah beda jauh antara HP
+  // (kolom cari & chip bertumpuk) dan desktop (sebaris). Header ikut dihitung karena
+  // lompatan ini menggulir ke atas, yang otomatis memunculkan lagi header yang tersembunyi.
+  const scrollListToTop = () => {
+    const list = listRef.current;
+    if (!list) return;
+    const headerH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-h")) || 72;
+    const clearance = headerH + (barRef.current?.offsetHeight ?? 0) + 16;
+    const top = list.getBoundingClientRect().top;
+    if (top < clearance) window.scrollTo({ top: top + window.scrollY - clearance, behavior: "instant" });
+  };
+
   const selectCategory = (id: CategoryId | "all") => {
     if (id === active) return;
-    // Kalau sudah scroll jauh ke bawah, kembalikan ke awal daftar supaya hasil filter langsung terlihat
-    const list = listRef.current;
-    const jumpTo = list && list.getBoundingClientRect().top < 0 ? list.getBoundingClientRect().top + window.scrollY - 170 : null;
     startTransition(() => {
       setActive(id);
-      if (jumpTo !== null) window.scrollTo({ top: jumpTo, behavior: "instant" });
+      scrollListToTop();
     });
   };
 
   return (
     <div>
-      <div className="sticky-below-header sticky z-30 -mx-5 mb-12 border-b border-black/8 bg-cream/95 px-5 py-3 backdrop-blur-md md:-mx-10 md:px-10">
+      <div ref={barRef} className="sticky-below-header sticky z-30 -mx-5 mb-12 border-b border-black/8 bg-cream/95 px-5 py-3 backdrop-blur-md md:-mx-10 md:px-10">
         <div className="flex flex-col gap-3 md:flex-row md:items-center">
           <label className="relative shrink-0 md:w-72">
             <span className="sr-only">Cari menu</span>
-            <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted" width={18} height={18} />
+            <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink" width={18} height={18} />
             <input
               type="search"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                scrollListToTop();
+              }}
               placeholder="Cari menu, mis. kebuli"
-              className="field !min-h-11 !rounded-full !py-2 pl-11"
+              className="field field-search"
             />
           </label>
           <div className="-mx-5 min-w-0 px-5 md:mx-0 md:px-0">

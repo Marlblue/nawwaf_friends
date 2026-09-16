@@ -31,63 +31,67 @@ export default function CartDrawer() {
         onClick={() => setDrawerOpen(false)}
         aria-hidden
       />
-      <aside
-        className={`fixed right-0 top-0 z-[80] flex h-full w-full max-w-md flex-col bg-cream transition-transform duration-300 sm:right-3 sm:top-3 sm:h-[calc(100%-24px)] sm:overflow-hidden sm:rounded-[32px] ${
-          drawerOpen ? "translate-x-0" : "translate-x-[calc(100%+24px)]"
-        }`}
-        aria-label="Keranjang belanja"
-        aria-hidden={!drawerOpen}
-        inert={!drawerOpen}
-      >
-        <div className="flex items-center justify-between border-b border-black/10 px-6 py-5">
-          <h2 className="display-3">Keranjang ({count})</h2>
-          <button type="button" onClick={() => setDrawerOpen(false)} aria-label="Tutup keranjang" className="icon-btn">
-            <Close width={18} height={18} />
-          </button>
-        </div>
-
-        {lines.length === 0 ? (
-          <div className="flex flex-1 flex-col items-center justify-center gap-4 p-8 text-center">
-            <span className="flex h-20 w-20 items-center justify-center rounded-full bg-sand">
-              <CartIcon width={32} height={32} />
-            </span>
-            <p className="text-muted">Keranjang masih kosong.</p>
-            <Link href="/menu" onClick={() => setDrawerOpen(false)} className="btn btn-primary">
-              Lihat Menu
-            </Link>
+      {/* Pembungkus fixed + overflow-hidden: menahan drawer yang digeser ke luar layar
+          supaya tidak bikin halaman bisa di-scroll ke samping di HP */}
+      <div className="pointer-events-none fixed inset-0 z-[80] overflow-hidden">
+        <aside
+          className={`pointer-events-auto absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-cream transition-transform duration-300 sm:right-3 sm:top-3 sm:h-[calc(100%-24px)] sm:overflow-hidden sm:rounded-[32px] ${
+            drawerOpen ? "translate-x-0" : "translate-x-[calc(100%+24px)]"
+          }`}
+          aria-label="Keranjang belanja"
+          aria-hidden={!drawerOpen}
+          inert={!drawerOpen}
+        >
+          <div className="flex items-center justify-between border-b border-black/10 px-6 py-5">
+            <h2 className="display-3">Keranjang ({count})</h2>
+            <button type="button" onClick={() => setDrawerOpen(false)} aria-label="Tutup keranjang" className="icon-btn">
+              <Close width={18} height={18} />
+            </button>
           </div>
-        ) : (
-          <>
-            <ul className="flex-1 divide-y divide-black/10 overflow-y-auto px-6">
-              {lines.map((line) => (
-                <li key={line.optionId} className="flex gap-3 py-4">
-                  <div className="h-16 w-16 shrink-0 overflow-hidden rounded-2xl bg-sand">
-                    <Image src={line.image ? thumb(line.image) : "/images/logo.jpg"} alt="" width={64} height={64} className="h-full w-full object-cover" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="font-medium leading-snug">{line.itemName}</p>
-                    {line.showOption && <p className="text-sm text-muted">{line.optionLabel}</p>}
-                    <div className="mt-2 flex items-center justify-between">
-                      <QtyControl qty={line.qty} onChange={(q) => setQty(line.optionId, q)} />
-                      <span className="text-sm font-medium tabular-nums">{rupiah(line.price * line.qty)}</span>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <div className="border-t border-black/10 bg-sand p-6">
-              <div className="mb-1 flex items-baseline justify-between">
-                <span className="text-muted">Subtotal</span>
-                <span className="text-xl font-medium tabular-nums">{rupiah(subtotal)}</span>
-              </div>
-              <p className="mb-5 text-sm text-muted">Ongkos kirim dikonfirmasi admin sesuai jarak.</p>
-              <Link href="/order" onClick={() => setDrawerOpen(false)} className="btn btn-primary w-full">
-                Lanjut ke checkout
+
+          {lines.length === 0 ? (
+            <div className="flex flex-1 flex-col items-center justify-center gap-4 p-8 text-center">
+              <span className="flex h-20 w-20 items-center justify-center rounded-full bg-sand">
+                <CartIcon width={32} height={32} />
+              </span>
+              <p className="text-muted">Keranjang masih kosong.</p>
+              <Link href="/menu" onClick={() => setDrawerOpen(false)} className="btn btn-primary">
+                Lihat Menu
               </Link>
             </div>
-          </>
-        )}
-      </aside>
+          ) : (
+            <>
+              <ul className="flex-1 divide-y divide-black/10 overflow-y-auto px-6">
+                {lines.map((line) => (
+                  <li key={line.optionId} className="flex gap-3 py-4">
+                    <div className="h-16 w-16 shrink-0 overflow-hidden rounded-2xl bg-sand">
+                      <Image src={line.image ? thumb(line.image) : "/images/logo.png"} alt="" width={64} height={64} className="h-full w-full object-cover" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium leading-snug">{line.itemName}</p>
+                      {line.showOption && <p className="text-sm text-muted">{line.optionLabel}</p>}
+                      <div className="mt-2 flex items-center justify-between">
+                        <QtyControl qty={line.qty} onChange={(q) => setQty(line.optionId, q)} />
+                        <span className="text-sm font-medium tabular-nums">{rupiah(line.price * line.qty)}</span>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <div className="border-t border-black/10 bg-sand p-6">
+                <div className="mb-1 flex items-baseline justify-between">
+                  <span className="text-muted">Subtotal</span>
+                  <span className="text-xl font-medium tabular-nums">{rupiah(subtotal)}</span>
+                </div>
+                <p className="mb-5 text-sm text-muted">Ongkos kirim dikonfirmasi admin sesuai jarak.</p>
+                <Link href="/order" onClick={() => setDrawerOpen(false)} className="btn btn-primary w-full">
+                  Lanjut ke checkout
+                </Link>
+              </div>
+            </>
+          )}
+        </aside>
+      </div>
     </>
   );
 }

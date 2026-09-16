@@ -20,7 +20,7 @@ export const articles: Article[] = [
     body: [
       {
         paragraphs: [
-          "Sekarang semua menu Nawwaf & Friends bisa dipesan antar langsung dari website. Tidak perlu mengetik ulang pesanan satu per satu — cukup pilih menu, isi alamat, dan pesanan otomatis terkirim ke WhatsApp admin kami.",
+          "Sekarang semua menu Nawwaf & Friends bisa dipesan antar langsung dari website. Tidak perlu mengetik ulang pesanan satu per satu: cukup pilih menu, isi alamat, dan pesanan otomatis terkirim ke WhatsApp admin kami.",
         ],
       },
       {
@@ -117,7 +117,7 @@ export const articles: Article[] = [
     slug: "mengenal-ummu-ali",
     title: "Mengenal Ummu Ali, Dessert Legendaris dari Mesir",
     excerpt:
-      "Puding roti susu hangat dengan kacang dan kismis — penutup sempurna setelah menyantap nasi kebuli.",
+      "Puding roti susu hangat dengan kacang dan kismis, penutup sempurna setelah menyantap nasi kebuli.",
     image: "/images/menu/ummu-ali.webp",
     date: "2026-08-28",
     category: "Kuliner",
@@ -158,7 +158,7 @@ export const articles: Article[] = [
       {
         heading: "Tentukan jumlah tamu lebih awal",
         paragraphs: [
-          "Jumlah tamu menentukan pilihan format — nampan, prasmanan, atau nasi box. Semakin cepat kamu mengabari kami, semakin mudah menyiapkan menu dan jadwalnya.",
+          "Jumlah tamu menentukan pilihan format: nampan, prasmanan, atau nasi box. Semakin cepat kamu mengabari kami, semakin mudah menyiapkan menu dan jadwalnya.",
         ],
       },
       {
