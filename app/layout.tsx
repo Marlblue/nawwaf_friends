@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ScrollReset from "@/components/ScrollReset";
 import ScrollReveal from "@/components/ScrollReveal";
+import { restaurantJsonLd } from "@/lib/jsonld";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -40,6 +41,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     // di tengah jalan, dan halaman berhenti di posisi nanggung, bukan di paling atas.
     <html lang="id" data-scroll-behavior="smooth" className={`${poppins.variable} antialiased`}>
       <body className="flex min-h-screen flex-col font-sans">
+        {/* JSON.stringify tidak membersihkan tag HTML, jadi "<" diganti escape unicode */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(restaurantJsonLd).replace(/</g, "\\u003c") }}
+        />
         <CartProvider>
           <Header />
           <main className="flex-1">{children}</main>

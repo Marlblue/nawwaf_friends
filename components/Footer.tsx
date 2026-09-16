@@ -1,20 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
-import { nav, site, waLink } from "@/lib/site";
-import { Facebook, Instagram, Tiktok, Whatsapp } from "./Icons";
+import { addressText, nav, openingHoursLines, site, waLink } from "@/lib/site";
+import { Bag, Facebook, Instagram, Threads, Tiktok, Whatsapp } from "./Icons";
 
 export default function Footer() {
   const socials = [
     { key: "instagram", href: site.social.instagram, Icon: Instagram, label: "Instagram" },
+    { key: "threads", href: site.social.threads, Icon: Threads, label: "Threads" },
     { key: "tiktok", href: site.social.tiktok, Icon: Tiktok, label: "TikTok" },
     { key: "facebook", href: site.social.facebook, Icon: Facebook, label: "Facebook" },
   ].filter((s) => s.href);
 
   const info = [
-    site.openingHours ? { title: "Jam buka", lines: [site.openingHours] } : null,
+    openingHoursLines.length > 0 ? { title: "Jam buka", lines: openingHoursLines } : null,
     { title: "Telepon", lines: [site.phone], href: `tel:${site.phone.replace(/\D/g, "")}` },
     { title: "WhatsApp", lines: [site.whatsappDisplay], href: waLink("Halo Nawwaf & Friends, saya mau tanya.") },
-    site.address ? { title: "Lokasi", lines: [site.address], href: site.mapsUrl || undefined } : null,
+    addressText || site.mapsUrl
+      ? { title: "Lokasi", lines: [addressText || "Lihat di Google Maps"], href: site.mapsUrl || undefined }
+      : null,
   ].filter((i) => i !== null);
 
   return (
@@ -35,6 +38,16 @@ export default function Footer() {
               >
                 <Whatsapp width={18} height={18} /> Chat WhatsApp
               </a>
+              {site.gofoodUrl && (
+                <a
+                  href={site.gofoodUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-sm border border-white/25 text-white hover:bg-white hover:text-brand"
+                >
+                  <Bag width={18} height={18} /> GoFood
+                </a>
+              )}
               {socials.map(({ key, href, Icon, label }) => (
                 <a
                   key={key}

@@ -143,6 +143,16 @@ export default function CheckoutForm() {
               </label>
             ))}
           </div>
+          {method === "pickup" && site.mapsUrl && (
+            <a
+              href={site.mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-brand hover:underline"
+            >
+              <MapPin width={16} height={16} /> Lihat lokasi resto di Google Maps
+            </a>
+          )}
         </fieldset>
 
         <fieldset className="card p-6 sm:p-8">

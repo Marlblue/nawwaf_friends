@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Clock, Facebook, Instagram, MapPin, Phone, Tiktok, Truck, Whatsapp } from "@/components/Icons";
+import { ArrowRight, Bag, Clock, Facebook, Instagram, MapPin, Phone, Threads, Tiktok, Truck, Whatsapp } from "@/components/Icons";
 import PageHero from "@/components/PageHero";
 import PageTransition from "@/components/PageTransition";
 import WhatsAppForm from "@/components/WhatsAppForm";
-import { site, waLink } from "@/lib/site";
+import { addressText, openingHoursLines, site, waLink } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Kontak",
@@ -13,14 +13,15 @@ export const metadata: Metadata = {
 
 export default function KontakPage() {
   const cards = [
-    { Icon: Phone, title: "Telepon", value: site.phone, href: `tel:${site.phone.replace(/\D/g, "")}` },
-    { Icon: Whatsapp, title: "WhatsApp", value: site.whatsappDisplay, href: waLink("Halo Nawwaf & Friends!") },
-    site.address ? { Icon: MapPin, title: "Alamat", value: site.address, href: site.mapsUrl || undefined } : null,
-    site.openingHours ? { Icon: Clock, title: "Jam buka", value: site.openingHours } : null,
+    { Icon: Phone, title: "Telepon", lines: [site.phone], href: `tel:${site.phone.replace(/\D/g, "")}` },
+    { Icon: Whatsapp, title: "WhatsApp", lines: [site.whatsappDisplay], href: waLink("Halo Nawwaf & Friends!") },
+    addressText ? { Icon: MapPin, title: "Alamat", lines: [addressText], href: site.mapsUrl || undefined } : null,
+    openingHoursLines.length > 0 ? { Icon: Clock, title: "Jam buka", lines: openingHoursLines } : null,
   ].filter((c) => c !== null);
 
   const socials = [
     { Icon: Instagram, label: "Instagram", href: site.social.instagram },
+    { Icon: Threads, label: "Threads", href: site.social.threads },
     { Icon: Tiktok, label: "TikTok", href: site.social.tiktok },
     { Icon: Facebook, label: "Facebook", href: site.social.facebook },
   ].filter((s) => s.href);
@@ -48,22 +49,24 @@ export default function KontakPage() {
         <div className="grid items-start gap-6 lg:grid-cols-[1fr_1.6fr]">
           <div data-reveal className="card p-6 sm:p-10">
             <dl className="divide-y divide-black/10">
-              {cards.map(({ Icon, title, value, href }) => (
+              {cards.map(({ Icon, title, lines, href }) => (
                 <div key={title} className="flex items-center gap-4 py-5 first:pt-0">
                   <span className="icon-btn pointer-events-none">
                     <Icon width={18} height={18} />
                   </span>
                   <span className="min-w-0">
                     <dt className="text-sm text-muted">{title}:</dt>
-                    <dd className="text-lg font-medium">
-                      {href ? (
-                        <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className="hover:underline">
-                          {value}
-                        </a>
-                      ) : (
-                        value
-                      )}
-                    </dd>
+                    {lines.map((line) => (
+                      <dd key={line} className="text-lg font-medium">
+                        {href ? (
+                          <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className="hover:underline">
+                            {line}
+                          </a>
+                        ) : (
+                          line
+                        )}
+                      </dd>
+                    ))}
                   </span>
                 </div>
               ))}
@@ -81,11 +84,18 @@ export default function KontakPage() {
               </div>
             </div>
 
-            {site.mapsUrl && (
-              <a href={site.mapsUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary mt-6">
-                <MapPin width={18} height={18} /> Buka di Google Maps
-              </a>
-            )}
+            <div className="mt-6 flex flex-wrap gap-3">
+              {site.mapsUrl && (
+                <a href={site.mapsUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+                  <MapPin width={18} height={18} /> Buka di Google Maps
+                </a>
+              )}
+              {site.gofoodUrl && (
+                <a href={site.gofoodUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+                  <Bag width={18} height={18} /> Buka di GoFood
+                </a>
+              )}
+            </div>
           </div>
 
           <div data-reveal className="card p-6 [--reveal-delay:.1s] sm:p-10">

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import HeroSlider from "@/components/HeroSlider";
-import { ArrowRight, Check, Truck, Whatsapp } from "@/components/Icons";
+import { ArrowRight, Bag, Check, MapPin, Truck, Whatsapp } from "@/components/Icons";
 import MenuItemRow from "@/components/MenuItemRow";
 import PageTransition from "@/components/PageTransition";
 import { articles, formatDate } from "@/lib/articles";
@@ -145,6 +145,11 @@ export default function Home() {
               <Link href="/menu" className="btn btn-primary">
                 Pesan antar sekarang
               </Link>
+              {site.gofoodUrl && (
+                <a href={site.gofoodUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+                  <Bag width={18} height={18} /> Pesan lewat GoFood
+                </a>
+              )}
               <a href={`tel:${site.phone.replace(/\D/g, "")}`} className="btn btn-secondary">
                 {site.phone}
               </a>
@@ -242,6 +247,11 @@ export default function Home() {
               <Link href="/kontak" className="btn btn-secondary">
                 Hubungi kami
               </Link>
+              {site.mapsUrl && (
+                <a href={site.mapsUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+                  <MapPin width={18} height={18} /> Lihat lokasi
+                </a>
+              )}
             </div>
           </div>
         </div>
