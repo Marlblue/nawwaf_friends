@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import { CartProvider } from "@/components/CartProvider";
 import CartDrawer from "@/components/CartDrawer";
@@ -20,6 +20,15 @@ export const metadata: Metadata = {
     template: `%s | ${site.name}`,
   },
   description: site.description,
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  // Saat keyboard HP muncul, ikut kecilkan area halaman. Tanpa ini sebagian browser
+  // hanya menyusutkan tampilan tanpa memberitahu halaman, sehingga elemen sticky
+  // (bilah filter menu) menempel di titik yang tertutup keyboard alias tak terlihat.
+  interactiveWidget: "resizes-content",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

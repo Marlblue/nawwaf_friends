@@ -357,6 +357,23 @@ body {
     background-color: #fff;
   }
 
+  /* Sorotan kata yang cocok di hasil pencarian menu. Warnanya digambar sebagai
+     gradien, bukan background-color, supaya bisa disapu dari kiri ke kanan seperti
+     stabilo. Yang dianimasikan hanya background-size, jadi teksnya tidak bergeser
+     sedikit pun saat mengetik. background-color wajib transparan: <mark> punya
+     warna latar bawaan browser yang kalau tidak dimatikan akan menyembul duluan. */
+  .hl {
+    border-radius: 4px;
+    padding: 0 2px;
+    color: inherit;
+    background-color: transparent;
+    /* var(--color-accent) #f9ae40 pada 45% */
+    background-image: linear-gradient(rgb(249 174 64 / 0.45), rgb(249 174 64 / 0.45));
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
+    animation: hlSweep 0.26s var(--ease) forwards;
+  }
+
   .label {
     display: block;
     font-size: 14px;
@@ -574,6 +591,12 @@ body {
   }
   75% {
     transform: translate(0, -1px);
+  }
+}
+
+@keyframes hlSweep {
+  to {
+    background-size: 100% 100%;
   }
 }
 

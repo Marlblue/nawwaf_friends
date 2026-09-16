@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { startTransition, useLayoutEffect, useMemo, useRef, useState, ViewTransition } from "react";
+import { startTransition, useEffect, useLayoutEffect, useMemo, useRef, useState, ViewTransition } from "react";
 import { categories, menu, type CategoryId } from "@/lib/menu";
+import Highlight from "./Highlight";
 import { Search } from "./Icons";
 import MenuItemRow from "./MenuItemRow";
 
@@ -15,6 +16,7 @@ export default function MenuCatalog({ initialQuery = "", initialCategory }: { in
   const indicatorRef = useRef<HTMLSpanElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const q = query.trim().toLowerCase();
   const groups = useMemo(() => {
@@ -81,6 +83,23 @@ export default function MenuCatalog({ initialQuery = "", initialCategory }: { in
     if (top < clearance) window.scrollTo({ top: top + window.scrollY - clearance, behavior: "instant" });
   };
 
+  // Safari iOS belum mendukung interactive-widget: keyboard cuma menutupi layar tanpa
+  // mengecilkan halaman, jadi bilah filter yang sticky ter-pin di titik yang tertutup
+  // keyboard dan seolah hilang begitu digulir. Melepas fokus saat pengguna mulai
+  // menggulir mengembalikan bilahnya, sekaligus mengembalikan ruang layar yang terpakai.
+  // Dipasang di touchmove, bukan scroll, supaya lompatan scroll otomatis waktu mengetik
+  // tidak ikut menutup keyboard di tengah pengetikan.
+  useEffect(() => {
+    const onTouchMove = (e: TouchEvent) => {
+      const input = inputRef.current;
+      if (!input || document.activeElement !== input) return;
+      if (e.target === input) return; // sedang menggeser kursor di dalam kolomnya sendiri
+      input.blur();
+    };
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    return () => window.removeEventListener("touchmove", onTouchMove);
+  }, []);
+
   const selectCategory = (id: CategoryId | "all") => {
     if (id === active) return;
     startTransition(() => {
@@ -97,6 +116,7 @@ export default function MenuCatalog({ initialQuery = "", initialCategory }: { in
             <span className="sr-only">Cari menu</span>
             <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink" width={18} height={18} />
             <input
+              ref={inputRef}
               type="search"
               value={query}
               onChange={(e) => {
@@ -139,13 +159,15 @@ export default function MenuCatalog({ initialQuery = "", initialCategory }: { in
                     </div>
                   </div>
                   <div>
-                    <h2 className="display-2">{g.name}</h2>
+                    <h2 className="display-2">
+                      <Highlight text={g.name} query={q} />
+                    </h2>
                     <p className="mt-2 text-muted">
                       {g.blurb} · {g.items.length} menu
                     </p>
                     <div className="mt-6 divide-y divide-black/10 border-y border-black/10">
                       {g.items.map((item) => (
-                        <MenuItemRow key={item.id} item={item} />
+                        <MenuItemRow key={item.id} item={item} query={q} />
                       ))}
                     </div>
                   </div>

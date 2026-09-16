@@ -5,10 +5,11 @@ import { useState } from "react";
 import { thumb, type MenuItem } from "@/lib/menu";
 import { rupiah } from "@/lib/site";
 import { useCart } from "./CartProvider";
+import Highlight from "./Highlight";
 import { Check, Plus } from "./Icons";
 
 // Baris menu bergaya daftar (nama - harga, deskripsi di bawahnya) seperti menu Latte.
-export default function MenuItemRow({ item }: { item: MenuItem }) {
+export default function MenuItemRow({ item, query = "" }: { item: MenuItem; query?: string }) {
   const { add } = useCart();
   const [optionId, setOptionId] = useState(item.options[0].id);
   const [added, setAdded] = useState(false);
@@ -30,7 +31,7 @@ export default function MenuItemRow({ item }: { item: MenuItem }) {
       <div className="min-w-0 flex-1">
         <div className="flex items-start justify-between gap-4">
           <h3 className="text-[17px] font-medium leading-snug sm:text-lg">
-            {item.name}
+            <Highlight text={item.name} query={query} />
             {item.badge && (
               <span className="ml-2 inline-block translate-y-[-2px] rounded-full bg-accent/25 px-2 py-0.5 align-middle text-[11px] font-medium text-ink">
                 {item.badge}
@@ -39,7 +40,11 @@ export default function MenuItemRow({ item }: { item: MenuItem }) {
           </h3>
           <span className="shrink-0 text-[17px] font-medium tabular-nums sm:text-lg">{rupiah(option.price)}</span>
         </div>
-        {item.description && <p className="mt-1 text-[15px] text-muted">{item.description}</p>}
+        {item.description && (
+          <p className="mt-1 text-[15px] text-muted">
+            <Highlight text={item.description} query={query} />
+          </p>
+        )}
 
         <div className="mt-3 flex flex-wrap items-center gap-2">
           {item.options.length > 1 && (
