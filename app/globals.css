@@ -397,153 +397,46 @@ body {
     margin: 2.5rem 0 0.75rem;
   }
 
-  /* ---------- Hero carousel (meniru hero Latte) ---------- */
-  .hero-carousel {
-    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Kartu lebar hero beranda: foto latar berganti fade, teks putih di atas overlay gelap */
+  .hero-banner {
     position: relative;
+    isolation: isolate;
+    display: flex;
+    min-height: 480px;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
-    aspect-ratio: 0.82;
-    touch-action: pan-y;
-  }
-
-  /* Vignette: tepi carousel memudar ke warna latar */
-  .hero-carousel::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 5;
-    pointer-events: none;
-    background: radial-gradient(
-      50% 85% at 50% 50%,
-      rgb(255 255 255 / 0) 39%,
-      rgb(255 254 253 / 0.13) 58%,
-      var(--color-cream) 100%
-    );
-  }
-
-  .hero-card {
-    /* HP: kartu tengah 72%, tetangga 58% (hanya mengintip di tepi) */
-    --x: 50%;
-    --w: 58%;
-    --o: 1;
-    --z: 1;
-    --scale: 1;
-    position: absolute;
-    top: 50%;
-    left: var(--x);
-    width: var(--w);
-    aspect-ratio: 0.609;
-    z-index: var(--z);
-    opacity: var(--o);
-    overflow: hidden;
-    border-radius: 32px;
-    background-color: var(--color-sand);
-    transform: translate(-50%, -50%) scale(var(--scale));
-    transition:
-      left 0.7s var(--ease),
-      width 0.7s var(--ease),
-      opacity 0.7s var(--ease),
-      transform 0.45s var(--ease),
-      box-shadow 0.45s var(--ease);
-  }
-
-  .hero-card[data-jump] {
-    transition: none;
-  }
-
-  .hero-card[data-slot="0"] {
-    --w: 72%;
-    --z: 3;
-    box-shadow: 0 1px 3px rgb(42 16 19 / 0.25);
-  }
-  .hero-card[data-slot="-1"] { --x: -18%; --z: 2; }
-  .hero-card[data-slot="1"] { --x: 118%; --z: 2; }
-  .hero-card[data-slot="-2"] { --x: -79%; }
-  .hero-card[data-slot="2"] { --x: 179%; }
-  .hero-card[data-slot="-3"] { --x: -140%; --o: 0; }
-  .hero-card[data-slot="3"] { --x: 240%; --o: 0; }
-
-  .hero-card[data-slot="-1"],
-  .hero-card[data-slot="1"] {
-    cursor: pointer;
-  }
-
-  .hero-card[data-slot="-1"]:hover,
-  .hero-card[data-slot="1"]:hover {
-    --scale: 1.025;
-  }
-
-  /* Panah hanya muncul di layar lebar. Di HP navigasinya lewat swipe atau tap
-     kartu di samping, jadi panah cuma menutupi foto. */
-  .hero-arrow {
-    display: none;
-    position: absolute;
-    top: 50%;
-    z-index: 6;
-    width: 42px;
-    height: 42px;
-    margin: -21px 0 0 -21px;
-    overflow: hidden;
-    border-radius: 999px;
-    background-color: rgb(255 255 255 / 0.85);
-    color: var(--color-ink);
-    backdrop-filter: blur(6px);
-    transition: background-color 0.3s;
-    --delay: 0.6s;
-  }
-
-  .hero-arrow--next { transform: rotate(180deg); }
-
-  .hero-arrow:hover {
-    background-color: var(--color-sand);
-  }
-
-  .hero-arrow:focus-visible {
-    outline: 2px solid var(--color-ink);
-    outline-offset: 2px;
-  }
-
-  .hero-arrow svg {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    width: 18px;
-    height: 18px;
-    transition: transform 0.4s var(--ease);
-  }
-
-  .hero-arrow svg:last-child {
-    transform: translateX(34px);
-  }
-
-  .hero-arrow:hover svg:first-child {
-    transform: translateX(-34px);
-  }
-
-  .hero-arrow:hover svg:last-child {
-    transform: translateX(0);
+    border-radius: var(--radius-card);
+    background-color: var(--color-ink);
+    padding: 64px 20px 72px;
+    box-shadow: 0 24px 60px -20px rgb(42 16 19 / 0.45);
   }
 
   @media (min-width: 810px) {
-    /* Desktop: lebar 20/25/30/25/20% seperti Latte */
-    .hero-carousel {
-      aspect-ratio: 2.17;
+    .hero-banner {
+      min-height: 560px;
+      padding: 80px 48px 88px;
     }
-    .hero-card {
-      --w: 20%;
-      aspect-ratio: 0.685;
-    }
-    .hero-card[data-slot="0"] { --w: 30%; }
-    .hero-card[data-slot="-1"] { --x: 21.7%; --w: 25%; }
-    .hero-card[data-slot="1"] { --x: 78.3%; --w: 25%; }
-    .hero-card[data-slot="-2"] { --x: -1.6%; }
-    .hero-card[data-slot="2"] { --x: 101.6%; }
-    .hero-card[data-slot="-3"] { --x: -22.4%; }
-    .hero-card[data-slot="3"] { --x: 122.4%; }
+  }
 
-    .hero-arrow { display: block; }
-    .hero-arrow--prev { left: 30.83%; }
-    .hero-arrow--next { left: 69.17%; }
+  .hero-banner-photo {
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1);
+    transition:
+      opacity 1s ease-in-out,
+      transform 6s ease-out;
+  }
+
+  .hero-banner-photo[data-active] {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+
+  .hero-banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgb(20 6 8 / 0.45), rgb(20 6 8 / 0.6));
   }
 
   /* Animasi muncul saat halaman dibuka (naik + fade, bertahap) */
