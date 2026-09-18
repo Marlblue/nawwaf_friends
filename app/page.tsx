@@ -72,32 +72,32 @@ export default function Home() {
             <p className="text-[15px] text-muted">Disesuaikan untuk perayaan hangat keluarga dan korporat</p>
           </div>
 
-          <ul className="mt-10 grid grid-cols-1 gap-6 text-left sm:grid-cols-2 lg:grid-cols-4 lg:gap-7">
+          <ul className="mt-8 grid grid-cols-2 gap-3 text-left sm:mt-10 sm:gap-6 lg:grid-cols-4 lg:gap-7">
             {homeServices.map(({ id, title, badge, text, note, image }, i) => {
               return (
                 <li key={id} className="hero-rise" style={{ "--delay": `${0.18 + i * 0.06}s` } as React.CSSProperties}>
                   <Link
                     href={`/menu?kategori=${id}`}
-                    className="group flex h-full flex-col rounded-[28px] border border-black/10 bg-white p-5 transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_-10px_rgb(42_16_19/0.12)]"
+                    className="group flex h-full flex-col rounded-[20px] border border-black/10 bg-white p-2.5 transition sm:rounded-[28px] sm:p-5 duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_-10px_rgb(42_16_19/0.12)]"
                   >
-                    <span className="relative block h-56 overflow-hidden rounded-[20px] bg-sand">
+                    <span className="relative block aspect-square overflow-hidden rounded-[14px] bg-sand sm:aspect-auto sm:h-56 sm:rounded-[20px]">
                       <Image
                         src={image}
                         alt=""
                         fill
-                        sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 90vw"
+                        sizes="(min-width: 1024px) 320px, 45vw"
                         className="object-cover transition duration-500 group-hover:scale-105"
                         preload
                       />
-                      <span className="absolute right-3 top-3 rounded-full border border-black/10 bg-white/90 px-3 py-1 text-[11px] font-semibold tracking-wide text-brand backdrop-blur-sm">
+                      <span className="absolute right-3 top-3 hidden rounded-full border border-black/10 bg-white/90 px-3 py-1 text-[11px] font-semibold tracking-wide text-brand backdrop-blur-sm sm:inline">
                         {badge}
                       </span>
                     </span>
-                    <span className="mt-5 block text-xl font-bold transition group-hover:text-brand">{title}</span>
-                    <span className="mt-1.5 block flex-1 text-[13px] leading-relaxed text-ink-soft">{text}</span>
-                    <span className="mt-6 flex items-center justify-between border-t border-black/8 pt-4">
-                      <span className="text-xs font-semibold text-brand">{note}</span>
-                      <span className="flex size-9 items-center justify-center rounded-full bg-sand transition group-hover:bg-brand group-hover:text-white">
+                    <span className="mt-3 block px-1 text-base font-bold leading-tight transition group-hover:text-brand sm:mt-5 sm:px-0 sm:text-xl">{title}</span>
+                    <span className="mt-1 line-clamp-3 flex-1 px-1 text-xs leading-relaxed text-ink-soft sm:mt-1.5 sm:line-clamp-none sm:px-0 sm:text-[13px]">{text}</span>
+                    <span className="mt-3 flex items-center justify-between gap-2 border-t border-black/8 px-1 pt-2.5 sm:mt-6 sm:px-0 sm:pt-4">
+                      <span className="text-[11px] font-semibold leading-tight text-brand sm:text-xs">{note}</span>
+                      <span className="flex size-7 shrink-0 items-center sm:size-9 justify-center rounded-full bg-sand transition group-hover:bg-brand group-hover:text-white">
                         <ArrowRight width={18} height={18} />
                       </span>
                     </span>
@@ -108,49 +108,77 @@ export default function Home() {
           </ul>
 
           {/* Promo */}
-          <div data-reveal className="mt-16 grid items-center gap-8 rounded-[32px] border border-black/8 bg-sand p-6 text-left shadow-[0_16px_40px_-20px_rgb(42_16_19/0.18)] sm:p-10 lg:grid-cols-[1.35fr_1fr] lg:gap-12 lg:p-12">
-            <div>
+          <div data-reveal className="mt-12 grid items-center gap-6 overflow-hidden rounded-[28px] border border-black/8 bg-sand p-4 text-left sm:mt-16 sm:gap-8 sm:rounded-[32px] shadow-[0_16px_40px_-20px_rgb(42_16_19/0.18)] sm:p-10 lg:grid-cols-[1.35fr_1fr] lg:gap-12 lg:p-12">
+            <div className="min-w-0 px-1 pb-2 sm:p-0">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-brand/25 bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-brand">
                 🔥 Penawaran Spesial Bulan Ini
               </span>
-              <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-[42px]">
+              <h2 className="mt-3 text-[26px] font-bold leading-tight sm:mt-4 sm:text-[42px]">
                 Paket Promo Berkah <span className="text-brand">Nampan Sultan</span>
               </h2>
-              <div className="mt-5 inline-block rounded-2xl border border-black/10 bg-white px-4 py-3">
+              <div className="mt-4 rounded-2xl border border-black/10 bg-white px-4 py-3 sm:mt-5 sm:inline-block">
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-soft">Hemat hingga 25% + gratis ongkos kirim</p>
                 <p className="mt-1 flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
                   <span className="text-xs text-muted line-through">Rp 385.000</span>
-                  <span className="text-2xl font-bold">Mulai Rp 299.000</span>
+                  <span className="text-xl font-bold sm:text-2xl">Mulai Rp 299.000</span>
                   <span className="rounded-full bg-sand px-2 py-0.5 text-[11px] font-medium text-brand">Porsi 5-10 Orang</span>
                 </p>
               </div>
-              <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+              <div className="mt-5 flex flex-col gap-3 sm:mt-6 sm:flex-row sm:items-center sm:gap-6">
                 <a
                   href={waLink("Halo Nawwaf & Friends, saya mau klaim Paket Promo Berkah Nampan Sultan.")}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-primary self-start"
+                  className="btn btn-primary w-full whitespace-normal text-center sm:w-auto sm:self-start"
                 >
                   Klaim Promo Nampan Sekarang <ArrowRight width={18} height={18} />
                 </a>
-                <p className="max-w-[240px] text-sm text-ink-soft">
+                <p className="text-center text-sm text-ink-soft sm:max-w-[240px] sm:text-left">
                   ⚡ <strong className="font-semibold text-ink">Berlaku terbatas</strong> untuk 20 pemesan pertama hari ini.
                 </p>
               </div>
             </div>
 
-            <div className="relative aspect-[4/3.4] overflow-hidden rounded-[24px] shadow-[0_20px_40px_-16px_rgb(42_16_19/0.35)]">
+            <div className="relative order-first aspect-[4/3] overflow-hidden rounded-[20px] sm:rounded-[24px] lg:order-none lg:aspect-[4/3.4] shadow-[0_20px_40px_-16px_rgb(42_16_19/0.35)]">
               <Image src="/images/menu/kebuli-full-kambing.webp" alt="Nampan nasi kebuli kambing" fill sizes="(min-width: 1024px) 520px, 90vw" className="object-cover" />
-              <span className="absolute right-4 top-4 rounded-full border border-black/10 bg-white/90 px-3 py-1 text-[11px] font-semibold text-brand backdrop-blur-sm">
+              <span className="absolute right-3 top-3 rounded-full sm:right-4 sm:top-4 border border-black/10 bg-white/90 px-3 py-1 text-[11px] font-semibold text-brand backdrop-blur-sm">
                 ★ Porsi Nampan Akbar
               </span>
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-5 pt-16 text-white">
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-4 pt-12 text-white sm:p-5 sm:pt-16">
                 <p className="text-xs text-white/85">Sajian Mandhi &amp; Kebuli Autentik</p>
                 <p className="text-sm font-bold">Cita Rasa Kerajaan Abu Nawwaf</p>
               </div>
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Galeri perjamuan & catering */}
+      <section className="container-x pb-20 lg:pb-28">
+        <div data-reveal className="max-w-2xl">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-brand/20 bg-sand px-3.5 py-1 text-[11px] font-bold uppercase tracking-widest text-brand">
+            ★ Galeri Perjamuan &amp; Catering Akbar
+          </span>
+          <h2 className="mt-3 text-2xl font-bold sm:text-3xl">Dokumentasi Santapan &amp; Porsi Besar Siap Antar</h2>
+          <p className="mt-2 text-[15px] text-muted">Pengalaman melayani perhelatan akbar, hajatan keluarga, hingga acara korporat.</p>
+        </div>
+        <div data-reveal className="mt-6 lg:-mt-12">
+          <GallerySlider />
+        </div>
+
+        <ul data-reveal className="mt-12 grid gap-8 rounded-[32px] border border-black/8 bg-sand p-8 md:grid-cols-3 lg:p-12">
+          {qualities.map(({ icon: Icon, title, text }) => (
+            <li key={title} className="flex items-start gap-4">
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-black/8 bg-white text-brand shadow-sm">
+                <Icon width={22} height={22} />
+              </span>
+              <span>
+                <span className="block text-lg font-bold">{title}</span>
+                <span className="mt-1 block text-sm leading-relaxed text-ink-soft">{text}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* Menu */}
@@ -248,15 +276,15 @@ export default function Home() {
               Lihat venue <ArrowRight width={18} height={18} />
             </Link>
           </div>
-          <div className="mt-10 grid gap-8 md:grid-cols-2 md:gap-6">
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-6">
             {activeRooms.map((room, i) => (
               <Link key={room.id} href={`/venue#${room.id}`} data-reveal style={revealDelay(i, 0.12)} className="group block">
-                <div className="media aspect-[16/10]">
-                  <Image src={room.image} alt="" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover transition duration-700 group-hover:scale-[1.04]" />
-                  <span className="absolute left-4 top-4 rounded-full bg-cream px-3 py-1 text-xs font-medium">{room.tag}</span>
+                <div className="media aspect-[4/3] max-sm:!rounded-[18px] sm:aspect-[16/10]">
+                  <Image src={room.image} alt="" fill sizes="50vw" className="object-cover transition duration-700 group-hover:scale-[1.04]" />
+                  <span className="absolute left-2 top-2 rounded-full bg-cream px-2.5 py-1 text-[11px] font-medium sm:left-4 sm:top-4 sm:px-3 sm:text-xs">{room.tag}</span>
                 </div>
-                <h3 className="display-3 mt-4 group-hover:underline">{room.name}</h3>
-                <p className="mt-1 max-w-lg text-[15px] text-muted">{room.summary}</p>
+                <h3 className="mt-3 text-base font-medium leading-snug group-hover:underline sm:mt-4 sm:text-2xl">{room.name}</h3>
+                <p className="mt-1 line-clamp-3 max-w-lg text-xs text-muted sm:line-clamp-none sm:text-[15px]">{room.summary}</p>
               </Link>
             ))}
           </div>
@@ -271,45 +299,17 @@ export default function Home() {
             Semua artikel <ArrowRight width={18} height={18} />
           </Link>
         </div>
-        <div className="mt-10 grid gap-10 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-6 lg:grid-cols-3">
           {latest.map((a, i) => (
-            <Link key={a.slug} href={`/artikel/${a.slug}`} data-reveal style={revealDelay(i, 0.1)} className={`group block ${i === 2 ? "sm:hidden lg:block" : ""}`}>
-              <div className="media aspect-[4/3]">
-                <Image src={a.image} alt="" fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover transition duration-700 group-hover:scale-[1.04]" />
+            <Link key={a.slug} href={`/artikel/${a.slug}`} data-reveal style={revealDelay(i, 0.1)} className={`group block ${i === 2 ? "hidden lg:block" : ""}`}>
+              <div className="media aspect-[4/3] max-sm:!rounded-[18px]">
+                <Image src={a.image} alt="" fill sizes="(min-width: 1024px) 33vw, 50vw" className="object-cover transition duration-700 group-hover:scale-[1.04]" />
               </div>
-              <p className="mt-4 text-sm text-muted">{formatDate(a.date)}</p>
-              <h3 className="mt-1 text-lg font-medium leading-snug group-hover:underline">{a.title}</h3>
+              <p className="mt-3 text-xs text-muted sm:mt-4 sm:text-sm">{formatDate(a.date)}</p>
+              <h3 className="mt-1 line-clamp-3 text-sm font-medium leading-snug group-hover:underline sm:line-clamp-none sm:text-lg">{a.title}</h3>
             </Link>
           ))}
         </div>
-      </section>
-
-      {/* Galeri perjamuan & catering */}
-      <section className="container-x section border-t border-black/8">
-        <div data-reveal className="max-w-2xl">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-brand/20 bg-sand px-3.5 py-1 text-[11px] font-bold uppercase tracking-widest text-brand">
-            ★ Galeri Perjamuan &amp; Catering Akbar
-          </span>
-          <h2 className="mt-3 text-2xl font-bold sm:text-3xl">Dokumentasi Santapan &amp; Porsi Besar Siap Antar</h2>
-          <p className="mt-2 text-[15px] text-muted">Pengalaman melayani perhelatan akbar, hajatan keluarga, hingga acara korporat.</p>
-        </div>
-        <div data-reveal className="mt-6 lg:-mt-12">
-          <GallerySlider />
-        </div>
-
-        <ul data-reveal className="mt-12 grid gap-8 rounded-[32px] border border-black/8 bg-sand p-8 md:grid-cols-3 lg:p-12">
-          {qualities.map(({ icon: Icon, title, text }) => (
-            <li key={title} className="flex items-start gap-4">
-              <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-black/8 bg-white text-brand shadow-sm">
-                <Icon width={22} height={22} />
-              </span>
-              <span>
-                <span className="block text-lg font-bold">{title}</span>
-                <span className="mt-1 block text-sm leading-relaxed text-ink-soft">{text}</span>
-              </span>
-            </li>
-          ))}
-        </ul>
       </section>
 
       {/* Tentang kami + catering & aqiqah */}
