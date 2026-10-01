@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { bump, wiggle } from "@/lib/motion";
 import { nav, site, waLink } from "@/lib/site";
 import { useCart, useOnCartAdd } from "./CartProvider";
-import { CartIcon, Whatsapp } from "./Icons";
+import { CartIcon } from "./Icons";
 
 const reservasiHref = waLink("Halo Nawwaf & Friends, saya mau reservasi tempat untuk makan di resto.");
 
@@ -96,9 +96,9 @@ export default function Header() {
             href={reservasiHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn-secondary btn-sm hidden lg:inline-flex"
+            className="btn btn-accent btn-sm hidden lg:inline-flex"
           >
-            <Whatsapp width={16} height={16} /> Reservasi
+            Reservasi
           </a>
           <button
             type="button"
@@ -172,9 +172,9 @@ export default function Header() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => setOpen(false)}
-            className="btn btn-secondary mt-3 w-full"
+            className="btn btn-accent mt-3 w-full"
           >
-            <Whatsapp width={18} height={18} /> Reservasi
+            Reservasi
           </a>
         </div>
       </div>

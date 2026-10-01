@@ -191,6 +191,15 @@ body {
     background-color: var(--color-ink-soft);
   }
 
+  .btn-accent {
+    background-color: var(--color-accent);
+    color: var(--color-ink);
+  }
+
+  .btn-accent:hover {
+    background-color: var(--color-accent-600);
+  }
+
   .btn-secondary {
     border: 1px solid rgb(0 0 0 / 0.14);
     background-color: transparent;

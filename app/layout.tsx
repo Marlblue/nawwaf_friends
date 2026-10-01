@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ScrollReset from "@/components/ScrollReset";
 import ScrollReveal from "@/components/ScrollReveal";
+import WhatsAppFloat from "@/components/WhatsAppFloat";
 import { restaurantJsonLd } from "@/lib/jsonld";
 import { site } from "@/lib/site";
 import "./globals.css";
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
+          <WhatsAppFloat />
           <CartDrawer />
           <ScrollReveal />
           <ScrollReset />
