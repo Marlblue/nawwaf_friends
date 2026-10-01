@@ -55,11 +55,11 @@ export default function Home() {
             </h1>
             <p className="lead hero-rise mx-auto mt-4 max-w-xl text-white/90 [--delay:.12s]">Berlaku untuk pengantaran ke Kota Wisata, dan Cikeas, dengan minimum pemesanan Rp150.000.</p>
             <div className="hero-rise mt-8 flex flex-wrap justify-center gap-3 [--delay:.18s]">
-              <Link href="/menu" className="btn btn-primary">
+              <a href={waLink("Halo Nawwaf & Friends, saya mau pesan.")} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
                 Pesan Sekarang <ArrowRight width={18} height={18} />
-              </Link>
-              <a href={waLink("Halo Nawwaf & Friends, saya mau tanya menu & layanan.")} target="_blank" rel="noopener noreferrer" className="btn border border-white/40 bg-white/15 text-white backdrop-blur-md hover:bg-white hover:text-ink">
-                <Whatsapp width={18} height={18} /> Chat WhatsApp
+              </a>
+              <a href={waLink("Halo Nawwaf & Friends, saya mau reservasi tempat untuk makan di resto.")} target="_blank" rel="noopener noreferrer" className="btn border border-white/40 bg-white/15 text-white backdrop-blur-md hover:bg-white hover:text-ink">
+                Reservasi Sekarang
               </a>
             </div>
           </HeroBanner>
