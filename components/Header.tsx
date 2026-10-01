@@ -5,9 +5,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { bump, wiggle } from "@/lib/motion";
-import { nav, site } from "@/lib/site";
+import { nav, site, waLink } from "@/lib/site";
 import { useCart, useOnCartAdd } from "./CartProvider";
-import { CartIcon } from "./Icons";
+import { CartIcon, Whatsapp } from "./Icons";
+
+const reservasiHref = waLink("Halo Nawwaf & Friends, saya mau reservasi tempat untuk makan di resto.");
 
 export default function Header() {
   const pathname = usePathname();
@@ -90,6 +92,14 @@ export default function Header() {
         </ul>
 
         <div className="flex items-center gap-2">
+          <a
+            href={reservasiHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-secondary btn-sm hidden lg:inline-flex"
+          >
+            <Whatsapp width={16} height={16} /> Reservasi
+          </a>
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
@@ -157,6 +167,15 @@ export default function Header() {
           <Link href="/menu" onClick={() => setOpen(false)} className="btn btn-primary w-full">
             Pesan Antar
           </Link>
+          <a
+            href={reservasiHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setOpen(false)}
+            className="btn btn-secondary mt-3 w-full"
+          >
+            <Whatsapp width={18} height={18} /> Reservasi
+          </a>
         </div>
       </div>
     </header>
