@@ -98,7 +98,7 @@ export default function Header() {
             rel="noopener noreferrer"
             className="btn btn-accent btn-sm hidden lg:inline-flex"
           >
-            Reservasi
+            Reservasi Sekarang
           </a>
           <button
             type="button"
@@ -174,7 +174,7 @@ export default function Header() {
             onClick={() => setOpen(false)}
             className="btn btn-accent mt-3 w-full"
           >
-            Reservasi
+            Reservasi Sekarang
           </a>
         </div>
       </div>
