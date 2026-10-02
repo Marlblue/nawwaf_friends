@@ -47,17 +47,17 @@ export default function KontakPage() {
         </Link>
 
         <div className="grid items-start gap-6 lg:grid-cols-[1fr_1.6fr]">
-          <div data-reveal className="card p-6 sm:p-10">
+          <div data-reveal className="card p-5 sm:p-10">
             <dl className="divide-y divide-black/10">
               {cards.map(({ Icon, title, lines, href }) => (
-                <div key={title} className="flex items-center gap-4 py-5 first:pt-0">
+                <div key={title} className="flex items-center gap-3 py-5 first:pt-0 sm:gap-4">
                   <span className="icon-btn pointer-events-none">
                     <Icon width={18} height={18} />
                   </span>
                   <span className="min-w-0">
                     <dt className="text-sm text-muted">{title}:</dt>
                     {lines.map((line) => (
-                      <dd key={line} className="text-lg font-medium">
+                      <dd key={line} className="text-[15px] font-medium sm:text-lg">
                         {href ? (
                           <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className="hover:underline">
                             {line}
@@ -80,7 +80,7 @@ export default function KontakPage() {
                     <Icon width={18} height={18} />
                   </a>
                 ))}
-                <span className="text-lg font-medium">{site.socialName}</span>
+                <span className="text-base font-medium sm:text-lg">{site.socialName}</span>
               </div>
             </div>
 

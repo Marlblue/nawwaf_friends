@@ -412,13 +412,13 @@ body {
     isolation: isolate;
     display: flex;
     /* Tinggi ikut layar HP (svh), dibatasi supaya konsisten di HP kecil maupun tinggi */
-    min-height: clamp(440px, 72svh, 560px);
+    min-height: clamp(420px, 62svh, 560px);
     align-items: center;
     justify-content: center;
     overflow: hidden;
     border-radius: var(--radius-card);
     background-color: var(--color-ink);
-    padding: 48px 16px 64px;
+    padding: 40px 16px 56px;
     box-shadow: 0 24px 60px -20px rgb(42 16 19 / 0.45);
   }
 

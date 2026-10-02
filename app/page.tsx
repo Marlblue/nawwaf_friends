@@ -39,7 +39,7 @@ export default function Home() {
       <section className="pb-20 pt-4 sm:pt-6">
         <div className="container-x text-center">
           <HeroBanner>
-            <p className="eyebrow hero-rise rounded-full border border-white/25 bg-white/15 px-4 py-1.5 text-white backdrop-blur-md">
+            <p className="eyebrow hero-rise whitespace-nowrap rounded-full border border-white/25 bg-white/15 px-3 py-1 text-xs text-white backdrop-blur-md sm:px-4 sm:py-1.5 sm:text-sm">
               <span className="truck-wind text-accent">
                 <svg className="truck-wind-lines" width="16" height="20" viewBox="0 0 16 20" aria-hidden="true">
                   <path d="M5 6h10" />
@@ -50,11 +50,11 @@ export default function Home() {
               </span>{" "}
               Gratis Pengantaran • Area Pilihan
             </p>
-            <h1 className="display-1 hero-rise mx-auto mt-5 max-w-4xl text-white [--delay:.06s] [text-shadow:0_2px_16px_rgb(0_0_0/0.35)]">
+            <h1 className="display-1 hero-rise mx-auto mt-4 max-w-4xl sm:mt-5 text-white [--delay:.06s] [text-shadow:0_2px_16px_rgb(0_0_0/0.35)]">
               Pesanan Diantar <span className="text-accent">Gratis</span> ke Lokasi Anda
             </h1>
-            <p className="lead hero-rise mx-auto mt-4 max-w-xl text-white/90 [--delay:.12s]">Berlaku untuk pengantaran ke Kota Wisata, dan Cikeas, dengan minimum pemesanan Rp150.000.</p>
-            <div className="hero-rise mx-auto mt-8 flex w-full max-w-xs flex-col gap-3 [--delay:.18s] sm:max-w-none sm:flex-row sm:flex-wrap sm:justify-center">
+            <p className="lead hero-rise mx-auto mt-3 max-w-xl sm:mt-4 text-white/90 [--delay:.12s]">Berlaku untuk pengantaran ke Kota Wisata, dan Cikeas, dengan minimum pemesanan Rp150.000.</p>
+            <div className="hero-rise mx-auto mt-6 flex w-full max-w-[240px] flex-col gap-2.5 sm:mt-8 sm:gap-3 [--delay:.18s] sm:max-w-none sm:flex-row sm:flex-wrap sm:justify-center">
               <a href={waLink("Halo Nawwaf & Friends, saya mau pesan.")} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
                 Pesan Sekarang <ArrowRight width={18} height={18} />
               </a>
@@ -129,9 +129,9 @@ export default function Home() {
                   href={waLink("Halo Nawwaf & Friends, saya mau klaim Paket Promo Berkah Nampan Sultan.")}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-primary w-full whitespace-normal text-center sm:w-auto sm:self-start sm:whitespace-nowrap"
+                  className="btn btn-primary w-full whitespace-nowrap px-4 text-center text-sm sm:w-auto sm:self-start sm:px-6 sm:text-[15px]"
                 >
-                  Klaim Promo Nampan Sekarang <ArrowRight width={18} height={18} />
+                  Klaim Promo Nampan Sekarang <ArrowRight width={18} height={18} className="shrink-0" />
                 </a>
                 <p className="text-center text-sm text-ink-soft sm:max-w-[240px] sm:text-left">
                   ⚡ <strong className="font-semibold text-ink">Berlaku terbatas</strong> untuk 20 pemesan pertama hari ini.
