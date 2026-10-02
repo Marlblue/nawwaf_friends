@@ -67,15 +67,15 @@ export default function Header() {
       }`}
     >
       <nav className="container-x flex h-[var(--header-h)] items-center justify-between gap-4">
-        <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
+        <Link href="/" className="flex shrink-0 items-center gap-3" onClick={() => setOpen(false)}>
           <Image src="/images/logo.webp" alt="" width={44} height={44} className="h-11 w-11 rounded-full object-cover" priority />
-          <span className="leading-tight">
+          <span className="whitespace-nowrap leading-tight">
             <span className="block text-base font-semibold">{site.name}</span>
             <span className="block text-xs text-muted">{site.tagline}</span>
           </span>
         </Link>
 
-        <ul className="hidden items-center gap-7 lg:flex">
+        <ul className="hidden items-center gap-5 lg:flex xl:gap-7">
           {nav.map((item) => (
             <li key={item.href}>
               <Link

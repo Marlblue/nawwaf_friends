@@ -46,7 +46,7 @@ export default function HeroBanner({ children }: { children: React.ReactNode }) 
       ))}
       <div className="hero-banner-overlay" aria-hidden />
 
-      <div className="relative z-10 flex flex-col items-center">{children}</div>
+      <div className="relative z-10 flex w-full flex-col items-center">{children}</div>
 
       <div className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-2">
         {photos.map((src, i) => (

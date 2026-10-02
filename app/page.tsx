@@ -54,7 +54,7 @@ export default function Home() {
               Pesanan Diantar <span className="text-accent">Gratis</span> ke Lokasi Anda
             </h1>
             <p className="lead hero-rise mx-auto mt-4 max-w-xl text-white/90 [--delay:.12s]">Berlaku untuk pengantaran ke Kota Wisata, dan Cikeas, dengan minimum pemesanan Rp150.000.</p>
-            <div className="hero-rise mt-8 flex flex-wrap justify-center gap-3 [--delay:.18s]">
+            <div className="hero-rise mx-auto mt-8 flex w-full max-w-xs flex-col gap-3 [--delay:.18s] sm:max-w-none sm:flex-row sm:flex-wrap sm:justify-center">
               <a href={waLink("Halo Nawwaf & Friends, saya mau pesan.")} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
                 Pesan Sekarang <ArrowRight width={18} height={18} />
               </a>
@@ -113,7 +113,7 @@ export default function Home() {
               <span className="inline-flex items-center gap-1.5 rounded-full border border-brand/25 bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-brand">
                 🔥 Penawaran Spesial Bulan Ini
               </span>
-              <h2 className="mt-3 text-[26px] font-bold leading-tight sm:mt-4 sm:text-[42px]">
+              <h2 className="mt-3 text-[26px] font-bold leading-tight sm:mt-4 sm:text-[42px] lg:text-[34px] xl:text-[42px]">
                 Paket Promo Berkah <span className="text-brand">Nampan Sultan</span>
               </h2>
               <div className="mt-4 rounded-2xl border border-black/10 bg-white px-4 py-3 sm:mt-5 sm:inline-block">
@@ -124,12 +124,12 @@ export default function Home() {
                   <span className="rounded-full bg-sand px-2 py-0.5 text-[11px] font-medium text-brand">Porsi 5-10 Orang</span>
                 </p>
               </div>
-              <div className="mt-5 flex flex-col gap-3 sm:mt-6 sm:flex-row sm:items-center sm:gap-6">
+              <div className="mt-5 flex flex-col gap-3 sm:mt-6 sm:flex-row sm:items-center sm:gap-6 lg:flex-col lg:items-start lg:gap-3 xl:flex-row xl:items-center xl:gap-6">
                 <a
                   href={waLink("Halo Nawwaf & Friends, saya mau klaim Paket Promo Berkah Nampan Sultan.")}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-primary w-full whitespace-normal text-center sm:w-auto sm:self-start"
+                  className="btn btn-primary w-full whitespace-normal text-center sm:w-auto sm:self-start sm:whitespace-nowrap"
                 >
                   Klaim Promo Nampan Sekarang <ArrowRight width={18} height={18} />
                 </a>
@@ -139,7 +139,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="relative order-first aspect-[4/3] overflow-hidden rounded-[20px] sm:rounded-[24px] lg:order-none lg:aspect-[4/3.4] shadow-[0_20px_40px_-16px_rgb(42_16_19/0.35)]">
+            <div className="relative order-first aspect-[4/3] overflow-hidden rounded-[20px] sm:rounded-[24px] lg:order-last lg:aspect-[4/3.4] shadow-[0_20px_40px_-16px_rgb(42_16_19/0.35)]">
               <Image src="/images/menu/kebuli-full-kambing.webp" alt="Nampan nasi kebuli kambing" fill sizes="(min-width: 1024px) 520px, 90vw" className="object-cover" />
               <span className="absolute right-3 top-3 rounded-full sm:right-4 sm:top-4 border border-black/10 bg-white/90 px-3 py-1 text-[11px] font-semibold text-brand backdrop-blur-sm">
                 ★ Porsi Nampan Akbar
