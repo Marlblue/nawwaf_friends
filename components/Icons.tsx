@@ -123,6 +123,13 @@ export const Users = (p: P) => (
   </svg>
 );
 
+export const Megaphone = (p: P) => (
+  <svg {...base(p)}>
+    <path d="m3 11 18-5v12L3 14v-3z" />
+    <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
+  </svg>
+);
+
 export const Utensils = (p: P) => (
   <svg {...base(p)}>
     <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7" />

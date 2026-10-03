@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Bag, Clock, Facebook, Instagram, MapPin, Phone, Threads, Tiktok, Truck, Users, Whatsapp } from "@/components/Icons";
+import { ArrowRight, Bag, Clock, Facebook, Instagram, MapPin, Megaphone, Phone, Threads, Tiktok, Truck, Users, Whatsapp } from "@/components/Icons";
 import PageTransition from "@/components/PageTransition";
 import { revealDelay } from "@/lib/motion";
 import { addressText, openingHoursLines, site, waLink } from "@/lib/site";
@@ -19,6 +19,8 @@ const quickLinks: QuickLink[] = [
   { href: "/menu", label: "Pesan antar dari menu", note: "Pilih menu, pesanan langsung tersusun ke WhatsApp admin.", Icon: Truck },
   site.gofoodUrl ? { href: site.gofoodUrl, label: "Pesan lewat GoFood", Icon: Bag, external: true } : null,
   { href: "/venue", label: "Booking ruang meeting & venue", Icon: Users },
+  { href: "/hubungi/kolaborasi", label: "Kolaborasi KOL & influencer", note: "Untuk content creator & food vlogger.", Icon: Megaphone },
+  { href: "/hubungi/komunitas", label: "Kolaborasi komunitas", note: "Gathering, kajian, workshop & makan bersama.", Icon: Users },
 ].filter((l) => l !== null);
 
 const intents = [
