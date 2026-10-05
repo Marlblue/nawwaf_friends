@@ -5,9 +5,9 @@ export const site = {
   tagline: "Abu Nawwaf Arabian Food",
   description:
     "Nasi Mandhi, Nasi Kebuli, nampan kambing & ayam khas Timur Tengah. Pesan antar online, catering, aqiqah, dan venue ruang meeting.",
-  // Domain final situs, tanpa garis miring di akhir. Google butuh URL absolut,
-  // jadi selama ini kosong, field url/image/menu tidak ikut di data terstruktur.
-  url: "",
+  // Domain final situs, tanpa garis miring di akhir. Dipakai untuk URL absolut di
+  // data terstruktur, sitemap.xml, robots.txt, dan metadataBase.
+  url: "https://nawwafresto.com",
   phone: "021-22962656",
   whatsappDisplay: "0818 0744 7714",
   // Format internasional tanpa "+" untuk link wa.me
