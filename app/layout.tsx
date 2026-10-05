@@ -18,6 +18,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  // Basis URL absolut untuk og:image, canonical, dll.
+  metadataBase: new URL(site.url),
   title: {
     default: `${site.name} - ${site.tagline} | Delivery Order Online`,
     template: `%s | ${site.name}`,
