@@ -35,25 +35,27 @@ jobs:
 
       - run: pnpm build:cpanel
 
+      # -4 di semua koneksi SSH: runner GitHub tidak punya rute IPv6, jadi kalau host
+      # ter-resolve ke IPv6 koneksinya gagal "Network is unreachable".
       - name: Siapkan SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+          ssh-keyscan -4 -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
 
       - name: Upload ke server
         # --delete menyamakan folder app dengan hasil build; tmp/ (restart Passenger) dan log dibiarkan.
         run: |
           rsync -az --delete \
             --exclude 'tmp/' --exclude '*.log' \
-            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }}" \
+            -e "ssh -4 -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }}" \
             deploy/app/ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${APP_DIR}/"
 
       - name: Restart aplikasi
         # Passenger me-restart app Node saat tmp/restart.txt disentuh.
         run: |
-          ssh -i ~/.ssh/deploy_key -p "${{ secrets.SSH_PORT }}" \
+          ssh -4 -i ~/.ssh/deploy_key -p "${{ secrets.SSH_PORT }}" \
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
             "mkdir -p ${APP_DIR}/tmp && touch ${APP_DIR}/tmp/restart.txt"
 
