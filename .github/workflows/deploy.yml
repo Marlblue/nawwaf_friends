@@ -1,0 +1,63 @@
+# Deploy otomatis ke cPanel DomaiNesia (Setup Node.js App) setiap push ke main.
+# Build dilakukan di runner GitHub (RAM shared hosting tidak cukup untuk next build),
+# lalu hasilnya dikirim lewat SSH dan aplikasinya di-restart.
+#
+# Secrets repo: SSH_HOST, SSH_PORT, SSH_USER, SSH_PRIVATE_KEY
+# Env var form (COLLAB_SCRIPT_URL, dst.) tetap diisi di cPanel, bukan di sini.
+name: Deploy ke cPanel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-cpanel
+  cancel-in-progress: false
+
+env:
+  APP_DIR: nawwafresto # Application root di Setup Node.js App, relatif ke home
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm build:cpanel
+
+      - name: Siapkan SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Upload ke server
+        # --delete menyamakan folder app dengan hasil build; tmp/ (restart Passenger) dan log dibiarkan.
+        run: |
+          rsync -az --delete \
+            --exclude 'tmp/' --exclude '*.log' \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }}" \
+            deploy/app/ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${APP_DIR}/"
+
+      - name: Restart aplikasi
+        # Passenger me-restart app Node saat tmp/restart.txt disentuh.
+        run: |
+          ssh -i ~/.ssh/deploy_key -p "${{ secrets.SSH_PORT }}" \
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+            "mkdir -p ${APP_DIR}/tmp && touch ${APP_DIR}/tmp/restart.txt"
+
+      - name: Cek situs
+        run: |
+          sleep 5
+          curl -fsS -o /dev/null -w "nawwafresto.com: %{http_code}\n" https://nawwafresto.com/
