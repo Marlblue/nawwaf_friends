@@ -1,3 +1,4 @@
+import { GoogleTagManager } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import { CartProvider } from "@/components/CartProvider";
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     // pulihkan posisi setelah refresh). Gulirannya jadi beranimasi, bisa terpotong
     // di tengah jalan, dan halaman berhenti di posisi nanggung, bukan di paling atas.
     <html lang="id" data-scroll-behavior="smooth" className={`${poppins.variable} antialiased`}>
+      <GoogleTagManager gtmId={site.gtmId} />
       <body className="flex min-h-screen flex-col font-sans">
         {/* JSON.stringify tidak membersihkan tag HTML, jadi "<" diganti escape unicode */}
         <script
