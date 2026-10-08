@@ -1,14 +1,5 @@
-import { GoogleTagManager } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
-import { CartProvider } from "@/components/CartProvider";
-import CartDrawer from "@/components/CartDrawer";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import ScrollReset from "@/components/ScrollReset";
-import ScrollReveal from "@/components/ScrollReveal";
-import WhatsAppFloat from "@/components/WhatsAppFloat";
-import { restaurantJsonLd } from "@/lib/jsonld";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -18,14 +9,11 @@ const poppins = Poppins({
   weight: ["400", "500", "600"],
 });
 
+// Layout akar cuma kerangka <html>/<body>. Navbar, footer, GTM, dsb. ada di
+// components/SiteShell.tsx (dipakai app/(site)/layout.tsx) supaya /studio tidak ikut memakainya.
 export const metadata: Metadata = {
   // Basis URL absolut untuk og:image, canonical, dll.
   metadataBase: new URL(site.url),
-  title: {
-    default: `${site.name} - ${site.tagline} | Delivery Order Online`,
-    template: `%s | ${site.name}`,
-  },
-  description: site.description,
 };
 
 export const viewport: Viewport = {
@@ -44,23 +32,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     // pulihkan posisi setelah refresh). Gulirannya jadi beranimasi, bisa terpotong
     // di tengah jalan, dan halaman berhenti di posisi nanggung, bukan di paling atas.
     <html lang="id" data-scroll-behavior="smooth" className={`${poppins.variable} antialiased`}>
-      <GoogleTagManager gtmId={site.gtmId} />
-      <body className="flex min-h-screen flex-col font-sans">
-        {/* JSON.stringify tidak membersihkan tag HTML, jadi "<" diganti escape unicode */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(restaurantJsonLd).replace(/</g, "\\u003c") }}
-        />
-        <CartProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <WhatsAppFloat />
-          <CartDrawer />
-          <ScrollReveal />
-          <ScrollReset />
-        </CartProvider>
-      </body>
+      <body className="flex min-h-screen flex-col font-sans">{children}</body>
     </html>
   );
 }

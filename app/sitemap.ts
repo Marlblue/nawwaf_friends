@@ -1,13 +1,16 @@
 import type { MetadataRoute } from "next";
-import { articles } from "@/lib/articles";
+import { getArticleSitemapEntries } from "@/lib/sanity/queries";
 import { site } from "@/lib/site";
 
+export const revalidate = 3600;
+
 // Disetor ke Google Search Console sebagai https://nawwafresto.com/sitemap.xml.
-// /order (checkout keranjang) dan /terima-kasih sengaja tidak dimasukkan.
-export default function sitemap(): MetadataRoute.Sitemap {
+// /order (checkout keranjang), /terima-kasih, dan /studio sengaja tidak dimasukkan.
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const pages = ["", "/menu", "/venue", "/artikel", "/hubungi", "/hubungi/kolaborasi", "/hubungi/komunitas", "/kontak"];
+  const articles = await getArticleSitemapEntries();
   return [
     ...pages.map((path) => ({ url: `${site.url}${path}` })),
-    ...articles.map((a) => ({ url: `${site.url}/artikel/${a.slug}`, lastModified: a.date })),
+    ...articles.map((a) => ({ url: `${site.url}/artikel/${a.slug}`, lastModified: a.updatedAt })),
   ];
 }
