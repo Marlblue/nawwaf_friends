@@ -4,9 +4,11 @@ import HeroBanner from "@/components/HeroBanner";
 import GallerySlider from "@/components/GallerySlider";
 import { ArrowRight, Bag, Check, MapPin, Truck, Utensils, Whatsapp } from "@/components/Icons";
 import PageTransition from "@/components/PageTransition";
-import { articles, formatDate } from "@/lib/articles";
+import ArticleCover from "@/components/ArticleCover";
+import { formatDate } from "@/lib/articles";
 import { bestSellers, minPrice } from "@/lib/menu";
 import { revealDelay } from "@/lib/motion";
+import { getLatestArticles } from "@/lib/sanity/queries";
 import { services } from "@/lib/services";
 import { rupiah, site, waLink } from "@/lib/site";
 import { rooms } from "@/lib/venue";
@@ -29,8 +31,11 @@ const qualities = [
 
 const cateringServices = ["Prasmanan & nasi box", "Arabian snack untuk acara", "Aqiqah all in one package", "Menyembelih & memasak daging aqiqah"];
 
-export default function Home() {
-  const latest = articles.slice(0, 3);
+// Artikel terbaru diambil dari Sanity; halaman dibangun ulang paling lama tiap 60 detik.
+export const revalidate = 60;
+
+export default async function Home() {
+  const latest = await getLatestArticles(3);
   const activeRooms = rooms.filter((r) => r.enabled);
 
   return (
@@ -291,26 +296,28 @@ export default function Home() {
         </section>
       )}
 
-      {/* Artikel */}
-      <section className={`container-x section ${activeRooms.length > 0 ? "border-t border-black/8" : ""}`}>
-        <div data-reveal className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
-          <h2 className="display-2">Artikel terbaru</h2>
-          <Link href="/artikel" className="btn btn-secondary self-start sm:self-auto">
-            Semua artikel <ArrowRight width={18} height={18} />
-          </Link>
-        </div>
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-6 lg:grid-cols-3">
-          {latest.map((a, i) => (
-            <Link key={a.slug} href={`/artikel/${a.slug}`} data-reveal style={revealDelay(i, 0.1)} className={`group block ${i === 2 ? "hidden lg:block" : ""}`}>
-              <div className="media aspect-[4/3] max-sm:!rounded-[18px]">
-                <Image src={a.image} alt="" fill sizes="(min-width: 1024px) 33vw, 50vw" className="object-cover transition duration-700 group-hover:scale-[1.04]" />
-              </div>
-              <p className="mt-3 text-xs text-muted sm:mt-4 sm:text-sm">{formatDate(a.date)}</p>
-              <h3 className="mt-1 line-clamp-3 text-sm font-medium leading-snug group-hover:underline sm:line-clamp-none sm:text-lg">{a.title}</h3>
+      {/* Artikel (disembunyikan selama belum ada artikel di Sanity) */}
+      {latest.length > 0 && (
+        <section className={`container-x section ${activeRooms.length > 0 ? "border-t border-black/8" : ""}`}>
+          <div data-reveal className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+            <h2 className="display-2">Artikel terbaru</h2>
+            <Link href="/artikel" className="btn btn-secondary self-start sm:self-auto">
+              Semua artikel <ArrowRight width={18} height={18} />
             </Link>
-          ))}
-        </div>
-      </section>
+          </div>
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-6 lg:grid-cols-3">
+            {latest.map((a, i) => (
+              <Link key={a._id} href={`/artikel/${a.slug}`} data-reveal style={revealDelay(i, 0.1)} className={`group block ${i === 2 ? "hidden lg:block" : ""}`}>
+                <div className="media aspect-[4/3] max-sm:!rounded-[18px]">
+                  <ArticleCover cover={a.coverImage} width={800} height={600} sizes="(min-width: 1024px) 33vw, 50vw" className="object-cover transition duration-700 group-hover:scale-[1.04]" decorative />
+                </div>
+                <p className="mt-3 text-xs text-muted sm:mt-4 sm:text-sm">{formatDate(a.publishedAt)}</p>
+                <h3 className="mt-1 line-clamp-3 text-sm font-medium leading-snug group-hover:underline sm:line-clamp-none sm:text-lg">{a.title}</h3>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Tentang kami + catering & aqiqah */}
       <section className="container-x pb-20">
