@@ -1,5 +1,5 @@
 // Slide galeri di beranda. Tambah foto dokumentasi acara cukup dengan menambah item di sini.
-// Foto sementara diambil dari menu; ganti dengan foto asli acara / catering kalau sudah ada.
+// Sebagian foto sementara diambil dari menu; ganti dengan foto asli acara / catering kalau sudah ada.
 
 export type GallerySlide = {
   image: string;
@@ -18,7 +18,7 @@ export const gallery: GallerySlide[] = [
     tags: ["Siap Saji di Lokasi", "Chef Berpengalaman"],
   },
   {
-    image: "/images/menu/nasi-kebuli-ayam.webp",
+    image: "/Nasi box .webp",
     badge: "Nasi Box Siap Kirim",
     title: "Distribusi Nasi Box Skala Besar & Korporat",
     text: "Kemasan bersegel higienis menjaga aroma kebuli dan kelembutan daging tetap prima hingga sampai di acara Anda.",

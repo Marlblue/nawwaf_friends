@@ -1,4 +1,4 @@
-// Katalog venue. Kapasitas, fasilitas, dan foto masih perlu dikonfirmasi
+// Katalog venue. Kapasitas dan fasilitas masih perlu dikonfirmasi
 // dengan tim outlet; ganti isinya sesuai kondisi ruangan sebenarnya.
 // Set `enabled: false` untuk menyembunyikan ruang dari halaman venue.
 
@@ -24,7 +24,7 @@ export const rooms: VenueRoom[] = [
     capacity: "Konfirmasi ke admin",
     facilities: ["Ruang ber-AC", "Meja & kursi meeting", "Colokan listrik", "Paket makan & minum"],
     idealFor: ["Rapat kantor", "Workshop kecil", "Arisan & komunitas"],
-    image: "/images/menu/mix-full.webp",
+    image: "/Meting room.webp",
     enabled: true,
   },
   {
@@ -36,7 +36,7 @@ export const rooms: VenueRoom[] = [
     capacity: "Konfirmasi ke admin",
     facilities: ["Ruang privat ber-AC", "Penyajian nampan", "Pelayan khusus", "Dekorasi sederhana (by request)"],
     idealFor: ["Makan keluarga", "Syukuran & aqiqah", "Jamuan tamu"],
-    image: "/images/menu/kebuli-full-kambing.webp",
+    image: "/Private room.webp",
     enabled: true,
   },
 ];

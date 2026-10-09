@@ -1,5 +1,4 @@
 // Layanan utama. Dipakai kartu layanan di beranda dan tab di halaman menu (/menu?kategori=<id>).
-// Foto sementara diambil dari menu; ganti dengan foto asli nasi box / aqiqah / prasmanan kalau sudah ada
 
 export type ServiceId = "delivery" | "nasi-box" | "aqiqah" | "kambing-guling" | "dine-in";
 
@@ -32,7 +31,7 @@ export const services: Service[] = [
     badge: "Kemasan Eksklusif",
     text: "Paket bento premium elegan berpartisi khusus untuk rapat kantor, gathering, dan syukuran berkelas.",
     note: "Mulai 35k / box",
-    image: "/images/menu/nasi-kebuli-ayam.webp",
+    image: "/Nasi box .webp",
     points: ["Pilihan nasi mandhi atau kebuli", "Untuk rapat kantor, pengajian & syukuran", "Bisa pesan dalam jumlah besar"],
     waText: "Halo Nawwaf & Friends, saya mau pesan nasi box.",
   },
@@ -42,7 +41,7 @@ export const services: Service[] = [
     badge: "Syar'i & Higienis",
     text: "Layanan aqiqah syar'i terpercaya dengan olahan kambing lezat tanpa prengus, sertifikat, & dokumentasi.",
     note: "Paket Lengkap Siap Saji",
-    image: "/images/menu/mandhi-full-kambing.webp",
+    image: "/Nasi Box Aqiqah.webp",
     points: ["Aqiqah all in one package", "Menyembelih & memasak daging aqiqah", "Sertifikat & dokumentasi"],
     waText: "Halo Nawwaf & Friends, saya mau tanya paket aqiqah.",
   },
