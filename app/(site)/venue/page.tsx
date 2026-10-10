@@ -73,9 +73,9 @@ export default function VenuePage() {
           <p data-reveal className="lead mx-auto mt-3 max-w-lg text-center">Suasana outlet dan fasilitas pendukung untuk tamu dan keluarga.</p>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-6">
             {venueGallery.map((g, i) => (
-              <figure key={g.image} data-reveal style={revealDelay(i, 0.1)}>
-                <div className="media aspect-[4/3] max-sm:!rounded-[18px]">
-                  <Image src={g.image} alt={g.caption} fill sizes="50vw" className="object-cover" />
+              <figure key={g.image} data-reveal style={revealDelay(i, 0.1)} className={i === 0 ? "col-span-2" : ""}>
+                <div className={`media max-sm:!rounded-[18px] ${i === 0 ? "aspect-[16/9]" : "aspect-[4/3]"}`}>
+                  <Image src={g.image} alt={g.caption} fill sizes={i === 0 ? "100vw" : "50vw"} className="object-cover" />
                 </div>
                 <figcaption className="mt-3 text-sm font-medium sm:text-base">{g.caption}</figcaption>
               </figure>

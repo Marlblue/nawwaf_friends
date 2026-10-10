@@ -59,6 +59,7 @@ export const venuePackages = [
 // Galeri suasana outlet di bawah katalog venue. Tambah foto cukup dengan menambah item di sini.
 export const venueGallery = [
   { image: "/outdoor.webp", caption: "Area outdoor" },
+  { image: "/lantai-2.webp", caption: "Lantai 2" },
   { image: "/outdoor-belakang.webp", caption: "Outdoor belakang" },
   { image: "/mushola.webp", caption: "Mushola" },
   { image: "/playground.webp", caption: "Playground anak" },

@@ -21,7 +21,7 @@ export const services: Service[] = [
     badge: "Siap Kirim Cepat",
     text: "Santap hangat langsung di rumah. Paket nampan kebuli & mandhi lengkap sambal dan acar segar.",
     note: "Mulai 45k / porsi",
-    image: "/images/menu/nasi-mandhi-kambing.webp",
+    image: "/delivery.webp",
     points: [],
     waText: "Halo Nawwaf & Friends, saya mau pesan antar.",
   },
