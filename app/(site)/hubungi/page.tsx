@@ -26,7 +26,7 @@ const quickLinks: QuickLink[] = [
 const intents = [
   { href: "/menu", title: "Menu", text: "Nasi mandhi, kebuli & nampan favorit.", cta: "Lihat Menu", image: "/images/menu/nasi-mandhi-kambing.webp" },
   { href: "/menu?kategori=nasi-box", title: "Nasi Box", text: "Untuk rapat kantor & syukuran.", cta: "Lihat Paket", image: "/Nasi box .webp" },
-  { href: "/menu?kategori=aqiqah", title: "Aqiqah", text: "Syar'i, lengkap siap saji.", cta: "Lihat Paket", image: "/Nasi Box Aqiqah.webp" },
+  { href: "/menu?kategori=aqiqah", title: "Aqiqah", text: "Syar'i, lengkap siap saji.", cta: "Lihat Paket", image: "/aqiqah.webp" },
   { href: "/venue", title: "Venue", text: "Ruang meeting & private room.", cta: "Reservasi", image: "/Meting room.webp" },
 ];
 

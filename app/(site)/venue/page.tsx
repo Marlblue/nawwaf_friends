@@ -6,7 +6,7 @@ import PageHero from "@/components/PageHero";
 import PageTransition from "@/components/PageTransition";
 import WhatsAppForm from "@/components/WhatsAppForm";
 import { revealDelay } from "@/lib/motion";
-import { rooms, venuePackages } from "@/lib/venue";
+import { rooms, venueGallery, venuePackages } from "@/lib/venue";
 
 export const metadata: Metadata = {
   title: "Venue - Ruang Meeting & Private Room",
@@ -67,6 +67,21 @@ export default function VenuePage() {
             </article>
           ))}
         </div>
+
+        <section className="section">
+          <h2 data-reveal className="display-2 text-center">Galeri</h2>
+          <p data-reveal className="lead mx-auto mt-3 max-w-lg text-center">Suasana outlet dan fasilitas pendukung untuk tamu dan keluarga.</p>
+          <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-6">
+            {venueGallery.map((g, i) => (
+              <figure key={g.image} data-reveal style={revealDelay(i, 0.1)}>
+                <div className="media aspect-[4/3] max-sm:!rounded-[18px]">
+                  <Image src={g.image} alt={g.caption} fill sizes="50vw" className="object-cover" />
+                </div>
+                <figcaption className="mt-3 text-sm font-medium sm:text-base">{g.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
 
         <section className="section">
           <h2 data-reveal className="display-2 text-center">Pilihan paket</h2>

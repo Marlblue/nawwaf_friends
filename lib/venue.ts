@@ -55,3 +55,11 @@ export const venuePackages = [
     desc: "Untuk acara lebih besar: prasmanan, nasi box, dan arabian snack.",
   },
 ];
+
+// Galeri suasana outlet di bawah katalog venue. Tambah foto cukup dengan menambah item di sini.
+export const venueGallery = [
+  { image: "/outdoor.webp", caption: "Area outdoor" },
+  { image: "/outdoor-belakang.webp", caption: "Outdoor belakang" },
+  { image: "/mushola.webp", caption: "Mushola" },
+  { image: "/playground.webp", caption: "Playground anak" },
+];

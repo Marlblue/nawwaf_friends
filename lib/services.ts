@@ -41,7 +41,7 @@ export const services: Service[] = [
     badge: "Syar'i & Higienis",
     text: "Layanan aqiqah syar'i terpercaya dengan olahan kambing lezat tanpa prengus, sertifikat, & dokumentasi.",
     note: "Paket Lengkap Siap Saji",
-    image: "/Nasi Box Aqiqah.webp",
+    image: "/aqiqah.webp",
     points: ["Aqiqah all in one package", "Menyembelih & memasak daging aqiqah", "Sertifikat & dokumentasi"],
     waText: "Halo Nawwaf & Friends, saya mau tanya paket aqiqah.",
   },
