@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Check, Users, Whatsapp } from "@/components/Icons";
+import { Check, Users } from "@/components/Icons";
 import PageHero from "@/components/PageHero";
 import PageTransition from "@/components/PageTransition";
 import { revealDelay } from "@/lib/motion";
@@ -61,7 +61,7 @@ export default function VenuePage() {
                   </div>
                 </div>
                 <a href={waLink(`Halo Nawwaf & Friends, saya mau booking ${room.name}.`)} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-8">
-                  <Whatsapp width={18} height={18} /> Booking {room.name}
+                  Booking {room.name}
                 </a>
               </div>
             </article>
