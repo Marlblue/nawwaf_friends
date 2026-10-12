@@ -35,14 +35,20 @@ html {
   --header-h: 72px;
 }
 
+/* Jaring pengaman anti scroll ke samping di HP. `clip` lebih aman daripada
+   `hidden` karena tidak membuat body jadi kotak scroll (header sticky tetap jalan);
+   baris `hidden` cuma cadangan buat browser lama. Harus dipasang di html juga:
+   kalau cuma di body, aturannya dipindah ke layar sebagai `hidden` dan isi yang
+   kelebaran masih bisa digeser pakai jari. */
+html,
+body {
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
 body {
   color: var(--color-ink);
   background-color: var(--color-cream);
-  /* Jaring pengaman anti scroll ke samping di HP. `clip` lebih aman daripada
-     `hidden` karena tidak membuat body jadi kotak scroll (header sticky tetap jalan);
-     baris `hidden` di atasnya cuma cadangan buat browser lama. */
-  overflow-x: hidden;
-  overflow-x: clip;
 }
 
 ::selection {
