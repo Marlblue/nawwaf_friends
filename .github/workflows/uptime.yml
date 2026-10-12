@@ -1,0 +1,62 @@
+# Cek berkala bahwa situsnya masih hidup, dengan kabar ke grup Telegram lewat webhook
+# yang sama dengan alert form (lib/ops-alert.ts). Tanpa ini, proses Node yang mati,
+# hosting yang di-suspend, atau domain yang lupa diperpanjang baru ketahuan saat ada
+# pengunjung yang mengeluh.
+name: Cek situs hidup
+
+on:
+  # Tiap 30 menit, bukan tiap 5: di repo privat tiap run memakan kuota menit Actions
+  # (dibulatkan per menit), dan tiap 5 menit jauh melewati jatah gratis 2.000 menit.
+  # Jadwal GitHub juga sering molor saat antrean ramai, jadi ini batas atas deteksi.
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Periksa halaman utama
+        env:
+          WEBHOOK: ${{ secrets.OPS_ALERT_WEBHOOK_URL }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          BASE="https://nawwafresto.com/"
+          # Parameter acak memaksa permintaan sampai ke aplikasi. Tanpa itu cache proxy
+          # hosting bisa menjawab HTML lama dengan 200 walaupun proses Node sudah mati.
+          # Tiga percobaan berjeda 20 detik, supaya restart sesaat tidak langsung jadi alarm.
+          code=000
+          for attempt in 1 2 3; do
+            code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 "${BASE}?uptime=$(date +%s)" || true)
+            if [ "$code" = "200" ]; then
+              echo "OK: HTTP 200 pada percobaan ke-$attempt."
+              exit 0
+            fi
+            echo "percobaan $attempt: HTTP $code"
+            [ "$attempt" = "3" ] || sleep 20
+          done
+
+          echo "::error::$BASE tidak membalas HTTP 200 dalam tiga percobaan (terakhir HTTP $code)."
+
+          # Dikirim di tiap run yang gagal: pengingat tiap 30 menit selama situs mati memang
+          # yang diinginkan. Run ini tetap exit 1, jadi email GitHub juga jalan.
+          if [ -n "$WEBHOOK" ]; then
+            if [ "$code" = "000" ]; then
+              REASON="tidak bisa dihubungi sama sekali (DNS, SSL, atau server mati)"
+            else
+              REASON="membalas HTTP $code"
+            fi
+            TEXT="[nawwafresto.com] SITUS BERMASALAH: $BASE $REASON dalam tiga percobaan. Detail: $RUN_URL"
+            BODY=$(jq -n --arg text "$TEXT" '{text: $text, content: $text}')
+            kabar=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 -X POST \
+              -H "Content-Type: application/json" -d "$BODY" "$WEBHOOK" || true)
+            case "$kabar" in
+              2??) echo "Kabar terkirim ke grup (HTTP $kabar)." ;;
+              *) echo "::error::Grup TIDAK dikabari (HTTP $kabar). Periksa juga OPS_ALERT_WEBHOOK_URL." ;;
+            esac
+          fi
+          exit 1

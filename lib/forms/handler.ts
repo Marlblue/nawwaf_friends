@@ -1,3 +1,4 @@
+import { alertOps, notifyLead } from "../ops-alert";
 import { postToAppsScript } from "./apps-script";
 import { SUBMISSION_ID_FIELD, SUBMISSION_ID_PATTERN } from "./submission-id";
 import { thankYouCookie, type ThankYouForm } from "./thank-you";
@@ -75,6 +76,7 @@ export async function handleFormSubmission(request: Request, { label, scriptUrl,
 
   if (!scriptUrl) {
     console.error(`[${label}] URL Apps Script belum diset di environment`);
+    alertOps(`url-kosong:${label}`, `Form "${label}" menolak semua kiriman: URL Apps Script belum diisi di env cPanel.`);
     return jsonError("Form belum siap menerima pengiriman.", 500);
   }
 
@@ -113,11 +115,19 @@ export async function handleFormSubmission(request: Request, { label, scriptUrl,
   const result = await postToAppsScript(scriptUrl, fields);
   if (!result.ok) {
     console.error(`[${label}] gagal meneruskan ke Apps Script: ${result.reason}`);
+    alertOps(
+      `simpan-gagal:${label}`,
+      `Form "${label}" GAGAL menyimpan ke Sheet: ${result.reason}. Pengunjung melihat pesan gagal. ` +
+        `Kalau alasannya "unauthorized", FORMS_SHARED_SECRET dan Script Property SHARED_SECRET tidak sama.`
+    );
     return jsonError("Pengiriman gagal diproses. Silakan coba lagi atau hubungi kami via WhatsApp.", 502);
   }
   if (result.mailFailed) {
     console.error(`[${label}] tersimpan di Sheet, tapi email notifikasinya gagal (kuota MailApp habis?)`);
+    alertOps(`email-gagal:${label}`, `Form "${label}" tersimpan di Sheet, tapi email notifikasinya GAGAL (kuota MailApp habis?). Cek Sheet langsung.`);
   }
+  // Kiriman ulang (submission id yang sama) tidak menambah baris di Sheet, jadi tidak dihitung lead baru.
+  if (!result.duplicate) notifyLead(label);
 
   const response = Response.json({ ok: true });
   response.headers.append("Set-Cookie", thankYouCookie(thankYou));

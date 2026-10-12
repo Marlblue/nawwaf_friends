@@ -2,7 +2,7 @@
 # Build dilakukan di runner GitHub (RAM shared hosting tidak cukup untuk next build),
 # lalu hasilnya dikirim lewat SSH dan aplikasinya di-restart.
 #
-# Secrets repo: SSH_HOST, SSH_PORT, SSH_USER, SSH_PRIVATE_KEY
+# Secrets repo: SSH_HOST, SSH_PORT, SSH_USER, SSH_PRIVATE_KEY, OPS_ALERT_WEBHOOK_URL (opsional, kabar ke Telegram)
 # Env var form (COLLAB_SCRIPT_URL, dst.) dan SANITY_REVALIDATE_SECRET tetap diisi di cPanel.
 # Variables repo: NEXT_PUBLIC_SANITY_PROJECT_ID, NEXT_PUBLIC_SANITY_DATASET (dipakai saat build).
 name: Deploy ke cPanel
@@ -68,3 +68,45 @@ jobs:
         run: |
           sleep 5
           curl -fsS -o /dev/null -w "nawwafresto.com: %{http_code}\n" https://nawwafresto.com/
+
+      # Kabar hasil deploy ke grup Telegram, lewat webhook yang sama dengan alert form
+      # (lib/ops-alert.ts). `always()` supaya tetap jalan saat langkah di atas gagal;
+      # continue-on-error supaya pesan chat yang memantul tidak memerahkan deploy yang berhasil.
+      # Semua nilai lewat env, bukan interpolasi, supaya pesan commit tidak bisa menyisipkan perintah.
+      - name: Kabari grup
+        if: always()
+        continue-on-error: true
+        env:
+          WEBHOOK: ${{ secrets.OPS_ALERT_WEBHOOK_URL }}
+          JOB_STATUS: ${{ job.status }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          COMMIT_SHA: ${{ github.sha }}
+          ACTOR: ${{ github.actor }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ -z "$WEBHOOK" ]; then
+            echo "Secret OPS_ALERT_WEBHOOK_URL kosong, kabar deploy dilewati."
+            exit 0
+          fi
+
+          # Baris pertama pesan commit saja; workflow_dispatch tidak membawa pesan commit.
+          SUBJECT=$(printf '%s' "$COMMIT_MESSAGE" | head -n 1)
+          [ -n "$SUBJECT" ] || SUBJECT="(dijalankan manual oleh $ACTOR)"
+          SHORT_SHA=$(printf '%s' "$COMMIT_SHA" | cut -c1-7)
+
+          case "$JOB_STATUS" in
+            success) TEXT="Deploy BERHASIL: $SUBJECT ($SHORT_SHA). Situs sudah memakai versi baru." ;;
+            cancelled) TEXT="Deploy DIBATALKAN: $SUBJECT ($SHORT_SHA). $RUN_URL" ;;
+            *) TEXT="Deploy GAGAL: $SUBJECT ($SHORT_SHA). Cek log: $RUN_URL" ;;
+          esac
+
+          BODY=$(jq -n --arg text "[nawwafresto.com] $TEXT" '{text: $text, content: $text}')
+          code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 -X POST \
+            -H "Content-Type: application/json" -d "$BODY" "$WEBHOOK" || true)
+          echo "Webhook membalas HTTP $code"
+          case "$code" in
+            2??) ;;
+            *)
+              echo "::error::Kabar deploy tidak terkirim (HTTP $code). Periksa OPS_ALERT_WEBHOOK_URL: token bot diganti, grupnya dihapus, atau bot dikeluarkan dari grup."
+              exit 1 ;;
+          esac
