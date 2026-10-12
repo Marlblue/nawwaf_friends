@@ -88,7 +88,7 @@ export default function VenuePage() {
           </div>
         </section>
 
-        <section className="section">
+        <section className="section !pt-0">
           <h2 data-reveal className="display-2 text-center">Pilihan paket</h2>
           <div className="mt-10 grid gap-4 md:grid-cols-3 md:gap-6">
             {venuePackages.map((p, i) => (
