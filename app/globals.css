@@ -607,6 +607,61 @@ body {
   }
 }
 
+/* Banner pesan antar di /hubungi: motor kurir melaju di atas marka jalan yang bergerak */
+.motor-ride {
+  animation: motorRide 9s linear infinite;
+}
+
+.motor-bob {
+  animation: motorBob 0.4s ease-in-out infinite;
+}
+
+.motor-smoke {
+  animation: motorSmoke 0.8s ease-out infinite;
+}
+
+.road-dash {
+  background-image: repeating-linear-gradient(90deg, var(--color-sand-200) 0 6px, transparent 6px 14px);
+  background-size: 28px 2px;
+  animation: roadDash 1.2s linear infinite;
+}
+
+@keyframes motorRide {
+  from {
+    transform: translateX(-48px);
+  }
+  to {
+    transform: translateX(min(100vw, 576px));
+  }
+}
+
+@keyframes motorBob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-2px) rotate(1deg);
+  }
+}
+
+@keyframes motorSmoke {
+  0% {
+    opacity: 0.6;
+    transform: scale(0.6) translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.4) translateX(-8px);
+  }
+}
+
+@keyframes roadDash {
+  to {
+    background-position: -28px 0;
+  }
+}
+
 @keyframes hlSweep {
   to {
     background-size: 100% 100%;

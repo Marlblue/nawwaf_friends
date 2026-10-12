@@ -35,7 +35,13 @@ export const ArrowLeft = (p: P) => (
   </svg>
 );
 
-export const MapPin = (p: P) => (
+export const ChevronRight = (p: P) => (
+  <svg {...base(p)}>
+    <path d="m9 18 6-6-6-6" />
+  </svg>
+);
+
+export const MapPin =(p: P) => (
   <svg {...base(p)}>
     <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
     <circle cx="12" cy="10" r="3" />
@@ -70,7 +76,15 @@ export const Truck = (p: P) => (
   </svg>
 );
 
-export const Bag = (p: P) => (
+export const Moped = (p: P) => (
+  <svg {...base(p)}>
+    <circle cx="5.5" cy="17.5" r="2.5" />
+    <circle cx="18.5" cy="17.5" r="2.5" />
+    <path d="M8 17.5h7.5l2-6.5h-4M15 5h2.5l1 6M3 13h7l2 4.5" />
+  </svg>
+);
+
+export const Bag =(p: P) => (
   <svg {...base(p)}>
     <path d="M4 8h16l-1.2 12.1a1 1 0 0 1-1 .9H6.2a1 1 0 0 1-1-.9z" />
     <path d="M8 8V6a4 4 0 0 1 8 0v2" />

@@ -24,7 +24,7 @@ export default function VenuePage() {
         subtitle="Ruang meeting dan private room untuk rapat, keluarga, maupun acara spesial, lengkap dengan menu khas Timur Tengah."
       />
 
-      <div className="container-x">
+      <div className="container-x overflow-x-clip">
         <div className="space-y-20 lg:space-y-28">
           {activeRooms.map((room, i) => (
             <article key={room.id} id={room.id} data-reveal className="grid scroll-mt-28 items-center gap-8 md:grid-cols-2 lg:gap-16">
@@ -71,13 +71,18 @@ export default function VenuePage() {
         <section className="section">
           <h2 data-reveal className="display-2 text-center">Galeri</h2>
           <p data-reveal className="lead mx-auto mt-3 max-w-lg text-center">Suasana outlet dan fasilitas pendukung untuk tamu dan keluarga.</p>
-          <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-6">
+          {/* Kartu foto tinggi berselang naik-turun: kartu genap turun sedikit.
+              HP & tablet: digeser ke samping; desktop: lima kolom sejajar. */}
+          <div
+            data-reveal
+            className="no-scrollbar -mx-5 mt-10 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto overscroll-x-contain scroll-px-5 px-5 pb-2 md:-mx-10 md:scroll-px-10 md:gap-6 md:px-10 lg:mx-0 lg:grid lg:grid-cols-5 lg:overflow-visible lg:px-0 lg:pb-0"
+          >
             {venueGallery.map((g, i) => (
-              <figure key={g.image} data-reveal style={revealDelay(i, 0.1)} className={i === 0 ? "col-span-2" : ""}>
-                <div className={`media max-sm:!rounded-[18px] ${i === 0 ? "aspect-[16/9]" : "aspect-[4/3]"}`}>
-                  <Image src={g.image} alt={g.caption} fill sizes={i === 0 ? "100vw" : "50vw"} className="object-cover" />
+              <figure key={g.image} className={`w-[62%] shrink-0 snap-start sm:w-[40%] md:w-[30%] lg:w-auto ${i % 2 === 1 ? "mt-12" : ""}`}>
+                <div className="media aspect-[4/5] !rounded-2xl">
+                  <Image src={g.image} alt={g.caption} fill sizes="(min-width: 1024px) 20vw, (min-width: 640px) 40vw, 62vw" className="object-cover" />
                 </div>
-                <figcaption className="mt-3 text-sm font-medium sm:text-base">{g.caption}</figcaption>
+                <figcaption className="mt-4 text-base font-semibold text-brand sm:text-lg">{g.caption}</figcaption>
               </figure>
             ))}
           </div>
