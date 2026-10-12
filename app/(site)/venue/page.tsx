@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Check, Users } from "@/components/Icons";
+import { Check, Users, Whatsapp } from "@/components/Icons";
 import PageHero from "@/components/PageHero";
 import PageTransition from "@/components/PageTransition";
-import WhatsAppForm from "@/components/WhatsAppForm";
 import { revealDelay } from "@/lib/motion";
+import { waLink } from "@/lib/site";
 import { rooms, venueGallery, venuePackages } from "@/lib/venue";
 
 export const metadata: Metadata = {
@@ -60,8 +60,8 @@ export default function VenuePage() {
                     </ul>
                   </div>
                 </div>
-                <a href="#booking" className="btn btn-primary mt-8">
-                  Booking {room.name}
+                <a href={waLink(`Halo Nawwaf & Friends, saya mau booking ${room.name}.`)} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-8">
+                  <Whatsapp width={18} height={18} /> Booking {room.name}
                 </a>
               </div>
             </article>
@@ -106,30 +106,6 @@ export default function VenuePage() {
             </Link>
             .
           </p>
-        </section>
-
-        <section id="booking" className="scroll-mt-28 pb-20">
-          <div data-reveal className="card grid gap-10 p-6 sm:p-10 lg:grid-cols-[1fr_2fr] lg:gap-16 lg:p-16">
-            <div>
-              <h2 className="display-2">Booking venue</h2>
-              <p className="lead mt-4">Isi form, admin kami akan mengonfirmasi ketersediaan ruang dan harga lewat WhatsApp.</p>
-            </div>
-            <WhatsAppForm
-              title="BOOKING VENUE - Nawwaf & Friends"
-              submitLabel="Kirim booking via WhatsApp"
-              fields={[
-                { name: "name", label: "Nama", required: true },
-                { name: "phone", label: "No. WhatsApp", type: "tel", required: true, placeholder: "08xxxxxxxxxx" },
-                { name: "room", label: "Ruang", type: "select", required: true, options: activeRooms.map((r) => r.name) },
-                { name: "package", label: "Paket", type: "select", required: true, options: venuePackages.map((p) => p.name) },
-                { name: "date", label: "Tanggal", type: "date", required: true },
-                { name: "time", label: "Jam mulai", type: "time", required: true },
-                { name: "duration", label: "Durasi", type: "select", options: ["1-2 jam", "2-4 jam", "Setengah hari", "Seharian"] },
-                { name: "guests", label: "Jumlah tamu", type: "number", required: true },
-                { name: "notes", label: "Kebutuhan / catatan", type: "textarea", placeholder: "mis. butuh proyektor, menu nampan kambing 2 porsi" },
-              ]}
-            />
-          </div>
         </section>
       </div>
     </PageTransition>

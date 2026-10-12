@@ -21,13 +21,14 @@ const quickLinks: QuickLink[] = [
   { href: "/venue", label: "Reservasi R. Meeting & Kajian", note: "Untuk rapat, kajian, dan kumpul komunitas.", Icon: Users },
   { href: "/hubungi/kolaborasi", label: "Kolaborasi KOL & Influencer", note: "Food review & konten kuliner.", Icon: Megaphone },
   { href: "/hubungi/komunitas", label: "Kolaborasi Komunitas", note: "Gathering & acara komunitas.", Icon: Users },
-].filter((l) => l !== null);
+];
 
+// Kartu menu favorit langsung membuka chat WhatsApp dengan pesan sesuai produk.
 const favorites = [
-  { href: "/menu", title: "Paket Nampan", text: "Makan bersama keluarga dan teman lebih puas.", cta: "Pesan Paket Nampan", image: "/images/menu/mix-half.webp" },
-  { href: "/menu?kategori=nasi-box", title: "Nasi Box Premium", text: "Praktis untuk acara kantor, pengajian, dan syukuran.", cta: "Pesan Nasi Box", image: "/Nasi box .webp" },
-  { href: "/menu?kategori=aqiqah", title: "Paket Aqiqah", text: "All-in: biaya masak, sertifikat, dan kartu ucapan.", cta: "Tanya Paket Aqiqah", image: "/aqiqah.webp" },
-  { href: "/menu?kategori=kambing-guling", title: "Kambing Guling", text: "Sajian kambing guling untuk menjamu tamu di acara spesial.", cta: "Pesan Kambing Guling", image: "/images/menu/mix-full.webp" },
+  { waText: "Halo Nawwaf & Friends, saya mau tanya Paket Nampan.", title: "Paket Nampan", text: "Makan bersama keluarga dan teman lebih puas.", cta: "Pesan Paket Nampan", image: "/delivery.webp" },
+  { waText: "Halo Nawwaf & Friends, saya mau order Nasi Box Premium.", title: "Nasi Box Premium", text: "Praktis untuk acara kantor, pengajian, dan syukuran.", cta: "Pesan Nasi Box", image: "/Nasi box .webp" },
+  { waText: "Halo Nawwaf & Friends, saya mau konsultasi Paket Aqiqah.", title: "Paket Aqiqah", text: "All-in: biaya masak, sertifikat, dan kartu ucapan.", cta: "Tanya Paket Aqiqah", image: "/aqiqah.webp" },
+  { waText: "Halo Nawwaf & Friends, saya mau info Kambing Guling.", title: "Kambing Guling", text: "Sajian kambing guling untuk menjamu tamu di acara spesial.", cta: "Pesan Kambing Guling", image: "/kambing-guling.webp" },
 ];
 
 // Ruang venue + foto suasana outlet, ditampilkan berselang naik-turun.
@@ -181,10 +182,12 @@ export default function HubungiPage() {
         <section className="mx-auto mt-12 max-w-5xl">
           <h2 className="display-3 font-semibold">Pilihan Menu Favorit</h2>
           <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
-            {favorites.map(({ href, title, text, cta, image }, i) => (
-              <Link
+            {favorites.map(({ waText, title, text, cta, image }, i) => (
+              <a
                 key={title}
-                href={href}
+                href={waLink(waText)}
+                target="_blank"
+                rel="noopener noreferrer"
                 data-reveal
                 style={revealDelay(i)}
                 className="group flex h-full flex-col overflow-hidden rounded-3xl border border-black/10 bg-white transition hover:border-ink"
@@ -206,7 +209,7 @@ export default function HubungiPage() {
                   {cta}
                   <ChevronRight width={16} height={16} className="shrink-0 transition group-hover:translate-x-0.5" />
                 </span>
-              </Link>
+              </a>
             ))}
           </div>
         </section>
