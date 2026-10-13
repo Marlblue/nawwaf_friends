@@ -1,3 +1,13 @@
 allowBuilds:
   sharp: false
   unrs-resolver: false
+
+# Versi aman untuk paket yang dibawa Next, sama seperti kalih-signature dan sdbi.
+# Keduanya kenaikan patch di major yang sama; hapus begitu Next sendiri menarik
+# versi yang sudah ditambal.
+overrides:
+  # GHSA-wq5f-xc86-pv6w (high): celah librsvg saat membaca SVG, ditambal di 0.35.5.
+  sharp: ^0.35.5
+  # GHSA-68fv-2mgg-jv7q (high): source map berindeks bisa bikin event loop macet,
+  # ditambal di 1.2.2. Dibawa postcss yang dikunci Next.
+  source-map-js: ^1.2.2
