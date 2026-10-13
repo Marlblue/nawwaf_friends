@@ -16,11 +16,16 @@
  *    COMMUNITY_SCRIPT_URL di .env server.
  * 4. Setiap kali berkas ini diubah: tempel ulang, lalu Deploy > Manage
  *    deployments > Edit > Version: New version.
+ * 5. Rekap harian ke Telegram (opsional): tambah Script Property
+ *      OPS_ALERT_WEBHOOK_URL = sama persis dengan OPS_ALERT_WEBHOOK_URL di env cPanel.
+ *    Lalu pilih fungsi pasangRekapHarian di dropdown dan Run (setujui izin baru).
+ *    Untuk mencoba tanpa menunggu besok jam 08.00, Run kirimRekapHarian.
  *
  * Tab "Komunitas" dan baris judulnya dibuat otomatis saat kiriman pertama.
  */
 
 var SHEET_NAME = "Komunitas";
+var RECAP_TITLE = "Kolaborasi komunitas";
 
 function doPost(e) {
   if (isUnauthorized(e)) return json({ status: "error", error: "unauthorized" });
@@ -179,4 +184,68 @@ function sendNotification(subject, body) {
     Logger.log("Gagal kirim email: " + err);
     return "failed";
   }
+}
+
+/**
+ * Mengirim satu pesan ke grup Telegram lewat webhook yang sama dengan alert website
+ * (lib/ops-alert.ts). Alamatnya di Script Property "OPS_ALERT_WEBHOOK_URL", isinya sama
+ * persis dengan OPS_ALERT_WEBHOOK_URL di env cPanel. Tidak ditulis di berkas ini karena
+ * URL itu memuat token bot. Tidak pernah melempar.
+ */
+function postToWebhook(text) {
+  var url = PropertiesService.getScriptProperties().getProperty("OPS_ALERT_WEBHOOK_URL") || "";
+  if (!url) return "not-configured";
+  var body = "[nawwafresto.com] " + text;
+  try {
+    var response = UrlFetchApp.fetch(url, {
+      method: "post",
+      contentType: "application/json",
+      payload: JSON.stringify({ text: body, content: body }),
+      muteHttpExceptions: true,
+    });
+    return response.getResponseCode() < 300 ? "sent" : "failed";
+  } catch (err) {
+    Logger.log("Gagal kirim ke webhook: " + err);
+    return "failed";
+  }
+}
+
+/** Tanggal kemarin menurut jam Jakarta ("yyyy-MM-dd"), apa pun zona waktu project-nya. */
+function yesterdayInJakarta(now) {
+  return Utilities.formatDate(new Date(now.getTime() - 24 * 60 * 60 * 1000), "Asia/Jakarta", "yyyy-MM-dd");
+}
+
+/** Jumlah baris yang kolom Timestamp-nya (kolom A) jatuh di `day`. */
+function countRowsOn(sheet, day) {
+  if (!sheet || sheet.getLastRow() < 2) return 0;
+  var stamps = sheet.getRange(2, 1, sheet.getLastRow() - 1, 1).getValues();
+  var count = 0;
+  for (var i = 0; i < stamps.length; i++) {
+    var value = stamps[i][0];
+    if (value instanceof Date && Utilities.formatDate(value, "Asia/Jakarta", "yyyy-MM-dd") === day) count++;
+  }
+  return count;
+}
+
+/**
+ * Dipanggil trigger harian dari pasangRekapHarian. Tetap dikirim walaupun nol, supaya
+ * "tidak ada pesan" tidak tertukar dengan trigger yang mati. Isinya cuma jumlah, tanpa
+ * isian pengunjung.
+ */
+function kirimRekapHarian() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var day = yesterdayInJakarta(new Date());
+  var count = countRowsOn(ss.getSheetByName(SHEET_NAME), day);
+  return postToWebhook("Rekap lead " + day + ", " + RECAP_TITLE + ": " + count + "\n" + ss.getUrl());
+}
+
+/**
+ * Jalankan SEKALI dari editor untuk memasang rekap harian jam 08.00 WIB. Trigger lama
+ * dihapus dulu, jadi aman dijalankan ulang tanpa membuat rekap terkirim dobel.
+ */
+function pasangRekapHarian() {
+  ScriptApp.getProjectTriggers().forEach(function (trigger) {
+    if (trigger.getHandlerFunction() === "kirimRekapHarian") ScriptApp.deleteTrigger(trigger);
+  });
+  ScriptApp.newTrigger("kirimRekapHarian").timeBased().atHour(8).everyDays(1).inTimezone("Asia/Jakarta").create();
 }
