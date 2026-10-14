@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nawwaf & Friends
 
-## Getting Started
+Website [nawwafresto.com](https://nawwafresto.com): resto Arabian food di Ciangsana, Bogor.
+Menu dan pesan antar lewat WhatsApp, venue, form kolaborasi KOL dan komunitas, dan artikel.
 
-First, run the development server:
+Next.js 16 (App Router) + Tailwind CSS 4, artikel dikelola lewat Sanity CMS, dan form
+kolaborasi disimpan ke Google Sheet lewat Google Apps Script. Dihosting di DomaiNesia
+sebagai aplikasi Node.js di cPanel (Passenger), bukan Vercel. Deploy otomatis setiap
+push ke `main`.
+
+Stack dan cara deploy-nya sama dengan kalih-signature dan sdbi, jadi perbaikan di salah
+satunya biasanya bisa dipakai juga di sini.
+
+## Menjalankan secara lokal
+
+Butuh Node 24 dan pnpm (versinya dikunci lewat `packageManager` di `package.json`).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
+cp .env.example .env.local   # lalu isi nilainya
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`.env.example` adalah catatan semua env var yang dibutuhkan, lengkap dengan tempat
+mengisinya di produksi. Setiap menambah env var baru, tambahkan juga di sana.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Perintah            | Kegunaan                                                         |
+| ------------------- | ---------------------------------------------------------------- |
+| `pnpm dev`          | Server pengembangan                                              |
+| `pnpm lint`         | ESLint                                                           |
+| `pnpm typecheck`    | `tsc --noEmit`                                                   |
+| `pnpm cek:audit`    | Audit dependensi yang melayani pengunjung saja, bukan pohon Sanity |
+| `pnpm build:cpanel` | Build produksi lalu rakit bundel cPanel di `deploy/`              |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`lint`, `typecheck`, `cek:audit`, dan build dijalankan otomatis di setiap pull request
+lewat `.github/workflows/ci.yml`.
 
-## Learn More
+## Struktur
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/(site)/           Halaman situs publik (kebagian navbar dan footer lewat SiteShell)
+app/studio/           Sanity Studio di /studio, sengaja di luar (site)
+app/api/              Route handler form kolaborasi/komunitas dan webhook revalidate
+components/           Komponen halaman; components/forms berisi field form
+lib/site.ts           Nama, kontak, WhatsApp, alamat, jam buka, ID GTM
+lib/menu.ts           Katalog menu dan harga
+lib/forms/            Validasi, honeypot, dan pengiriman ke Apps Script
+lib/sanity/           Client, query GROQ, dan helper gambar Sanity
+lib/ops-alert.ts      Kabar ke grup Telegram
+scripts/apps-script/  Isi Google Apps Script per form, bukan kode yang ikut di-build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Pesanan menu tidak disimpan di server: keranjang dirakit di browser lalu dikirim
+sebagai pesan WhatsApp.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Artikel (Sanity)
 
-## Deploy on Vercel
+Editor membuka **/studio** di situs ini. Webhook Sanity memanggil `/api/revalidate`
+setiap artikel dipublish, jadi tulisan baru langsung tampil tanpa deploy ulang (secret
+`SANITY_REVALIDATE_SECRET`, lihat komentar di `app/api/revalidate/route.ts`).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deploy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`.github/workflows/deploy.yml` jalan setiap push ke `main`: lint, audit, build di runner
+GitHub (RAM shared hosting tidak cukup untuk `next build`), kirim hasilnya lewat rsync,
+lalu restart Passenger dengan menyentuh `tmp/restart.txt`. Hasilnya dikabarkan ke grup
+Telegram.
+
+- Env var server (URL Apps Script, `FORMS_SHARED_SECRET`, `SANITY_REVALIDATE_SECRET`,
+  `OPS_ALERT_WEBHOOK_URL`) diisi di cPanel > Setup Node.js App.
+- `NEXT_PUBLIC_*` dibaca saat build, jadi diisi sebagai repository Variables GitHub.
+- Secrets SSH-nya tercantum di komentar pembuka `deploy.yml`.
+
+`.github/workflows/uptime.yml` mengecek situs tiap 30 menit dan mengabari grup Telegram
+kalau mati.
