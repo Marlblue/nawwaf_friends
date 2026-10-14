@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import { startTransition, useEffect, useLayoutEffect, useMemo, useRef, useState, ViewTransition } from "react";
 import { categories, menu } from "@/lib/menu";
 import { services, type ServiceId } from "@/lib/services";

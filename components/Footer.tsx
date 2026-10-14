@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import Link from "next/link";
 import { addressText, nav, openingHoursLines, site, waLink } from "@/lib/site";
 import { Bag, Facebook, Instagram, Threads, Tiktok, Whatsapp } from "./Icons";

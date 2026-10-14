@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import Link from "next/link";
 import { Check, ChevronRight, Clock, Facebook, Instagram, MapPin, Megaphone, Moped, Phone, Threads, Tiktok, Users, Whatsapp } from "@/components/Icons";
 import PageTransition from "@/components/PageTransition";

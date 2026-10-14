@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import { coverSource } from "@/lib/sanity/image";
 import type { SanityArticleCover } from "@/lib/sanity/types";
 

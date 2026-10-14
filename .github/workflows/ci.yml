@@ -31,9 +31,10 @@ jobs:
       # pengunjung yang memerahkan PR. Lihat scripts/audit-runtime-deps.mjs.
       - run: pnpm cek:audit
 
-      # `pnpm build`, bukan `build:cpanel`: yang dicek di sini cuma build-nya lolos,
-      # bundel cPanel dirakit di deploy.yml. Project ID Sanity dibaca saat build;
-      # kalau Variables repo belum diisi, langkah ini dilewati dengan peringatan.
+      # `build:cpanel`, bukan `pnpm build`: bundel cPanel ikut dirakit supaya pemeriksaan
+      # sharp di scripts/pack-cpanel.mjs jalan di Linux sebelum merge, bukan baru saat
+      # deploy. Project ID Sanity dibaca saat build; kalau Variables repo belum diisi,
+      # langkah ini dilewati dengan peringatan.
       - name: Build
         env:
           NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
@@ -43,4 +44,4 @@ jobs:
             echo "::warning::Variable NEXT_PUBLIC_SANITY_PROJECT_ID belum diisi, langkah build dilewati."
             exit 0
           fi
-          pnpm build
+          pnpm build:cpanel
