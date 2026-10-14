@@ -10,7 +10,10 @@ import { FORMS_SHARED_SECRET } from "./env";
 // submissionId (lihat lib/forms/submission-id.ts).
 const TIMEOUT_MS = 25_000;
 
-export type SubmitResult = { ok: true; mailFailed?: true; duplicate?: true } | { ok: false; reason: string };
+export type SubmitResult =
+  | { ok: true; mailFailed?: true; duplicate?: true }
+  // timedOut: kita berhenti menunggu, tapi barisnya mungkin tetap tertulis.
+  | { ok: false; reason: string; timedOut?: true };
 
 export async function postToAppsScript(scriptUrl: string, fields: Record<string, string>): Promise<SubmitResult> {
   const body = new URLSearchParams(fields);
@@ -28,7 +31,8 @@ export async function postToAppsScript(scriptUrl: string, fields: Record<string,
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });
   } catch (error) {
-    return { ok: false, reason: error instanceof Error ? error.message : "network error" };
+    const timedOut = error instanceof Error && error.name === "TimeoutError";
+    return { ok: false, reason: error instanceof Error ? error.message : "network error", ...(timedOut && { timedOut: true }) };
   }
 
   if (!response.ok) return { ok: false, reason: `HTTP ${response.status}` };

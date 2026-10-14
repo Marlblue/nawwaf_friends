@@ -117,8 +117,12 @@ export async function handleFormSubmission(request: Request, { label, scriptUrl,
     console.error(`[${label}] gagal meneruskan ke Apps Script: ${result.reason}`);
     alertOps(
       `simpan-gagal:${label}`,
-      `Form "${label}" GAGAL menyimpan ke Sheet: ${result.reason}. Pengunjung melihat pesan gagal. ` +
-        `Kalau alasannya "unauthorized", FORMS_SHARED_SECRET dan Script Property SHARED_SECRET tidak sama.`
+      result.timedOut
+        ? `Form "${label}": Apps Script tidak menjawab dalam batas waktu, pengunjung melihat pesan gagal. ` +
+            `Barisnya kemungkinan TETAP tersimpan (eksekusinya tidak ikut berhenti), cek Sheet dan email dulu. ` +
+            `Kalau berulang, Apps Script sedang lambat.`
+        : `Form "${label}" GAGAL menyimpan ke Sheet: ${result.reason}. Pengunjung melihat pesan gagal. ` +
+            `Kalau alasannya "unauthorized", FORMS_SHARED_SECRET dan Script Property SHARED_SECRET tidak sama.`
     );
     return jsonError("Pengiriman gagal diproses. Silakan coba lagi atau hubungi kami via WhatsApp.", 502);
   }
