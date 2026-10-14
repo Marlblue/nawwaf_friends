@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "cek:audit": "node scripts/audit-runtime-deps.mjs",
     "build:cpanel": "next build && node scripts/pack-cpanel.mjs"
   },
