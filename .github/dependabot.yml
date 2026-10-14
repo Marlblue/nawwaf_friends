@@ -1,0 +1,43 @@
+# Update dependensi otomatis. File ini sama persis di nawwaf_friends, kalih-signature,
+# dan sdbi; ubah ketiganya bersamaan.
+#
+# Dikelompokkan supaya yang datang paling banyak beberapa PR seminggu, bukan satu PR
+# per paket. Setiap PR melewati CI (lint, typecheck, test, audit, build) dulu, dan
+# merge ke main = deploy, jadi cukup merge yang hijau.
+#
+# Advisory keamanan tidak menunggu jadwal mingguan ini: Dependabot security updates
+# membuka PR-nya begitu advisory terbit.
+version: 2
+updates:
+  - package-ecosystem: npm # juga untuk pnpm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "07:00"
+      timezone: Asia/Jakarta
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "Deps"
+    groups:
+      # Next dan React naik bersama: eslint-config-next dan @next/* dikunci ke versi
+      # Next yang sama, dan React mengikuti yang didukung Next.
+      next-react:
+        patterns: ["next", "@next/*", "eslint-config-next", "react", "react-dom", "@types/react", "@types/react-dom"]
+      sanity:
+        patterns: ["sanity", "@sanity/*", "next-sanity", "@portabletext/*", "styled-components"]
+      # Sisanya, selama bukan versi major. Versi major datang sebagai PR sendiri-sendiri
+      # karena biasanya butuh perubahan kode.
+      lainnya:
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+      timezone: Asia/Jakarta
+    commit-message:
+      prefix: "Actions"
+    groups:
+      actions:
+        patterns: ["*"]
