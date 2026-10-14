@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import Link from "next/link";
 import HeroBanner from "@/components/HeroBanner";
 import GallerySlider from "@/components/GallerySlider";

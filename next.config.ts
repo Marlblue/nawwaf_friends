@@ -49,9 +49,20 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // Optimizer jalan di server cPanel memakai binary sharp prebuilt untuk Linux, yang ikut
+  // terbawa karena build dikerjakan di runner GitHub (pola yang sama dengan kalih-signature).
+  // Foto menu yang transparan dan gambar Sanity sengaja dilewatkan; aturannya ada di
+  // components/SiteImage.tsx.
   images: {
-    // sharp tidak di-build (pnpm allowBuilds), jadi gambar disajikan apa adanya
-    unoptimized: true,
+    // WebP saja. AVIF di kalih-signature merusak alpha, dan sumber semua gambar di sini
+    // memang sudah WebP.
+    formats: ["image/webp"],
+    // 384 dan 480 untuk kartu setengah layar di ponsel; tanpa keduanya kandidat terkecil
+    // 640px dan ponsel mengunduh gambar jauh lebih besar dari yang ditampilkan.
+    deviceSizes: [384, 480, 640, 828, 1080, 1280, 1920],
+    // 30 hari, bukan setahun seperti kalih: gambar di public/ tidak punya hash di namanya,
+    // jadi foto yang diganti dengan nama yang sama baru sampai ke pengunjung setelah ini lewat.
+    minimumCacheTTL: 2592000,
   },
 };
 

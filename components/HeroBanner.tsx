@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import { useEffect, useState } from "react";
 import { prefersReducedMotion } from "@/lib/motion";
 

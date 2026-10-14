@@ -12,8 +12,8 @@ export function urlFor(source: Image) {
 /**
  * Sumber <Image> untuk sampul artikel, atau null kalau tidak ada sampul.
  *
- * Ukurannya dipotong langsung di CDN Sanity karena next/image di situs ini `unoptimized`
- * (sharp tidak di-build), jadi minta lebar yang memang dibutuhkan tiap tempat.
+ * Ukurannya dipotong langsung di CDN Sanity, dan gambar ini sengaja tidak lewat optimizer
+ * Next (lihat components/SiteImage.tsx), jadi minta lebar yang memang dibutuhkan tiap tempat.
  */
 export function coverSource(cover: SanityArticleCover | undefined, width: number, height: number) {
   if (!cover?.asset) return null;

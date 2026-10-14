@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/components/SiteImage";
 import { useState } from "react";
 import { thumb, type MenuItem } from "@/lib/menu";
 import { rupiah } from "@/lib/site";
