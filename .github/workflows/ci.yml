@@ -1,0 +1,46 @@
+# Pemeriksaan sebelum merge, sama seperti kalih-signature dan sdbi. deploy.yml baru
+# jalan setelah push ke main, jadi tanpa workflow ini build yang rusak baru ketahuan
+# saat deploy, dan situsnya tertahan di versi lama sampai diperbaiki.
+name: CI
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # Versi pnpm dibaca dari packageManager di package.json, jadi CI dan lokal tidak melenceng.
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm lint
+
+      - run: pnpm typecheck
+
+      # Gerbang yang sama dengan deploy.yml: hanya advisory di paket yang melayani
+      # pengunjung yang memerahkan PR. Lihat scripts/audit-runtime-deps.mjs.
+      - run: pnpm cek:audit
+
+      # `pnpm build`, bukan `build:cpanel`: yang dicek di sini cuma build-nya lolos,
+      # bundel cPanel dirakit di deploy.yml. Project ID Sanity dibaca saat build;
+      # kalau Variables repo belum diisi, langkah ini dilewati dengan peringatan.
+      - name: Build
+        env:
+          NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+          NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
+        run: |
+          if [ -z "$NEXT_PUBLIC_SANITY_PROJECT_ID" ]; then
+            echo "::warning::Variable NEXT_PUBLIC_SANITY_PROJECT_ID belum diisi, langkah build dilewati."
+            exit 0
+          fi
+          pnpm build
