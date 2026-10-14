@@ -33,8 +33,13 @@ updates:
         patterns: ["sanity", "@sanity/*", "next-sanity", "@portabletext/*", "styled-components"]
       # Sisanya, selama bukan versi major. Versi major datang sebagai PR sendiri-sendiri
       # karena biasanya butuh perubahan kode.
+      # exclude-patterns wajib: tanpa itu grup ini juga menyedot Next dan Sanity, dan
+      # dua grup di atas ditutup Dependabot karena dianggap tergantikan.
       lainnya:
         update-types: ["minor", "patch"]
+        exclude-patterns:
+          ["next", "@next/*", "eslint-config-next", "react", "react-dom", "@types/react", "@types/react-dom",
+           "sanity", "@sanity/*", "next-sanity", "@portabletext/*", "styled-components"]
 
   - package-ecosystem: github-actions
     directory: /
