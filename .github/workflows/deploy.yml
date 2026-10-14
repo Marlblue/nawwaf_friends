@@ -21,7 +21,12 @@ env:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    # Dipaku ke 24.04, sama seperti kalih-signature dan sdbi: ubuntu-latest pindah ke
+    # Ubuntu 26 mulai 19 Oktober 2026, dan job ini yang rsync ke situs produksi.
+    # ci.yml sengaja dibiarkan di ubuntu-latest supaya image barunya datang duluan di
+    # pull request, tempat kegagalannya murah. Kembalikan ke ubuntu-latest begitu
+    # ci.yml hijau di Ubuntu 26 selama beberapa minggu.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
