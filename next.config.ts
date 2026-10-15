@@ -1,20 +1,14 @@
 import type { NextConfig } from "next";
 
 /**
- * Header keamanan, mengikuti kalih-signature minus kebijakan CSP lengkapnya.
+ * Header keamanan. CSP yang ditegakkan cuma direktif yang tidak bergantung pada daftar
+ * host: situs ini tidak punya <base>, <object>, atau <embed>, tidak perlu dibingkai situs
+ * lain, dan tidak punya form yang dikirim ke luar (form mem-POST lewat fetch ke /api,
+ * pesanan dibuka sebagai link WhatsApp).
  *
- * CSP yang ditegakkan cuma direktif yang tidak bergantung pada daftar host: situs ini
- * tidak punya <base>, <object>, maupun <embed>, dan tidak ada situs lain yang perlu
- * membingkainya.
- *
- * `form-action 'self'` aman karena tidak ada <form> yang dikirim ke luar: form kolaborasi
- * dan komunitas mem-POST lewat fetch ke /api sendiri, dan pesanan dibuka sebagai link
- * WhatsApp. Yang dikhawatirkan adalah Meta Pixel, yang di sdbi mengirim sebagian event
- * lewat form POST ke facebook.com/tr dan ikut terblokir. Diuji 15 Oktober 2026 di 10
- * halaman situs ini (Chrome headless, CSP ini disisipkan sebagai Report-Only, dengan sdbi
- * sebagai pembanding yang memang tertangkap): Meta Pixel di sini hanya mengirim beacon GET,
- * dan tidak ada satu pun pelanggaran. Kalau tag GTM untuk Meta diganti template lain,
- * cek ulang ke arah yang sama.
+ * form-action juga tidak memblokir Meta Pixel, karena di sini pixel-nya cuma mengirim beacon
+ * GET (diuji 15 Oktober 2026). Kalau template Meta di GTM diganti, cek ulang: di sdbi ada
+ * template yang mengirim form POST ke facebook.com/tr dan ikut terblokir.
  */
 const securityHeaders = [
   {
