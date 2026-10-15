@@ -11,3 +11,15 @@ overrides:
   # GHSA-68fv-2mgg-jv7q (high): source map berindeks bisa bikin event loop macet,
   # ditambal di 1.2.2. Dibawa postcss yang dikunci Next.
   source-map-js: ^1.2.2
+  # Paket transitif di pohon Sanity Studio/CLI (bukan jalur pengunjung, lihat
+  # scripts/audit-runtime-deps), dinaikkan ke versi yang sudah ditambal: brace-expansion,
+  # js-yaml, smol-toml, uuid, dan dompurify, advisory sampai Oktober 2026. Semua di major
+  # yang sama kecuali uuid 10 -> 11 dan brace-expansion 4 -> 5, alasannya sama dengan
+  # catatan di kalih-signature. Hapus satu per satu begitu induknya menarik versi aman.
+  brace-expansion@1: ^1.1.21
+  brace-expansion@2: ^2.1.7
+  brace-expansion@>=4: ^5.0.12
+  js-yaml@3: ^3.15.2
+  smol-toml: ^1.9.0
+  uuid@10: ^11.1.1
+  dompurify@3: ^3.4.16
