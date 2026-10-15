@@ -34,9 +34,14 @@ function isRateLimited(key: string): boolean {
   return recent.length > RATE_MAX;
 }
 
-function clientIp(request: Request): string | null {
-  const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  return forwarded || request.headers.get("x-real-ip") || null;
+// X-Real-IP didahulukan: proxy hosting DomaiNesia menulisnya sendiri, sedangkan
+// X-Forwarded-For diteruskan mentah dan bisa dikarang pengirim, jadi mengganti isinya
+// tiap permintaan cukup untuk melewati rate limit (terbukti di produksi 15 Oktober 2026;
+// temuan yang sama di kalih-signature, lib/forms/rate-limit.ts). Diekspor untuk test.
+export function clientIp(request: Request): string | null {
+  const realIp = request.headers.get("x-real-ip")?.trim();
+  if (realIp) return realIp;
+  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || null;
 }
 
 // POST berisi FormData tidak butuh preflight CORS, jadi situs lain bisa

@@ -44,6 +44,8 @@ jobs:
       # sudah dijalankan `next build` sendiri.
       - run: pnpm lint
 
+      - run: pnpm test
+
       # Celah keamanan di paket yang melayani pengunjung (Next, React, dan
       # seterusnya) menghentikan deploy, dan grup Telegram menerima "Deploy GAGAL".
       # Pohon Sanity Studio/CLI sengaja dilewati; lihat scripts/audit-runtime-deps.mjs.
