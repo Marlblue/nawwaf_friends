@@ -27,6 +27,8 @@ jobs:
 
       - run: pnpm typecheck
 
+      - run: pnpm test
+
       # Gerbang yang sama dengan deploy.yml: hanya advisory di paket yang melayani
       # pengunjung yang memerahkan PR. Lihat scripts/audit-runtime-deps.mjs.
       - run: pnpm cek:audit

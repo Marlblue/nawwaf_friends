@@ -29,10 +29,11 @@ mengisinya di produksi. Setiap menambah env var baru, tambahkan juga di sana.
 | `pnpm dev`          | Server pengembangan                                              |
 | `pnpm lint`         | ESLint                                                           |
 | `pnpm typecheck`    | `tsc --noEmit`                                                   |
+| `pnpm test`         | Unit test `lib/**/*.test.ts` (test runner bawaan Node lewat tsx)  |
 | `pnpm cek:audit`    | Audit dependensi yang melayani pengunjung saja, bukan pohon Sanity |
 | `pnpm build:cpanel` | Build produksi lalu rakit bundel cPanel di `deploy/`              |
 
-`lint`, `typecheck`, `cek:audit`, dan build dijalankan otomatis di setiap pull request
+`lint`, `typecheck`, `test`, `cek:audit`, dan build dijalankan otomatis di setiap pull request
 lewat `.github/workflows/ci.yml`.
 
 ## Struktur

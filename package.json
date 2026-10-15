@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
+    "test": "tsx --test \"lib/**/*.test.ts\"",
     "cek:audit": "node scripts/audit-runtime-deps.mjs",
     "build:cpanel": "next build && node scripts/pack-cpanel.mjs"
   },
@@ -32,6 +33,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.8",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^6"
   },
   "packageManager": "pnpm@11.20.0",
