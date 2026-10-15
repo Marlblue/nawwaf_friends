@@ -5,14 +5,21 @@ import type { NextConfig } from "next";
  *
  * CSP yang ditegakkan cuma direktif yang tidak bergantung pada daftar host: situs ini
  * tidak punya <base>, <object>, maupun <embed>, dan tidak ada situs lain yang perlu
- * membingkainya. `form-action` sengaja belum ikut: di sdbi direktif itu memblokir event
- * Meta Pixel yang dikirim lewat form POST ke facebook.com, dan container GTM situs ini
- * belum dicek memakai jalur yang sama atau tidak.
+ * membingkainya.
+ *
+ * `form-action 'self'` aman karena tidak ada <form> yang dikirim ke luar: form kolaborasi
+ * dan komunitas mem-POST lewat fetch ke /api sendiri, dan pesanan dibuka sebagai link
+ * WhatsApp. Yang dikhawatirkan adalah Meta Pixel, yang di sdbi mengirim sebagian event
+ * lewat form POST ke facebook.com/tr dan ikut terblokir. Diuji 15 Oktober 2026 di 10
+ * halaman situs ini (Chrome headless, CSP ini disisipkan sebagai Report-Only, dengan sdbi
+ * sebagai pembanding yang memang tertangkap): Meta Pixel di sini hanya mengirim beacon GET,
+ * dan tidak ada satu pun pelanggaran. Kalau tag GTM untuk Meta diganti template lain,
+ * cek ulang ke arah yang sama.
  */
 const securityHeaders = [
   {
     key: "Content-Security-Policy",
-    value: ["base-uri 'self'", "object-src 'none'", "frame-ancestors 'self'"].join("; "),
+    value: ["base-uri 'self'", "object-src 'none'", "frame-ancestors 'self'", "form-action 'self'"].join("; "),
   },
   // Jangan menebak tipe file dari isinya, supaya berkas yang menyamar sebagai gambar
   // tidak ikut dieksekusi sebagai script.
