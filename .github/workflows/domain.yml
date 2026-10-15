@@ -1,0 +1,82 @@
+# Pengingat masa berlaku domain. Berkas ini sama di nawwaf_friends, kalih-signature,
+# dan sdbi, kecuali DOMAIN di bawah; ubah ketiganya bersamaan.
+#
+# Domain dipegang atasan, bukan tim, dan pernah habis sampai situsnya jadi halaman
+# parkir. Jadi mulai 60 hari sebelum habis, grup Telegram dikabari setiap Senin dengan
+# pesan yang siap diteruskan ke pemegang domain. Tanggalnya dibaca dari RDAP (data
+# publik registry .com), tanpa login ke registrar mana pun.
+
+name: Cek masa berlaku domain
+
+on:
+  schedule:
+    # Senin 08.00 WIB.
+    - cron: "0 1 * * 1"
+  workflow_dispatch:
+    inputs:
+      uji:
+        description: Cetak pesan pengingat tanpa mengirimnya ke grup
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  DOMAIN: nawwafresto.com
+  BATAS_HARI: 60
+
+jobs:
+  cek:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Baca tanggal kedaluwarsa
+        env:
+          WEBHOOK: ${{ secrets.OPS_ALERT_WEBHOOK_URL }}
+          UJI: ${{ inputs.uji }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          kirim() {
+            if [ "$UJI" = "true" ] || [ -z "$WEBHOOK" ]; then
+              echo "Pesan (tidak dikirim): $1"
+              return 0
+            fi
+            BODY=$(jq -n --arg text "$1" '{text: $text, content: $text}')
+            kabar=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 -X POST \
+              -H "Content-Type: application/json" -d "$BODY" "$WEBHOOK" || true)
+            case "$kabar" in
+              2??) echo "Kabar terkirim ke grup (HTTP $kabar)." ;;
+              *) echo "::error::Grup TIDAK dikabari (HTTP $kabar). Periksa OPS_ALERT_WEBHOOK_URL." ;;
+            esac
+          }
+
+          json=""
+          for attempt in 1 2 3; do
+            json=$(curl -sS --max-time 30 "https://rdap.verisign.com/com/v1/domain/$DOMAIN" || true)
+            echo "$json" | jq -e '.events' >/dev/null 2>&1 && break
+            json=""
+            [ "$attempt" = "3" ] || sleep 20
+          done
+          if [ -z "$json" ]; then
+            echo "::error::RDAP untuk $DOMAIN tidak terbaca dalam tiga percobaan."
+            kirim "[$DOMAIN] Masa berlaku domain $DOMAIN tidak bisa dicek minggu ini (RDAP tidak menjawab). Kalau berulang minggu depan, cek manual di registrar. Detail: $RUN_URL"
+            exit 1
+          fi
+
+          habis=$(echo "$json" | jq -r '.events[] | select(.eventAction == "expiration") | .eventDate' | head -1)
+          registrar=$(echo "$json" | jq -r '[.entities[]? | select(.roles | index("registrar")) | .vcardArray[1][]? | select(.[0] == "fn") | .[3]][0] // "registrar domain"')
+          sisa=$(( ($(date -d "$habis" +%s) - $(date +%s)) / 86400 ))
+
+          BULAN=(Januari Februari Maret April Mei Juni Juli Agustus September Oktober November Desember)
+          tanggal="$(date -d "$habis" +%-d) ${BULAN[$(( $(date -d "$habis" +%-m) - 1 ))]} $(date -d "$habis" +%Y)"
+          echo "$DOMAIN habis $tanggal ($sisa hari lagi), registrar $registrar."
+
+          # Mode uji selalu mencetak pesannya, supaya bentuknya bisa dilihat kapan saja.
+          if [ "$sisa" -gt "$BATAS_HARI" ] && [ "$UJI" != "true" ]; then
+            echo "Masih lebih dari $BATAS_HARI hari, tidak ada kabar."
+            exit 0
+          fi
+
+          if [ "$sisa" -le 14 ]; then tingkat="MENDESAK, DOMAIN HAMPIR HABIS"; else tingkat="Pengingat domain"; fi
+          kirim "[$DOMAIN] $tingkat: $DOMAIN habis $tanggal ($sisa hari lagi). Perpanjang lewat $registrar. Mohon diteruskan ke pemegang akun domain. Kalau sampai habis, situsnya berubah jadi halaman parkir."

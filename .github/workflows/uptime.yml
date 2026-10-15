@@ -22,6 +22,9 @@ jobs:
     steps:
       - name: Periksa halaman utama
         env:
+          # Nama situs di <title>. Peka huruf besar-kecil dengan sengaja: judul halaman
+          # parkir biasanya cuma nama domain (huruf kecil semua) dan tidak boleh ikut cocok.
+          PENANDA: "Nawwaf &amp; Friends"
           WEBHOOK: ${{ secrets.OPS_ALERT_WEBHOOK_URL }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
@@ -31,22 +34,29 @@ jobs:
           # Tiga percobaan berjeda 20 detik, supaya restart sesaat tidak langsung jadi alarm.
           code=000
           for attempt in 1 2 3; do
-            code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 "${BASE}?uptime=$(date +%s)" || true)
-            if [ "$code" = "200" ]; then
-              echo "OK: HTTP 200 pada percobaan ke-$attempt."
+            code=$(curl -sS -o /tmp/beranda.html -w '%{http_code}' --max-time 20 "${BASE}?uptime=$(date +%s)" || true)
+            # 200 saja belum cukup: halaman parkir domain yang habis, halaman suspend
+            # hosting, atau situs lain juga membalas 200. Itu yang terjadi waktu domain
+            # sempat habis: pemeriksaan tetap hijau sampai ada orang yang melihatnya.
+            if [ "$code" = "200" ] && grep -o '<title>[^<]*' /tmp/beranda.html | grep -qF "$PENANDA"; then
+              echo "OK: HTTP 200 dan judul memuat \"$PENANDA\" pada percobaan ke-$attempt."
               exit 0
             fi
+            [ "$code" = "200" ] && code=isi
             echo "percobaan $attempt: HTTP $code"
             [ "$attempt" = "3" ] || sleep 20
           done
 
-          echo "::error::$BASE tidak membalas HTTP 200 dalam tiga percobaan (terakhir HTTP $code)."
+          echo "::error::$BASE gagal dalam tiga percobaan (terakhir: $code)."
 
           # Dikirim di tiap run yang gagal: pengingat tiap 30 menit selama situs mati memang
           # yang diinginkan. Run ini tetap exit 1, jadi email GitHub juga jalan.
           if [ -n "$WEBHOOK" ]; then
             if [ "$code" = "000" ]; then
               REASON="tidak bisa dihubungi sama sekali (DNS, SSL, atau server mati)"
+            elif [ "$code" = "isi" ]; then
+              JUDUL=$(grep -o '<title>[^<]*' /tmp/beranda.html | head -1 | sed 's/<title>//' | cut -c1-100)
+              REASON="membalas HTTP 200, tapi judulnya \"${JUDUL:-kosong}\", bukan situs ini. Kemungkinan domain habis lalu jadi halaman parkir, atau hosting di-suspend"
             else
               REASON="membalas HTTP $code"
             fi
