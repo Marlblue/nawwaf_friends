@@ -4,6 +4,7 @@ import PageHero from "@/components/PageHero";
 import PageTransition from "@/components/PageTransition";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/hubungi/komunitas" },
   title: "Kolaborasi Komunitas",
   description:
     "Ajukan kolaborasi komunitas bersama Nawwaf & Friends: gathering, kajian, workshop, hingga makan bersama. Ceritakan profil komunitas dan rencana kegiatan Anda.",

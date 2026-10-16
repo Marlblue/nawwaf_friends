@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: Marlblue/website-ops/actions/cek-situs@ac5bef7704bc2dbde9207e91ec48917544997f54 # main
+      - uses: Marlblue/website-ops/actions/cek-situs@1fe4f15aecd6927e73dfa79444cd5e7b756a2806 # main
         with:
           url: https://nawwafresto.com/
           penanda: "Nawwaf &amp; Friends"

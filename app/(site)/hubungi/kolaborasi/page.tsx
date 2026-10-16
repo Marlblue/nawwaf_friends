@@ -4,6 +4,7 @@ import PageHero from "@/components/PageHero";
 import PageTransition from "@/components/PageTransition";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/hubungi/kolaborasi" },
   title: "Kolaborasi KOL & Influencer",
   description:
     "Ajukan kolaborasi KOL, influencer, atau content creator bersama Nawwaf & Friends. Isi form proposal dan tim kami akan meninjau pengajuan Anda.",

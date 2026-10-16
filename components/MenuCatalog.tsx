@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "@/components/SiteImage";
+import { useSearchParams } from "next/navigation";
 import { startTransition, useEffect, useLayoutEffect, useMemo, useRef, useState, ViewTransition } from "react";
 import { categories, menu } from "@/lib/menu";
 import { services, type ServiceId } from "@/lib/services";
@@ -8,6 +9,12 @@ import { addressText, openingHoursLines, site, waLink } from "@/lib/site";
 import Highlight from "./Highlight";
 import { ArrowRight, Check, Clock, MapPin, Search, Whatsapp } from "./Icons";
 import MenuItemRow from "./MenuItemRow";
+
+/** Katalog dengan kata kunci dan tab awal dari URL (?q=, ?kategori=), dibaca di browser. */
+export function MenuCatalogDariUrl() {
+  const params = useSearchParams();
+  return <MenuCatalog initialQuery={params.get("q") ?? ""} initialCategory={params.get("kategori") ?? undefined} />;
+}
 
 export default function MenuCatalog({ initialQuery = "", initialCategory }: { initialQuery?: string; initialCategory?: string }) {
   const [query, setQuery] = useState(initialQuery);

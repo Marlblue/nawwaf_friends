@@ -1,16 +1,19 @@
 import type { Metadata } from "next";
-import MenuCatalog from "@/components/MenuCatalog";
+import { Suspense } from "react";
+import MenuCatalog, { MenuCatalogDariUrl } from "@/components/MenuCatalog";
 import PageHero from "@/components/PageHero";
 import PageTransition from "@/components/PageTransition";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/menu" },
   title: "Menu & Katalog Produk",
   description: "Katalog lengkap menu Nawwaf & Friends: porsian, nampan ayam & kambing, snack, dessert, dan minuman. Pesan antar online.",
 };
 
-export default async function MenuPage({ searchParams }: PageProps<"/menu">) {
-  const { q, kategori } = await searchParams;
-
+// Halaman statis: ?q= dan ?kategori= dibaca di browser, bukan lewat searchParams, supaya
+// setiap kunjungan tidak dirender ulang di server (kuota proses akun cPanel kecil). HTML-nya
+// tetap memuat seluruh menu karena fallback-nya katalog dalam keadaan awal.
+export default function MenuPage() {
   return (
     <PageTransition>
       <PageHero
@@ -19,10 +22,9 @@ export default async function MenuPage({ searchParams }: PageProps<"/menu">) {
         subtitle="Tap Tambah, lalu buka keranjang untuk checkout."
       />
       <div className="container-x pb-20">
-        <MenuCatalog
-          initialQuery={typeof q === "string" ? q : ""}
-          initialCategory={typeof kategori === "string" ? kategori : undefined}
-        />
+        <Suspense fallback={<MenuCatalog />}>
+          <MenuCatalogDariUrl />
+        </Suspense>
       </div>
     </PageTransition>
   );

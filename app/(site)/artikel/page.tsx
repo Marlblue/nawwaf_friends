@@ -10,10 +10,16 @@ import { getArticles } from "@/lib/sanity/queries";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Artikel",
-  description: "Cerita kuliner Timur Tengah, tips pesan antar, catering, dan aqiqah dari Nawwaf & Friends.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  // Selama belum ada artikel, halaman kosong ini tidak perlu masuk indeks Google.
+  const kosong = (await getArticles()).length === 0;
+  return {
+    title: "Artikel",
+    description: "Cerita kuliner Timur Tengah, tips pesan antar, catering, dan aqiqah dari Nawwaf & Friends.",
+    alternates: { canonical: "/artikel" },
+    ...(kosong && { robots: { index: false } }),
+  };
+}
 
 export default async function ArtikelPage() {
   const articles = await getArticles();

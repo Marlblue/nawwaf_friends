@@ -113,7 +113,7 @@ jobs:
       - name: Kabari grup
         if: always()
         continue-on-error: true
-        uses: Marlblue/website-ops/actions/kabari@ac5bef7704bc2dbde9207e91ec48917544997f54 # main
+        uses: Marlblue/website-ops/actions/kabari@1fe4f15aecd6927e73dfa79444cd5e7b756a2806 # main
         with:
           pesan: ${{ steps.kabar.outputs.teks }}
           label: nawwafresto.com

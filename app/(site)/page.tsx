@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "@/components/SiteImage";
 import Link from "next/link";
 import HeroBanner from "@/components/HeroBanner";
@@ -12,6 +13,10 @@ import { getLatestArticles } from "@/lib/sanity/queries";
 import { services } from "@/lib/services";
 import { rupiah, site, waLink } from "@/lib/site";
 import { rooms } from "@/lib/venue";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 // Kartu layanan di beranda; Dine In cukup tampil sebagai tab di halaman menu
 const homeServices = services.filter((s) => s.id !== "dine-in");

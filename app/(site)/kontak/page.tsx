@@ -7,6 +7,7 @@ import WhatsAppForm from "@/components/WhatsAppForm";
 import { addressText, openingHoursLines, site, waLink } from "@/lib/site";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/kontak" },
   title: "Kontak",
   description: "Hubungi Nawwaf & Friends untuk pesan antar, catering, aqiqah, dan booking venue.",
 };
