@@ -11,6 +11,7 @@ import { rooms, venueGallery } from "@/lib/venue";
 // Halaman "link in bio": semua tautan penting dalam satu halaman ringkas,
 // untuk dipasang di bio Instagram/Threads. Sengaja tidak masuk nav utama.
 export const metadata: Metadata = {
+  alternates: { canonical: "/hubungi" },
   title: "Hubungi Kami",
   description: "Semua tautan penting Nawwaf & Friends dalam satu halaman: pesan via WhatsApp, menu, catering, aqiqah, venue, sosial media, dan lokasi.",
 };

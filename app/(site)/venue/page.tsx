@@ -10,6 +10,7 @@ import { waLink } from "@/lib/site";
 import { rooms, venueGallery, venuePackages } from "@/lib/venue";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/venue" },
   title: "Venue - Ruang Meeting & Private Room",
   description: "Sewa ruang meeting dan private room di Nawwaf & Friends, lengkap dengan hidangan Arabian food.",
 };
