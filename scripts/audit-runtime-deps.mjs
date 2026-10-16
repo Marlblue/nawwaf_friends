@@ -1,38 +1,26 @@
 /**
- * Gerbang audit dependensi yang sempit, dijalankan di deploy.yml sebelum build.
- * Disalin dari sdbi (scripts/audit-runtime-deps.mjs); yang berbeda cuma RUNTIME_PACKAGES.
+ * Gerbang audit dependensi yang sempit, dijalankan di CI dan deploy sebelum build:
  *
  *   node scripts/audit-runtime-deps.mjs
  *
- * `pnpm audit` apa adanya tidak bisa dipakai sebagai gerbang di repo ini.
- * Blok `overrides` di pnpm-workspace.yaml memang menahan advisory yang sudah
- * dikenal, tapi yang baru datang kapan saja dari pohon Sanity Studio/CLI
- * (@sanity/cli, @vercel/frameworks, @oclif/core, dan seterusnya), yaitu kode
- * yang cuma berjalan saat build atau saat menjalankan CLI-nya. Perbaikannya
- * menunggu rilis paket induk, jadi gerbang yang memerahkan PR karena itu akan
- * diabaikan sampai orang berhenti membacanya.
- *
- * Yang diperiksa di sini hanya paket yang benar-benar ikut melayani
- * pengunjung. Daftar lengkapnya tetap bisa dilihat dengan `pnpm audit`.
- *
- * Ditulis .mjs supaya bisa dijalankan Node langsung tanpa tsx.
+ * `pnpm audit` polos tidak bisa jadi gerbang: advisory baru terus datang dari pohon Sanity
+ * Studio/CLI yang cuma jalan saat build, dan perbaikannya menunggu rilis induknya. Yang
+ * diperiksa di sini hanya paket yang ikut melayani pengunjung; daftar lengkap tetap ada di
+ * `pnpm audit`. Sama dengan versi sdbi dan kalih-signature kecuali RUNTIME_PACKAGES.
  */
 import { exec } from "node:child_process";
 import { promisify } from "node:util";
 
 /**
- * Paket yang ada di jalur permintaan pengunjung.
- *
- * Sengaja daftar tetap, bukan diturunkan otomatis dari `dependencies`: `sanity`,
- * `@sanity/vision`, dan `styled-components` ada di sana, tapi cuma dimuat di
- * /studio. Impor `sanity` di lib/sanity hanya `import type`, jadi tidak terkirim.
+ * Paket yang ada di jalur permintaan pengunjung. Daftar tetap, bukan diturunkan dari
+ * `dependencies`: `sanity`, `@sanity/vision`, dan `styled-components` ada di sana tapi cuma
+ * dimuat di /studio.
  */
 export const RUNTIME_PACKAGES = new Set([
   "next",
   "react",
   "react-dom",
-  // Ikut terkirim bersama Next. images.unoptimized di next.config.ts membuatnya
-  // praktis tidak dipanggil, tapi tetap diperiksa: setelan itu bisa berubah.
+  // Optimizer gambar Next (/_next/image) untuk foto venue dan banner.
   "sharp",
   // Client Sanity dipanggil saat render halaman artikel (lib/sanity/client.ts).
   "next-sanity",
@@ -43,34 +31,16 @@ export const RUNTIME_PACKAGES = new Set([
 ]);
 
 /**
- * Segmen jalur yang menandai advisory-nya tidak di jalur permintaan
- * pengunjung, walaupun akar jalurnya paket runtime.
- *
- * `sanity` yang menanggung hampir semuanya: seluruh pohon Studio dan CLI
- * digantung di sana, dan `next-sanity` (yang memang paket runtime, karena
- * client Sanity dipanggil saat render) ikut menariknya lewat
- * `next-sanity > sanity > @sanity/cli > ...`. Tanpa pengecualian ini,
- * mencocokkan akar jalur akan menyeret balik seluruh pohon Studio.
- *
- * `@sanity/vision` ikut disebut walau ia dependency langsung dan bukan paket
- * runtime: ia tidak akan pernah cocok sebagai akar, tapi ia muncul sebagai
- * segmen tengah pada sebagian jalur, dan menyebutnya di sini membuat maksudnya
- * terbaca utuh di satu tempat.
+ * Segmen jalur yang menandai advisory-nya di luar jalur pengunjung walaupun akarnya paket
+ * runtime: `next-sanity` menarik seluruh pohon Studio/CLI lewat `next-sanity > sanity > ...`.
  */
 export const OFF_REQUEST_PATH = new Set(["sanity", "@sanity/vision"]);
 
-// `exec`, bukan `execFile`: di Windows `pnpm` adalah berkas .cmd yang butuh
-// shell untuk dijalankan, dan execFile dengan `shell: true` memicu peringatan
-// deprecation DEP0190 karena argumennya digabung tanpa di-escape. Perintah di
-// bawah tetap dan tidak menyisipkan nilai dari mana pun, jadi tidak ada yang
-// perlu di-escape.
+// `exec`, bukan `execFile`: di Windows `pnpm` berkas .cmd yang butuh shell, dan execFile
+// dengan shell memicu DEP0190. Perintahnya tetap, jadi tidak ada yang perlu di-escape.
 const run = promisify(exec);
 
-/**
- * `pnpm audit` keluar dengan status bukan nol begitu ada advisory apa pun,
- * jadi kegagalan perintahnya bukan penanda error. Yang menentukan adalah
- * apakah stdout-nya bisa diurai sebagai JSON.
- */
+/** `pnpm audit` keluar bukan nol kalau ada advisory; yang menentukan stdout-nya JSON atau bukan. */
 async function auditJson() {
   try {
     const { stdout } = await run("pnpm audit --json", { maxBuffer: 32 * 1024 * 1024 });
@@ -85,24 +55,10 @@ async function auditJson() {
 }
 
 /**
- * Apakah advisory ini menyentuh paket yang ikut melayani permintaan
- * pengunjung.
- *
- * Yang diperiksa jalurnya, bukan cuma nama paketnya. Paket bermasalah hampir
- * tidak pernah dipasang sendiri, ia ditarik oleh paket lain, jadi mencocokkan
- * `module_name` saja meleset ke arah yang berbahaya: advisory pada `nanoid`
- * yang masuk lewat ".>next>postcss>nanoid" akan lolos, karena yang dicocokkan
- * namanya sendiri ("nanoid") dan itu tidak ada di daftar mana pun. Gerbangnya
- * mencetak OK untuk advisory yang persis jenisnya ingin ditangkap.
- *
- * Bentuk jalur dari `pnpm audit` adalah ".>next>postcss>nanoid": segmen
- * pertama sesudah "." adalah dependency yang benar-benar ditulis di
- * package.json, dan itu yang menentukan. Jalur yang lewat OFF_REQUEST_PATH
- * dibuang.
- *
- * Pencocokan `module_name` tetap dipertahankan sebagai jalur kedua, supaya
- * advisory pada paket yang dipasang langsung tetap tertangkap walau bentuk
- * `findings` dari registry suatu saat berubah.
+ * Apakah advisory ini menyentuh paket yang melayani pengunjung. Yang dicek jalurnya, bukan
+ * cuma nama paketnya: advisory `nanoid` lewat ".>next>postcss>nanoid" harus tertangkap karena
+ * akarnya (segmen sesudah ".") paket runtime. Jalur yang lewat OFF_REQUEST_PATH dibuang.
+ * `module_name` tetap dicocokkan sebagai cadangan kalau bentuk `findings` berubah.
  */
 export function touchesRequestPath(advisory) {
   if (advisory.module_name !== undefined && RUNTIME_PACKAGES.has(advisory.module_name)) {
@@ -126,9 +82,7 @@ async function main() {
   const report = await auditJson();
 
   if (report === null) {
-    // Registry tidak bisa dihubungi atau keluarannya berubah bentuk. Sengaja
-    // tidak menggagalkan CI: menahan deploy karena jaringan runner sedang
-    // bermasalah bukan sinyal yang berguna.
+    // Registry tidak terjangkau atau keluarannya berubah bentuk: jangan tahan deploy karena itu.
     console.warn("PERINGATAN: keluaran `pnpm audit --json` tidak bisa diurai, gerbang dilewati.");
     return 0;
   }
@@ -157,8 +111,7 @@ async function main() {
   return 1;
 }
 
-// Dijalankan cuma kalau berkas ini yang dipanggil langsung, supaya fungsinya
-// bisa diimpor tanpa ikut menembak registry.
+// Cuma saat dipanggil langsung, supaya fungsinya bisa diimpor tanpa menembak registry.
 if (import.meta.main) {
   main().then(
     (code) => process.exit(code),
