@@ -1,0 +1,91 @@
+name: Sanity backup
+
+# Berkas ini sama persis di nawwaf_friends, kalih-signature, dan sdbi (kecuali label grup); ubah ketiganya bersamaan.
+#
+# Dokumen (artikel dan metadata gambar) disalin setiap hari ke NDJSON, disimpan 90
+# hari. Berkas gambarnya sebulan sekali (tanggal 1), disimpan 35 hari, jadi yang
+# tersimpan cuma salinan terakhir. Itu karena gambar jauh lebih besar dan kuota
+# artifact akun GitHub gratis cuma 500 MB untuk semua repo. Gambar artikel yang
+# baru diunggah di bulan berjalan juga sudah ada di repo agent-articles.
+#
+# Tanpa token: dataset-nya publik. Cara memulihkan ada di README, bagian
+# Backup Sanity.
+
+on:
+  schedule:
+    # 03.30 WIB, setengah jam setelah backup Supabase di sdbi.
+    - cron: '30 20 * * *'
+  workflow_dispatch:
+    inputs:
+      gambar:
+        description: Ikut unduh berkas gambar
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+
+      # Cron jalan pukul 20.30 UTC, yaitu sudah tanggal berikutnya di WIB. Jadi
+      # "tanggal 1 WIB" dicek dengan zona waktu Jakarta, bukan tanggal runner.
+      - name: Tentukan apakah gambar ikut
+        id: mode
+        env:
+          MANUAL: ${{ inputs.gambar }}
+        run: |
+          if [ "$MANUAL" = "true" ] || [ "$(TZ=Asia/Jakarta date +%d)" = "01" ]; then
+            echo "gambar=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "gambar=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Salin dataset
+        env:
+          NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+          NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
+          GAMBAR: ${{ steps.mode.outputs.gambar }}
+        run: |
+          if [ "$GAMBAR" = "true" ]; then
+            node scripts/backup-sanity.mjs backup-sanity --gambar
+          else
+            node scripts/backup-sanity.mjs backup-sanity
+          fi
+
+      - name: Simpan dokumen
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: sanity-dokumen-${{ github.run_id }}
+          path: |
+            backup-sanity/*.ndjson
+            backup-sanity/ringkasan.json
+          retention-days: 90
+          if-no-files-found: error
+
+      - name: Simpan gambar
+        if: steps.mode.outputs.gambar == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: sanity-gambar-${{ github.run_id }}
+          path: backup-sanity/gambar/
+          retention-days: 35
+          if-no-files-found: error
+          # Gambar sudah terkompresi (JPEG/WebP/PNG); mengompres ulang cuma buang waktu.
+          compression-level: 0
+
+      - name: Kabari grup kalau gagal
+        if: failure()
+        uses: Marlblue/website-ops/actions/kabari@1fe4f15aecd6927e73dfa79444cd5e7b756a2806 # main
+        with:
+          pesan: "BACKUP SANITY GAGAL. Artikel hari ini tidak tercadangkan. Detail: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          label: nawwafresto.com
+          webhook: ${{ secrets.OPS_ALERT_WEBHOOK_URL }}

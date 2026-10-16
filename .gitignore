@@ -46,3 +46,6 @@ next-env.d.ts
 
 # paket upload cPanel
 /deploy/
+
+# Hasil scripts/backup-sanity.mjs
+/backup-sanity
