@@ -60,6 +60,24 @@ Editor membuka **/studio** di situs ini. Webhook Sanity memanggil `/api/revalida
 setiap artikel dipublish, jadi tulisan baru langsung tampil tanpa deploy ulang (secret
 `SANITY_REVALIDATE_SECRET`, lihat komentar di `app/api/revalidate/route.ts`).
 
+### Backup
+
+`.github/workflows/sanity-backup.yml` menyalin semua dokumen yang sudah dipublish ke
+`production.ndjson` setiap hari jam 03.30 WIB, disimpan 90 hari; berkas gambarnya ikut
+setiap tanggal 1 dan disimpan 35 hari. Draft di Studio tidak ikut. Tanpa token, karena
+dataset-nya publik. Kalau gagal, grup Telegram dikabari.
+
+Memulihkan artikel yang terhapus atau tertimpa:
+
+1. Actions > Sanity backup > run terakhir sebelum kejadian > unduh `sanity-dokumen-*`.
+2. Dari root repo ini: `pnpm exec sanity login`, lalu
+   `pnpm exec sanity datasets import production.ndjson --project-id o8iiwin1 --dataset production --replace`.
+   `--replace` menimpa dokumen dengan `_id` yang sama dan membiarkan yang lain; pakai
+   `--missing` untuk cuma mengembalikan yang hilang. Cara yang sama sudah diuji di
+   kalih-signature (lihat README-nya).
+
+Backup manual dari laptop: `node scripts/backup-sanity.mjs [folder] [--gambar]`.
+
 ## Deploy
 
 `.github/workflows/deploy.yml` jalan setiap push ke `main`: lint, audit, build di runner
