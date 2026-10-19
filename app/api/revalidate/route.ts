@@ -27,7 +27,10 @@ export async function POST(request: Request) {
     if (!isValidSignature) return new Response("Invalid signature", { status: 401 });
     if (!body?._type) return new Response("Bad Request", { status: 400 });
 
-    revalidateTag(ARTICLE_TAG, "max");
+    // expire 0, bukan "max": dengan "max" pengunjung pertama sesudah publish masih dilayani
+    // data lama (stale-while-revalidate). Untuk artikel baru itu berarti 404, karena daftar
+    // slug yang dipakai memeriksa artikelnya juga masih yang lama.
+    revalidateTag(ARTICLE_TAG, { expire: 0 });
     return Response.json({ revalidated: true, now: Date.now() });
   } catch (err) {
     console.error("Sanity revalidate webhook gagal:", err);
