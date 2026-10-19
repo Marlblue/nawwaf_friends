@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "@/components/SiteImage";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { gallery } from "@/lib/gallery";
 import { prefersReducedMotion } from "@/lib/motion";
 import { ArrowLeft, ArrowRight } from "./Icons";
@@ -29,13 +29,16 @@ export default function GallerySlider() {
     if (track) setIndex(Math.round(track.scrollLeft / track.clientWidth));
   };
 
+  const maju = useEffectEvent(() => goTo(index + 1));
+
+  // index ikut jadi pemicu supaya timer mulai dari nol lagi setiap slide berganti, termasuk
+  // saat digeser manual.
   useEffect(() => {
     if (paused || prefersReducedMotion()) return;
     const t = setInterval(() => {
-      if (!document.hidden) goTo(index + 1);
+      if (!document.hidden) maju();
     }, AUTOPLAY_MS);
     return () => clearInterval(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, paused]);
 
   return (

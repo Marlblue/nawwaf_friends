@@ -54,13 +54,6 @@ export const Phone = (p: P) => (
   </svg>
 );
 
-export const Mail = (p: P) => (
-  <svg {...base(p)}>
-    <rect x="2" y="4" width="20" height="16" rx="2" />
-    <path d="m22 6-10 7L2 6" />
-  </svg>
-);
-
 export const Clock = (p: P) => (
   <svg {...base(p)}>
     <circle cx="12" cy="12" r="10" />
@@ -114,12 +107,6 @@ export const Minus = (p: P) => (
 export const Close = (p: P) => (
   <svg {...base(p)}>
     <path d="M18 6 6 18M6 6l12 12" />
-  </svg>
-);
-
-export const Trash = (p: P) => (
-  <svg {...base(p)}>
-    <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" />
   </svg>
 );
 
