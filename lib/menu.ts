@@ -154,8 +154,3 @@ export function minPrice(item: MenuItem) {
 export function thumb(src: string) {
   return src.replace("/images/menu/", "/images/menu/thumb/");
 }
-
-// Versi sedang (640px) untuk kartu kecil, mis. kartu layanan di beranda
-export function mediumImage(src: string) {
-  return src.replace("/images/menu/", "/images/menu/md/");
-}
