@@ -37,8 +37,11 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Kunci scroll di html, bukan body: html sudah `overflow-x: clip`, jadi `hidden` di body
+  // tidak dipindah ke layar dan body malah jadi kotak scroll (scrollTop 0). Header sticky
+  // lalu menempel ke body dan loncat ke atas dokumen, meninggalkan celah kalau halaman sudah digulir.
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    document.documentElement.style.overflow = open ? "hidden" : "";
   }, [open]);
 
   const hidden = hiddenOnScroll && !open && !drawerOpen;
