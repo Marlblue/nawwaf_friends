@@ -61,7 +61,7 @@ export default function GallerySlider() {
       </div>
 
       <div className="mt-6 rounded-[32px] border border-black/8 bg-sand p-2 shadow-[0_16px_40px_-20px_rgb(42_16_19/0.25)] sm:p-3">
-        <div ref={trackRef} onScroll={onScroll} className="no-scrollbar flex snap-x snap-mandatory overflow-x-auto rounded-[24px]">
+        <div ref={trackRef} onScroll={onScroll} tabIndex={0} className="no-scrollbar flex snap-x snap-mandatory overflow-x-auto rounded-[24px]">
           {gallery.map((slide, i) => (
             <figure
               key={slide.title}

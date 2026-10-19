@@ -52,6 +52,10 @@ export default function VenueGallery({ photos }: { photos: Photo[] }) {
       <div
         ref={trackRef}
         onScroll={onScroll}
+        // Bisa difokus supaya foto bisa digeser dengan tombol panah, bukan cuma diusap.
+        tabIndex={0}
+        role="region"
+        aria-label="Foto venue"
         className="no-scrollbar -mx-5 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto overscroll-x-contain scroll-px-5 px-5 md:-mx-10 md:scroll-px-10 md:gap-6 md:px-10 lg:mx-0 lg:grid lg:grid-cols-5 lg:overflow-visible lg:px-0"
       >
         {photos.map((g, i) => (
