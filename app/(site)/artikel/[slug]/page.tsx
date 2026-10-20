@@ -42,17 +42,30 @@ export async function generateMetadata({ params }: PageProps<"/artikel/[slug]">)
   if (!article) return {};
 
   const cover = coverSource(article.coverImage, 1200, 630);
+  const seo = article.seo ?? {};
+  const description = seo.metaDescription || article.excerpt;
+  const ogTitle = seo.ogTitle || seo.seoTitle || article.title;
+  const ogDescription = seo.ogDescription || description;
+  const keywords = [seo.focusKeyword, ...(seo.secondaryKeywords ?? [])].filter((k): k is string => Boolean(k));
   return {
-    title: article.title,
-    description: article.excerpt,
+    // SEO Title ditulis lengkap oleh editor, jadi template "| Nawwaf & Friends" tidak ditambahkan.
+    title: seo.seoTitle ? { absolute: seo.seoTitle } : article.title,
+    description,
+    ...(keywords.length > 0 && { keywords }),
     alternates: { canonical: `/artikel/${article.slug}` },
     openGraph: {
       type: "article",
-      title: article.title,
-      description: article.excerpt,
+      title: ogTitle,
+      description: ogDescription,
       url: `${site.url}/artikel/${article.slug}`,
       publishedTime: article.publishedAt,
       ...(cover && { images: [{ url: cover.src, width: 1200, height: 630, alt: cover.alt }] }),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seo.twitterTitle || ogTitle,
+      description: seo.twitterDescription || ogDescription,
+      ...(cover && { images: [cover.src] }),
     },
   };
 }
@@ -61,6 +74,7 @@ export default async function ArticlePage({ params }: PageProps<"/artikel/[slug]
   const { slug } = await params;
   const [article, others] = await Promise.all([getArticleBySlug(slug), getOtherArticles(slug, 3)]);
   if (!article) notFound();
+  const faq = (article.seo?.faq ?? []).filter((item) => item?.question && item?.answer);
 
   return (
     <PageTransition>
@@ -84,6 +98,32 @@ export default async function ArticlePage({ params }: PageProps<"/artikel/[slug]
 
         <div className="prose-article mx-auto mt-12 max-w-2xl sm:mt-16">
           <PortableText value={article.content ?? []} components={ptComponents} />
+          {faq.length > 0 && (
+            <section className="mt-12">
+              <h2>Pertanyaan yang sering diajukan</h2>
+              {faq.map((item) => (
+                <div key={item._key}>
+                  <h3>{item.question}</h3>
+                  <p>{item.answer}</p>
+                </div>
+              ))}
+              <script
+                type="application/ld+json"
+                // JSON.stringify tidak meng-escape "<"; tanpa replace, "</script>" di jawaban FAQ bisa menutup blok ini.
+                dangerouslySetInnerHTML={{
+                  __html: JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "FAQPage",
+                    mainEntity: faq.map((item) => ({
+                      "@type": "Question",
+                      name: item.question,
+                      acceptedAnswer: { "@type": "Answer", text: item.answer },
+                    })),
+                  }).replace(/</g, "\\u003c"),
+                }}
+              />
+            </section>
+          )}
           <div className="mt-10 flex flex-wrap gap-3 border-t border-black/10 pt-8">
             <Link href="/menu" className="btn btn-primary">
               Pesan sekarang

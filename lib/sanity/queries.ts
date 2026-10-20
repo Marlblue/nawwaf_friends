@@ -43,7 +43,7 @@ export const getLatestArticles = cache(async (limit: number): Promise<ArticleCar
 );
 
 export const getArticleBySlug = cache(async (slug: string): Promise<Article | null> =>
-  fetchArticles(`*[${FILTER} && slug.current == $slug][0] {${CARD_FIELDS}, content}`, { slug }, null),
+  fetchArticles(`*[${FILTER} && slug.current == $slug][0] {${CARD_FIELDS}, content, seo}`, { slug }, null),
 );
 
 export const getOtherArticles = cache(async (excludeSlug: string, limit: number): Promise<ArticleCard[]> =>
