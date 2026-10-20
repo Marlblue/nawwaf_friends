@@ -16,7 +16,23 @@ export type ArticleCard = {
   featured: boolean;
 };
 
+export type ArticleFaq = { _key: string; question?: string; answer?: string };
+
+/** Field SEO opsional; yang kosong jatuh ke title/excerpt. */
+export type ArticleSeo = {
+  seoTitle?: string;
+  metaDescription?: string;
+  focusKeyword?: string;
+  secondaryKeywords?: string[];
+  ogTitle?: string;
+  ogDescription?: string;
+  twitterTitle?: string;
+  twitterDescription?: string;
+  faq?: ArticleFaq[];
+};
+
 /** Artikel lengkap untuk halaman /artikel/[slug]. */
 export type Article = ArticleCard & {
   content: PortableTextBlock[];
+  seo?: ArticleSeo;
 };
