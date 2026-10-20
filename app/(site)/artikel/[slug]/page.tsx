@@ -98,31 +98,23 @@ export default async function ArticlePage({ params }: PageProps<"/artikel/[slug]
 
         <div className="prose-article mx-auto mt-12 max-w-2xl sm:mt-16">
           <PortableText value={article.content ?? []} components={ptComponents} />
+          {/* FAQ tidak ditampilkan ke pembaca (permintaan user), hanya dikirim sebagai FAQ schema untuk Google. */}
           {faq.length > 0 && (
-            <section className="mt-12">
-              <h2>Pertanyaan yang sering diajukan</h2>
-              {faq.map((item) => (
-                <div key={item._key}>
-                  <h3>{item.question}</h3>
-                  <p>{item.answer}</p>
-                </div>
-              ))}
-              <script
-                type="application/ld+json"
-                // JSON.stringify tidak meng-escape "<"; tanpa replace, "</script>" di jawaban FAQ bisa menutup blok ini.
-                dangerouslySetInnerHTML={{
-                  __html: JSON.stringify({
-                    "@context": "https://schema.org",
-                    "@type": "FAQPage",
-                    mainEntity: faq.map((item) => ({
-                      "@type": "Question",
-                      name: item.question,
-                      acceptedAnswer: { "@type": "Answer", text: item.answer },
-                    })),
-                  }).replace(/</g, "\\u003c"),
-                }}
-              />
-            </section>
+            <script
+              type="application/ld+json"
+              // JSON.stringify tidak meng-escape "<"; tanpa replace, "</script>" di jawaban FAQ bisa menutup blok ini.
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  mainEntity: faq.map((item) => ({
+                    "@type": "Question",
+                    name: item.question,
+                    acceptedAnswer: { "@type": "Answer", text: item.answer },
+                  })),
+                }).replace(/</g, "\\u003c"),
+              }}
+            />
           )}
           <div className="mt-10 flex flex-wrap gap-3 border-t border-black/10 pt-8">
             <Link href="/menu" className="btn btn-primary">

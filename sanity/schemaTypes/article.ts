@@ -107,7 +107,7 @@ export const article = defineType({
           name: "faq",
           title: "FAQ",
           type: "array",
-          description: "Tampil di bawah isi artikel dan sebagai FAQ schema untuk Google.",
+          description: "Tidak tampil di halaman; hanya dikirim sebagai FAQ schema untuk Google.",
           of: [
             defineArrayMember({
               type: "object",
