@@ -10,6 +10,7 @@
   --color-sand-200: #f2e5e1;
   --color-ink: #2a1013; /* teks utama, hitam kemerahan */
   --color-ink-soft: #553f42;
+  --color-body: #333031; /* teks panjang artikel: abu gelap netral, nyaman dibaca lama */
   --color-muted: #7d6c6e; /* teks sekunder */
 
   --color-brand: #7b111b; /* maroon logo */
@@ -401,7 +402,7 @@ body {
     margin-bottom: 1.15rem;
     font-size: 17px;
     line-height: 1.8;
-    color: var(--color-ink-soft);
+    color: var(--color-body);
   }
 
   .prose-article h2 {
@@ -437,7 +438,7 @@ body {
     padding-left: 1.4rem;
     font-size: 17px;
     line-height: 1.8;
-    color: var(--color-ink-soft);
+    color: var(--color-body);
   }
 
   .prose-article ul {
@@ -452,8 +453,10 @@ body {
     margin-top: 0.35rem;
   }
 
-  .prose-article a {
-    color: var(--color-ink);
+  /* :not(.btn): tombol "Pesan sekarang" / "Tanya admin" juga ada di dalam .prose-article; tanpa ini
+     warna & garis bawah link menimpa .btn-primary (teks gelap di atas latar maroon). */
+  .prose-article a:not(.btn) {
+    color: var(--color-brand);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
