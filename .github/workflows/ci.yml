@@ -47,3 +47,22 @@ jobs:
             exit 0
           fi
           pnpm build:cpanel
+
+      # Tes browser terhadap build di atas (e2e/). Menangkap halaman yang rusak di browser
+      # walau lint, typecheck, dan build lolos.
+      - name: Pasang browser untuk tes
+        if: vars.NEXT_PUBLIC_SANITY_PROJECT_ID != ''
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Tes browser
+        if: vars.NEXT_PUBLIC_SANITY_PROJECT_ID != ''
+        run: pnpm test:e2e
+
+      - name: Simpan jejak tes yang gagal
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: jejak-tes-browser
+          path: test-results/
+          retention-days: 7
+          if-no-files-found: ignore

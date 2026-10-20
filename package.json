@@ -9,6 +9,7 @@
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "tsx --test \"lib/**/*.test.ts\"",
+    "test:e2e": "playwright test",
     "cek:audit": "node scripts/audit-runtime-deps.mjs",
     "build:cpanel": "next build && node scripts/pack-cpanel.mjs"
   },
@@ -26,6 +27,7 @@
     "styled-components": "^6.6.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^24",
     "@types/react": "^19",
