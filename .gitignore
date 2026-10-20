@@ -49,3 +49,7 @@ next-env.d.ts
 
 # Hasil scripts/backup-sanity.mjs
 /backup-sanity
+
+# Hasil tes browser (Playwright)
+/test-results/
+/playwright-report/
