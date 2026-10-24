@@ -84,7 +84,7 @@ jobs:
 
       - name: Kabari grup kalau gagal
         if: failure()
-        uses: Marlblue/website-ops/actions/kabari@1fe4f15aecd6927e73dfa79444cd5e7b756a2806 # main
+        uses: Marlblue/website-ops/actions/kabari@8f016c53f902557e42072b93b2a7dfe99fcc4703 # main
         with:
           pesan: "BACKUP SANITY GAGAL. Artikel hari ini tidak tercadangkan. Detail: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           label: nawwafresto.com

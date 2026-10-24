@@ -12,13 +12,15 @@ on:
 
 permissions:
   contents: read
+  # cek-situs membaca hasil run sebelumnya sebelum mengabari situs tak terjangkau.
+  actions: read
 
 jobs:
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: Marlblue/website-ops/actions/cek-situs@1fe4f15aecd6927e73dfa79444cd5e7b756a2806 # main
+      - uses: Marlblue/website-ops/actions/cek-situs@8f016c53f902557e42072b93b2a7dfe99fcc4703 # main
         with:
           url: https://nawwafresto.com/
           penanda: "Nawwaf &amp; Friends"
