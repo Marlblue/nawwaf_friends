@@ -20,6 +20,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/artikel/halaman/[halaman]">): Promise<Metadata> {
   const page = nomorHalaman((await params).halaman);
+  if (!paginateArticles(await getArticles(), page)) return {};
   return {
     title: `Artikel – Halaman ${page}`,
     description: "Cerita kuliner Timur Tengah, tips pesan antar, catering, dan aqiqah dari Nawwaf & Friends.",
