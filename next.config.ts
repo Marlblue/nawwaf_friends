@@ -36,7 +36,17 @@ const nextConfig: NextConfig = {
   // Versi Next.js tidak perlu diumumkan ke pemindai otomatis.
   poweredByHeader: false,
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      // Varian dari lib/image-loader.ts selalu membawa ?v=<hash sumber>, jadi aman di-cache
+      // setahun: gambar yang diganti mendapat URL baru. Tanpa ini Next menyajikan public/
+      // dengan max-age=0 dan tiap kunjungan tetap mengetuk server untuk tiap gambar. Hanya
+      // /_img: foto menu tidak membawa ?v=, jadi foto yang diganti harus tetap divalidasi ulang.
+      {
+        source: "/_img/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+    ];
   },
   // www.nawwafresto.com dan nawwafresto.com tampil sama; satukan ke tanpa www supaya
   // Google tidak menganggapnya dua situs dengan konten ganda.
@@ -50,20 +60,15 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  // Optimizer jalan di server cPanel memakai binary sharp prebuilt untuk Linux, yang ikut
-  // terbawa karena build dikerjakan di runner GitHub (pola yang sama dengan kalih-signature).
-  // Foto menu yang transparan dan gambar Sanity sengaja dilewatkan; aturannya ada di
-  // components/SiteImage.tsx.
+  // Optimizer Next tidak dipakai: gambar public/ diperkecil saat build oleh
+  // scripts/generate-image-variants.mjs dan dipilih lib/image-loader.ts, karena sharp di server
+  // cPanel memicu 508 (batas proses akun) tiap cache kosong. Foto menu yang transparan dan
+  // gambar Sanity tetap `unoptimized`; aturannya ada di components/SiteImage.tsx.
   images: {
-    // WebP saja. AVIF di kalih-signature merusak alpha, dan sumber semua gambar di sini
-    // memang sudah WebP.
-    formats: ["image/webp"],
+    loaderFile: "./lib/image-loader.ts",
     // 384 dan 480 untuk kartu setengah layar di ponsel; tanpa keduanya kandidat terkecil
     // 640px dan ponsel mengunduh gambar jauh lebih besar dari yang ditampilkan.
     deviceSizes: [384, 480, 640, 828, 1080, 1280, 1920],
-    // 30 hari, bukan setahun seperti kalih: gambar di public/ tidak punya hash di namanya,
-    // jadi foto yang diganti dengan nama yang sama baru sampai ke pengunjung setelah ini lewat.
-    minimumCacheTTL: 2592000,
   },
 };
 

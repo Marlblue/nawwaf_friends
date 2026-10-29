@@ -11,7 +11,7 @@
     "test": "tsx --test \"lib/**/*.test.ts\"",
     "test:e2e": "playwright test",
     "cek:audit": "node scripts/audit-runtime-deps.mjs",
-    "build:cpanel": "next build && node scripts/pack-cpanel.mjs"
+    "build:cpanel": "node scripts/generate-image-variants.mjs && next build && node scripts/pack-cpanel.mjs"
   },
   "dependencies": {
     "@next/third-parties": "16.4.2",
