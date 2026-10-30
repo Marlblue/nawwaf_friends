@@ -1,0 +1,7 @@
+# Dipasang deploy.yml di public_html/_next/ dan public_html/_img/. Isi kedua folder disajikan
+# LiteSpeed langsung dari public_html, tanpa lewat aplikasi Node (lihat deploy.yml). Nama berkas
+# di _next/static ber-hash dan URL varian _img membawa ?v=<hash sumber>, jadi aman di-cache setahun.
+<IfModule mod_headers.c>
+Header set Cache-Control "public, max-age=31536000, immutable"
+Header set X-Content-Type-Options "nosniff"
+</IfModule>

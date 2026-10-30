@@ -74,6 +74,22 @@ jobs:
             -e "ssh -4 -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }}" \
             deploy/app/ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${APP_DIR}/"
 
+      - name: Salin file statis ke public_html
+        # LiteSpeed menyajikan berkas yang ada di public_html sendiri dan hanya meneruskan sisanya
+        # ke Passenger. Tanpa salinan ini, tiap JS/CSS/gambar (±40 per halaman) dilayani Node, dan
+        # batas proses akun cPanel membalas sebagian dengan 508 saat cache dingin. Sebelum restart,
+        # supaya HTML baru tidak merujuk chunk yang belum ada. Tanpa --delete: chunk lama masih
+        # diminta tab yang terbuka sebelum deploy; yang lebih dari 14 hari dibuang di bawah.
+        # Salinan di APP_DIR tetap ada sebagai cadangan (Next melayaninya kalau berkas di sini hilang).
+        run: |
+          SSH="ssh -4 -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }}"
+          DEST="${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:public_html"
+          rsync -az -e "$SSH" deploy/app/.next/static/ "$DEST/_next/static/"
+          rsync -az -e "$SSH" deploy/app/public/ "$DEST/"
+          rsync -az -e "$SSH" scripts/cpanel/static.htaccess "$DEST/_next/.htaccess"
+          rsync -az -e "$SSH" scripts/cpanel/static.htaccess "$DEST/_img/.htaccess"
+          $SSH "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}"             "find public_html/_next/static -type f -mtime +14 -delete; find public_html/_next/static -type d -empty -delete"
+
       - name: Restart aplikasi
         # Passenger me-restart app Node saat tmp/restart.txt disentuh.
         run: |
