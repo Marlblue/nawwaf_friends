@@ -84,6 +84,8 @@ jobs:
         run: |
           SSH="ssh -4 -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }}"
           DEST="${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:public_html"
+          # rsync tidak membuat folder induk yang belum ada (_next/ di deploy pertama).
+          $SSH "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" "mkdir -p public_html/_next/static public_html/_img"
           rsync -az -e "$SSH" deploy/app/.next/static/ "$DEST/_next/static/"
           rsync -az -e "$SSH" deploy/app/public/ "$DEST/"
           rsync -az -e "$SSH" scripts/cpanel/static.htaccess "$DEST/_next/.htaccess"
