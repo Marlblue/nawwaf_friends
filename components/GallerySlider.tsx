@@ -5,6 +5,7 @@ import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { gallery } from "@/lib/gallery";
 import { prefersReducedMotion } from "@/lib/motion";
 import { ArrowLeft, ArrowRight } from "./Icons";
+import SliderDots from "@/components/SliderDots";
 
 const AUTOPLAY_MS = 5000;
 
@@ -87,18 +88,7 @@ export default function GallerySlider() {
           ))}
         </div>
 
-        <div className="flex justify-center gap-2 py-4">
-          {gallery.map((slide, i) => (
-            <button
-              key={slide.title}
-              type="button"
-              onClick={() => goTo(i)}
-              aria-label={`Slide ${i + 1}`}
-              aria-current={i === index}
-              className={`h-2 rounded-full transition-all duration-300 ${i === index ? "w-8 bg-brand" : "w-2 bg-black/20 hover:bg-brand"}`}
-            />
-          ))}
-        </div>
+        <SliderDots count={gallery.length} index={index} onSelect={goTo} label={(i) => `Slide ${i + 1}`} className="py-2" />
       </div>
     </div>
   );

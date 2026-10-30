@@ -3,6 +3,7 @@
 import Image from "@/components/SiteImage";
 import { useEffect, useRef, useState } from "react";
 import { prefersReducedMotion } from "@/lib/motion";
+import SliderDots from "@/components/SliderDots";
 
 type Photo = { image: string; caption: string };
 
@@ -68,18 +69,7 @@ export default function VenueGallery({ photos }: { photos: Photo[] }) {
         ))}
       </div>
       {stops.length > 1 && (
-        <div className="mt-6 flex items-center justify-center gap-1.5 lg:hidden">
-          {stops.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => goTo(i)}
-              aria-label={`Geser ke posisi ${i + 1}`}
-              aria-current={i === index}
-              className={`h-1.5 rounded-full transition-all ${i === index ? "w-4 bg-brand" : "w-1.5 bg-black/15 hover:bg-black/30"}`}
-            />
-          ))}
-        </div>
+        <SliderDots count={stops.length} index={index} onSelect={goTo} label={(i) => `Geser ke posisi ${i + 1}`} size="sm" className="mt-4 lg:hidden" />
       )}
     </div>
   );
