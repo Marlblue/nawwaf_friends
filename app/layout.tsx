@@ -1,12 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Poppins } from "next/font/google";
+import localFont from "next/font/local";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const poppins = Poppins({
+// Poppins disimpan di repo (subset latin dari Google Fonts, lisensi OFL), bukan next/font/google:
+// varian google mengunduh font saat `next build`, dan deploy pernah gagal karena runner tidak
+// bisa menjangkau Google Fonts. Karakter di luar latin jatuh ke font cadangan.
+const poppins = localFont({
   variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  src: [
+    { path: "./fonts/poppins-400-latin.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/poppins-500-latin.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/poppins-600-latin.woff2", weight: "600", style: "normal" },
+  ],
 });
 
 // Layout akar cuma kerangka <html>/<body>. Navbar, footer, GTM, dsb. ada di
