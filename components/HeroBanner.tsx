@@ -3,6 +3,7 @@
 import Image from "@/components/SiteImage";
 import { useEffect, useState } from "react";
 import { prefersReducedMotion } from "@/lib/motion";
+import SliderDots from "@/components/SliderDots";
 
 // Foto sementara dari menu; ganti dengan foto suasana jamuan asli kalau sudah ada
 const photos = [
@@ -48,18 +49,14 @@ export default function HeroBanner({ children }: { children: React.ReactNode }) 
 
       <div className="relative z-10 flex w-full flex-col items-center">{children}</div>
 
-      <div className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-2">
-        {photos.map((src, i) => (
-          <button
-            key={src}
-            type="button"
-            onClick={() => setIndex(i)}
-            aria-label={`Foto ${i + 1}`}
-            aria-current={i === index}
-            className={`h-2 rounded-full transition-all duration-300 ${i === index ? "w-8 bg-white" : "w-2 bg-white/45 hover:bg-white/75"}`}
-          />
-        ))}
-      </div>
+      <SliderDots
+        count={photos.length}
+        index={index}
+        onSelect={setIndex}
+        label={(i) => `Foto ${i + 1}`}
+        tone="light"
+        className="absolute bottom-3 left-1/2 z-10 -translate-x-1/2"
+      />
     </div>
   );
 }
