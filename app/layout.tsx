@@ -20,6 +20,19 @@ const poppins = localFont({
 export const metadata: Metadata = {
   // Basis URL absolut untuk og:image, canonical, dll.
   metadataBase: new URL(site.url),
+  // Pratinjau saat link dibagikan (WhatsApp, Facebook, X). Judul & deskripsi sengaja tidak diisi:
+  // tanpa og:title/og:description, aplikasi memakai <title> dan meta description tiap halaman.
+  // Halaman yang menulis openGraph sendiri (artikel) menggantikan seluruh blok ini.
+  openGraph: {
+    type: "website",
+    siteName: site.name,
+    locale: "id_ID",
+    images: [{ url: site.shareImage, width: 1200, height: 630, alt: "Nampan nasi kebuli kambing Nawwaf & Friends" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [site.shareImage],
+  },
 };
 
 export const viewport: Viewport = {

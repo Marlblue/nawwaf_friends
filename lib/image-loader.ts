@@ -12,7 +12,7 @@ export default function imageLoader({ src, width }: ImageLoaderProps) {
   const v = version ? `v=${version}` : "";
   const widest = localImageVariants[src];
   const step = widest ? VARIANT_LADDER.find((s) => s >= width && s <= widest) : undefined;
-  // encodeURI wajib: ada nama berkas berspasi ("Meting room.webp"), dan spasi merusak srcset.
+  // encodeURI: nama berkas berspasi (mis. unggahan baru yang belum diganti namanya) merusak srcset.
   if (step) return encodeURI(`/_img/w${step}${src.replace(/\.(webp|png|jpe?g)$/i, ".webp")}`) + (v && `?${v}`);
   // Tidak ada varian selebar ini (slot lebih lebar dari varian terbesar, atau berkasnya kecil):
   // berkas asli. `w` membuat URL ikut berubah dengan width, yang diperiksa Next.

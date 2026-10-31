@@ -18,7 +18,7 @@ export const gallery: GallerySlide[] = [
     tags: ["Siap Saji di Lokasi", "Chef Berpengalaman"],
   },
   {
-    image: "/Nasi box .webp",
+    image: "/nasi-box.webp",
     badge: "Nasi Box Siap Kirim",
     title: "Distribusi Nasi Box Skala Besar & Korporat",
     text: "Kemasan bersegel higienis menjaga aroma kebuli dan kelembutan daging tetap prima hingga sampai di acara Anda.",

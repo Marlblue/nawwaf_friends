@@ -27,7 +27,7 @@ const quickLinks: QuickLink[] = [
 // Kartu menu favorit langsung membuka chat WhatsApp dengan pesan sesuai produk.
 const favorites = [
   { waText: "Halo Nawwaf & Friends, saya mau tanya Paket Nampan.", title: "Paket Nampan", text: "Makan bersama keluarga dan teman lebih puas.", cta: "Pesan Paket Nampan", image: "/delivery.webp" },
-  { waText: "Halo Nawwaf & Friends, saya mau order Nasi Box Premium.", title: "Nasi Box Premium", text: "Praktis untuk acara kantor, pengajian, dan syukuran.", cta: "Pesan Nasi Box", image: "/Nasi box .webp" },
+  { waText: "Halo Nawwaf & Friends, saya mau order Nasi Box Premium.", title: "Nasi Box Premium", text: "Praktis untuk acara kantor, pengajian, dan syukuran.", cta: "Pesan Nasi Box", image: "/nasi-box.webp" },
   { waText: "Halo Nawwaf & Friends, saya mau konsultasi Paket Aqiqah.", title: "Paket Aqiqah", text: "All-in: biaya masak, sertifikat, dan kartu ucapan.", cta: "Tanya Paket Aqiqah", image: "/aqiqah.webp" },
   { waText: "Halo Nawwaf & Friends, saya mau info Kambing Guling.", title: "Kambing Guling", text: "Sajian kambing guling untuk menjamu tamu di acara spesial.", cta: "Pesan Kambing Guling", image: "/kambing-guling.webp" },
 ];

@@ -27,7 +27,8 @@ const MIN_SOURCE_BYTES = 15 * 1024;
 const QUALITY = 80;
 const EXTENSIONS = [".webp", ".png", ".jpg", ".jpeg"];
 // Foto menu sudah dipotong tangan dan tidak lewat loader (components/SiteImage.tsx).
-const SKIP_DIRS = [OUT_DIR, path.join(PUBLIC_DIR, "images", "menu")];
+// public/bagikan berisi gambar pratinjau link (og:image), dibaca WhatsApp/Facebook apa adanya.
+const SKIP_DIRS = [OUT_DIR, path.join(PUBLIC_DIR, "images", "menu"), path.join(PUBLIC_DIR, "bagikan")];
 
 async function findSources(dir) {
   const results = [];
