@@ -29,6 +29,9 @@ export const site = {
     country: "ID",
   },
   mapsUrl: "https://maps.app.goo.gl/jGMnrsjd1UunykKN6",
+  // Titik pin listing Google Maps di atas (!3d/!4d pada URL tujuannya), untuk `geo` di JSON-LD.
+  // Kalau pinnya dipindah di Google Business Profile, ambil ulang dari URL itu.
+  geo: { latitude: -6.3782084, longitude: 106.9583264 },
   // Link resto di GoFood (pesan antar lewat aplikasi Gojek)
   gofoodUrl: "https://gofood.co.id/jakarta/restaurant/nawwaf-and-friends-5c01c098-8b15-4c80-a04c-544e3da711fd",
   // Jam buka. Nama hari mengikuti schema.org dan jam pakai format 24 jam, supaya

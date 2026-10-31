@@ -21,6 +21,7 @@ export const restaurantJsonLd = {
     postalCode: site.address.postalCode,
     addressCountry: site.address.country,
   },
+  geo: { "@type": "GeoCoordinates", ...site.geo },
   hasMap: site.mapsUrl,
   priceRange: `${rupiah(Math.min(...prices))} - ${rupiah(Math.max(...prices))}`,
   openingHoursSpecification: site.openingHours.map(({ days, opens, closes }) => ({
