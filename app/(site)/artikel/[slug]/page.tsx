@@ -76,6 +76,20 @@ export default async function ArticlePage({ params }: PageProps<"/artikel/[slug]
   const [article, others] = await Promise.all([getArticleBySlug(slug), getOtherArticles(slug, 3)]);
   if (!article) notFound();
   const faq = (article.seo?.faq ?? []).filter((item) => item?.question && item?.answer);
+  // Tanpa schema Article, Google cuma punya tebakannya sendiri soal judul, tanggal, dan gambar artikel.
+  // Gambar dihilangkan kalau tidak ada cover, bukan diisi kosong: properti yang tidak ada = tidak diketahui.
+  const cover = coverSource(article.coverImage, 1200, 630);
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.seo?.metaDescription || article.excerpt,
+    ...(cover && { image: cover.src }),
+    datePublished: article.publishedAt,
+    mainEntityOfPage: `${site.url}/artikel/${article.slug}`,
+    author: { "@type": "Organization", name: site.name, url: site.url },
+    publisher: { "@type": "Organization", name: site.name, url: site.url },
+  };
 
   return (
     <PageTransition>
@@ -99,6 +113,11 @@ export default async function ArticlePage({ params }: PageProps<"/artikel/[slug]
 
         <div className="prose-article mx-auto mt-12 max-w-2xl sm:mt-16">
           <PortableText value={article.content ?? []} components={ptComponents} />
+          <script
+            type="application/ld+json"
+            // Escape "<" sama seperti blok FAQ di bawah: judul dan ringkasan datang dari Sanity.
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd).replace(/</g, "\\u003c") }}
+          />
           {/* FAQ tidak ditampilkan ke pembaca (permintaan user), hanya dikirim sebagai FAQ schema untuk Google. */}
           {faq.length > 0 && (
             <script
