@@ -8,6 +8,8 @@ export const site = {
   // Domain final situs, tanpa garis miring di akhir. Dipakai untuk URL absolut di
   // data terstruktur, sitemap.xml, robots.txt, dan metadataBase.
   url: "https://nawwafresto.com",
+  // Gambar pratinjau link (og:image) untuk halaman yang tidak punya gambar sendiri, 1200x630.
+  shareImage: "/bagikan/nawwaf.jpg",
   // Container Google Tag Manager (akun "Nawwaf Resto"). Tag seperti Meta Pixel
   // diatur dari dashboard GTM, bukan dari kode.
   gtmId: "GTM-5LMJM3VH",

@@ -31,7 +31,7 @@ export const services: Service[] = [
     badge: "Kemasan Eksklusif",
     text: "Paket bento premium elegan berpartisi khusus untuk rapat kantor, gathering, dan syukuran berkelas.",
     note: "Mulai 35k / box",
-    image: "/Nasi box .webp",
+    image: "/nasi-box.webp",
     points: ["Pilihan nasi mandhi atau kebuli", "Untuk rapat kantor, pengajian & syukuran", "Bisa pesan dalam jumlah besar"],
     waText: "Halo Nawwaf & Friends, saya mau pesan nasi box.",
   },

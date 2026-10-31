@@ -24,7 +24,7 @@ export const rooms: VenueRoom[] = [
     capacity: "Konfirmasi ke admin",
     facilities: ["Ruang ber-AC", "Meja & kursi meeting", "Colokan listrik", "Paket makan & minum"],
     idealFor: ["Rapat kantor", "Workshop kecil", "Arisan & komunitas"],
-    image: "/Meting room.webp",
+    image: "/meeting-room.webp",
     enabled: true,
   },
   {
@@ -36,7 +36,7 @@ export const rooms: VenueRoom[] = [
     capacity: "Konfirmasi ke admin",
     facilities: ["Ruang privat ber-AC", "Penyajian nampan", "Pelayan khusus", "Dekorasi sederhana (by request)"],
     idealFor: ["Makan keluarga", "Syukuran & aqiqah", "Jamuan tamu"],
-    image: "/Private room.webp",
+    image: "/private-room.webp",
     enabled: true,
   },
 ];

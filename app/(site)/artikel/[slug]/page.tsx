@@ -59,13 +59,14 @@ export async function generateMetadata({ params }: PageProps<"/artikel/[slug]">)
       description: ogDescription,
       url: `${site.url}/artikel/${article.slug}`,
       publishedTime: article.publishedAt,
-      ...(cover && { images: [{ url: cover.src, width: 1200, height: 630, alt: cover.alt }] }),
+      // Tanpa cover, pakai gambar default layout: openGraph di sini menggantikan milik layout seluruhnya.
+      images: [cover ? { url: cover.src, width: 1200, height: 630, alt: cover.alt } : { url: site.shareImage, width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
       title: seo.twitterTitle || ogTitle,
       description: seo.twitterDescription || ogDescription,
-      ...(cover && { images: [cover.src] }),
+      images: [cover ? cover.src : site.shareImage],
     },
   };
 }

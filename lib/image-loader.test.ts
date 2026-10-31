@@ -11,7 +11,7 @@ describe("imageLoader", () => {
   });
 
   it("meng-encode spasi di nama berkas", () => {
-    assert.match(imageLoader({ src: "/Meting room.webp", width: 640 }), /^\/_img\/w640\/Meting%20room\.webp\?v=/);
+    assert.equal(imageLoader({ src: "/foto baru.webp", width: 640 }), "/foto%20baru.webp?w=640");
   });
 
   it("memakai berkas asli kalau lebih lebar dari varian terbesar atau tanpa varian", () => {
