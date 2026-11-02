@@ -35,4 +35,6 @@ export type ArticleSeo = {
 export type Article = ArticleCard & {
   content: PortableTextBlock[];
   seo?: ArticleSeo;
+  /** `_updatedAt` dokumen Sanity, untuk dateModified di JSON-LD. */
+  updatedAt: string;
 };

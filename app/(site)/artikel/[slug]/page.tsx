@@ -86,6 +86,7 @@ export default async function ArticlePage({ params }: PageProps<"/artikel/[slug]
     description: article.seo?.metaDescription || article.excerpt,
     ...(cover && { image: cover.src }),
     datePublished: article.publishedAt,
+    dateModified: article.updatedAt,
     mainEntityOfPage: `${site.url}/artikel/${article.slug}`,
     author: { "@type": "Organization", name: site.name, url: site.url },
     publisher: { "@type": "Organization", name: site.name, url: site.url },
