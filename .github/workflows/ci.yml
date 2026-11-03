@@ -58,6 +58,33 @@ jobs:
         if: vars.NEXT_PUBLIC_SANITY_PROJECT_ID != ''
         run: pnpm test:e2e
 
+      # Lighthouse terhadap build yang sama (lighthouserc.json): beranda dan daftar artikel,
+      # tiap halaman 3 kali, diambil median. Yang menggagalkan PR: pergeseran layout
+      # (CLS > 0,1; pernah lolos dari PageSpeed, kasus CLS 0,400 kalih-signature September
+      # 2026), serta skor aksesibilitas atau SEO di bawah 0,9 (ketiga situs 1,0 per 3 November
+      # 2026, dan keduanya tidak berayun antar-run). Performa dan best-practices cuma
+      # peringatan: performa berayun di runner GitHub, dan best-practices tertahan 0,79 oleh
+      # cookie pihak ketiga tag iklan (GTM, Meta), yang memang pilihan bisnis.
+      # Throttling "devtools", bukan simulasi,
+      # karena simulasi menganggap seluruh HTML datang sekaligus dan melewatkan kasus itu.
+      # Versi dipaku; 0.16.0 rilis 2 November 2026, terlalu baru untuk dipakai.
+      - name: Lighthouse
+        if: vars.NEXT_PUBLIC_SANITY_PROJECT_ID != ''
+        env:
+          PORT: "3930"
+        run: npx --yes @lhci/cli@0.15.1 autorun
+
+      - name: Simpan laporan Lighthouse
+        if: always() && vars.NEXT_PUBLIC_SANITY_PROJECT_ID != ''
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: laporan-lighthouse
+          path: .lighthouseci/
+          # .lighthouseci diawali titik; upload-artifact melewatkan folder tersembunyi kalau tidak diminta.
+          include-hidden-files: true
+          retention-days: 14
+          if-no-files-found: ignore
+
       - name: Simpan jejak tes yang gagal
         if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
