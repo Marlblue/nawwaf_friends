@@ -66,3 +66,31 @@ jobs:
           path: test-results/
           retention-days: 7
           if-no-files-found: ignore
+
+  # Pengganti secret scanning GitHub, yang untuk repo private butuh paket berbayar.
+  # Memindai seluruh riwayat, bukan hanya commit PR ini: kunci yang pernah ter-commit
+  # tetap bisa dibaca dari riwayat walau sudah dihapus di commit berikutnya.
+  # Kalau yang ditemukan ternyata bukan kunci, daftarkan sidik jarinya di
+  # .gitleaksignore (gitleaks mencetaknya), jangan matikan job ini.
+  # Kalau benar kunci: cabut/ganti kuncinya di layanan asalnya dulu. Menghapus dari
+  # riwayat saja tidak cukup, karena salinannya sudah ada di GitHub.
+  rahasia:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      # Binary resmi, versi dan checksum dipaku seperti action lain di repo ini.
+      # Naikkan keduanya bersamaan; checksum ada di gitleaks_<versi>_checksums.txt
+      # pada halaman rilis gitleaks/gitleaks.
+      - name: Pindai kunci rahasia (gitleaks)
+        env:
+          GITLEAKS_VERSI: 8.30.1
+          GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+        run: |
+          curl -sSfL -o gitleaks.tar.gz \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSI}/gitleaks_${GITLEAKS_VERSI}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  gitleaks.tar.gz" | sha256sum -c -
+          tar -xzf gitleaks.tar.gz gitleaks
+          ./gitleaks git --redact --no-banner --verbose .
