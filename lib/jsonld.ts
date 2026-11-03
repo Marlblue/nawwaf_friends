@@ -34,3 +34,14 @@ export const restaurantJsonLd = {
   // Butuh URL absolut, jadi baru ikut terkirim setelah site.url diisi.
   ...(site.url ? { url: site.url, image: `${site.url}/images/logo.webp`, hasMenu: `${site.url}/menu` } : {}),
 };
+
+/**
+ * Serialisasi JSON-LD untuk <script type="application/ld+json">.
+ * JSON.stringify tidak meng-escape "<", jadi teks dari Sanity yang memuat
+ * "</script>" akan menutup blok script lebih awal. Escape "\u003c" tetap "<"
+ * bagi parser JSON (termasuk Google). Backslash harus tetap ganda di sumber;
+ * lib/jsonld.test.ts menjaganya.
+ */
+export function serializeJsonLd(data: unknown): string {
+  return JSON.stringify(data).replace(/</g, "\\u003c");
+}

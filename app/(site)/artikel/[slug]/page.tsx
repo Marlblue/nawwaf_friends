@@ -6,6 +6,7 @@ import ArticleCover from "@/components/ArticleCover";
 import { ArrowLeft, Whatsapp } from "@/components/Icons";
 import PageTransition from "@/components/PageTransition";
 import { formatDate } from "@/lib/articles";
+import { serializeJsonLd } from "@/lib/jsonld";
 import { revealDelay } from "@/lib/motion";
 import { coverSource } from "@/lib/sanity/image";
 import { getAllArticleSlugs, getArticleBySlug, getOtherArticles } from "@/lib/sanity/queries";
@@ -116,16 +117,16 @@ export default async function ArticlePage({ params }: PageProps<"/artikel/[slug]
           <PortableText value={article.content ?? []} components={ptComponents} />
           <script
             type="application/ld+json"
-            // Escape "<" sama seperti blok FAQ di bawah: judul dan ringkasan datang dari Sanity.
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd).replace(/</g, "\\u003c") }}
+            // Judul dan ringkasan datang dari Sanity: serializeJsonLd meng-escape "<".
+            dangerouslySetInnerHTML={{ __html: serializeJsonLd(articleJsonLd) }}
           />
           {/* FAQ tidak ditampilkan ke pembaca (permintaan user), hanya dikirim sebagai FAQ schema untuk Google. */}
           {faq.length > 0 && (
             <script
               type="application/ld+json"
-              // JSON.stringify tidak meng-escape "<"; tanpa replace, "</script>" di jawaban FAQ bisa menutup blok ini.
+              // Jawaban FAQ datang dari Sanity: serializeJsonLd meng-escape "<".
               dangerouslySetInnerHTML={{
-                __html: JSON.stringify({
+                __html: serializeJsonLd({
                   "@context": "https://schema.org",
                   "@type": "FAQPage",
                   mainEntity: faq.map((item) => ({
@@ -133,7 +134,7 @@ export default async function ArticlePage({ params }: PageProps<"/artikel/[slug]
                     name: item.question,
                     acceptedAnswer: { "@type": "Answer", text: item.answer },
                   })),
-                }).replace(/</g, "\\u003c"),
+                }),
               }}
             />
           )}
