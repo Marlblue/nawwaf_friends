@@ -6,7 +6,7 @@ import Header from "@/components/Header";
 import ScrollReset from "@/components/ScrollReset";
 import ScrollReveal from "@/components/ScrollReveal";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
-import { restaurantJsonLd } from "@/lib/jsonld";
+import { restaurantJsonLd, serializeJsonLd } from "@/lib/jsonld";
 import { site } from "@/lib/site";
 
 // Kerangka situs publik (navbar, footer, keranjang, GTM). Dipakai app/(site)/layout.tsx
@@ -15,10 +15,9 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <GoogleTagManager gtmId={site.gtmId} />
-      {/* JSON.stringify tidak membersihkan tag HTML, jadi "<" diganti escape unicode */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(restaurantJsonLd).replace(/</g, "\\u003c") }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(restaurantJsonLd) }}
       />
       <CartProvider>
         <Header />
