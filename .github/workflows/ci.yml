@@ -59,10 +59,13 @@ jobs:
         run: pnpm test:e2e
 
       # Lighthouse terhadap build yang sama (lighthouserc.json): beranda dan daftar artikel,
-      # tiap halaman 3 kali, diambil median. Yang menggagalkan PR cuma pergeseran layout
-      # (CLS > 0,1): angkanya stabil antar-run dan pernah lolos dari PageSpeed (kasus CLS
-      # 0,400 kalih-signature, September 2026). Skor kategori cuma peringatan karena di
-      # runner GitHub berayun beberapa poin antar-run. Throttling "devtools", bukan simulasi,
+      # tiap halaman 3 kali, diambil median. Yang menggagalkan PR: pergeseran layout
+      # (CLS > 0,1; pernah lolos dari PageSpeed, kasus CLS 0,400 kalih-signature September
+      # 2026), serta skor aksesibilitas atau SEO di bawah 0,9 (ketiga situs 1,0 per 3 November
+      # 2026, dan keduanya tidak berayun antar-run). Performa dan best-practices cuma
+      # peringatan: performa berayun di runner GitHub, dan best-practices tertahan 0,79 oleh
+      # cookie pihak ketiga tag iklan (GTM, Meta), yang memang pilihan bisnis.
+      # Throttling "devtools", bukan simulasi,
       # karena simulasi menganggap seluruh HTML datang sekaligus dan melewatkan kasus itu.
       # Versi dipaku; 0.16.0 rilis 2 November 2026, terlalu baru untuk dipakai.
       - name: Lighthouse
