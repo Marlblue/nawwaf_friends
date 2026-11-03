@@ -77,6 +77,8 @@ jobs:
         with:
           name: laporan-lighthouse
           path: .lighthouseci/
+          # .lighthouseci diawali titik; upload-artifact melewatkan folder tersembunyi kalau tidak diminta.
+          include-hidden-files: true
           retention-days: 14
           if-no-files-found: ignore
 
