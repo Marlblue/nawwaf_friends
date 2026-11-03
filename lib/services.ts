@@ -51,7 +51,7 @@ export const services: Service[] = [
     badge: "Hajat & Prasmanan",
     text: "Penyelenggaraan prasmanan besar atau talam nampan bersama untuk resepsi, arisan agung, & haul akbar.",
     note: "Kapasitas s/d 1.000 Pax",
-    image: "/images/menu/mix-full.webp",
+    image: "/kambing-guling.webp",
     points: ["Kambing guling utuh untuk acara", "Prasmanan & nampan untuk rombongan", "Kapasitas hingga 1.000 pax"],
     waText: "Halo Nawwaf & Friends, saya mau tanya paket kambing guling / prasmanan.",
   },
