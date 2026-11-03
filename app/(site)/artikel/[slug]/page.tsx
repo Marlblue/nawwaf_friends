@@ -109,7 +109,7 @@ export default async function ArticlePage({ params }: PageProps<"/artikel/[slug]
 
         {article.coverImage?.asset && (
           <div className="media hero-rise mx-auto mt-10 aspect-[16/9] [--delay:.2s] [--rise:60px] max-w-5xl sm:mt-14">
-            <ArticleCover cover={article.coverImage} width={1600} height={900} sizes="(min-width: 1024px) 1024px, 100vw" priority />
+            <ArticleCover cover={article.coverImage} width={1600} height={900} sizes="(min-width: 1024px) 1024px, 100vw" priority fetchPriority="high" />
           </div>
         )}
 

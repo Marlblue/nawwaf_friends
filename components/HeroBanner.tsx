@@ -60,6 +60,9 @@ export default function HeroBanner({ children }: { children: React.ReactNode }) 
           className="hero-banner-photo"
           data-active={i === index || undefined}
           preload={i === 0}
+          // preload saja tidak memasang fetchpriority; tanpa ini foto pertama (LCP beranda)
+          // antre di belakang skrip dan baru turun sekitar 4 detik setelah HTML (Lighthouse 3 Nov 2026).
+          fetchPriority={i === 0 ? "high" : undefined}
           onLoad={i === 0 ? () => setSemuaFoto(true) : undefined}
         />
       ))}
