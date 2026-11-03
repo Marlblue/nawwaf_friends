@@ -1,0 +1,24 @@
+# Cek mingguan link internal dan gambar rusak di semua halaman sitemap. Logikanya ada di
+# Marlblue/website-ops/actions/cek-link; link ke situs luar tidak diperiksa (lihat README-nya).
+# Kalau ada yang rusak, grup Telegram dikabari dengan daftar link dan halaman asalnya.
+name: Cek link rusak
+
+on:
+  # Senin 08.00 WIB, sesudah artikel baru seminggu terakhir terbit.
+  schedule:
+    - cron: "0 1 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cek:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: Marlblue/website-ops/actions/cek-link@5f861eca6b948ac8d67ee075a65a6d7fb2536f3a # main
+        with:
+          sitemap: https://nawwafresto.com/sitemap.xml
+          label: nawwafresto.com
+          webhook: ${{ secrets.OPS_ALERT_WEBHOOK_URL }}

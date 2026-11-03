@@ -53,3 +53,6 @@ next-env.d.ts
 # Hasil tes browser (Playwright)
 /test-results/
 /playwright-report/
+
+# laporan Lighthouse CI (lighthouserc.json)
+.lighthouseci/
