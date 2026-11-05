@@ -32,3 +32,8 @@ overrides:
   # dan scripts/pack-cpanel.mjs menolak paket ganda saat meratakan node_modules. Hapus
   # begitu @pierre/diffs melonggarkan sematannya.
   hast-util-to-html@9: ^9.0.6
+  # CLI Sanity (@oclif/core, butuh ^10), GHSA-g3hv-75wg-m249: ditambal baru di 11.0.1.
+  # API yang dipakai oclif (named export `minimatch`) sama di 11. minimatch@3 milik
+  # ESLint (dev saja) sengaja tidak disentuh: ESLint 9 butuh API v3 dan tidak ada v3 yang
+  # ditambal, jadi advisory itu tetap muncul di `pnpm audit` penuh.
+  minimatch@10: ^11.0.1
