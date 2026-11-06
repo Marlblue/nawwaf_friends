@@ -42,3 +42,13 @@ test("artikel tampil", async ({ page }) => {
   await page.goto("/artikel");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 });
+
+test("pencarian artikel tanpa hasil", async ({ page }) => {
+  // Kata kunci yang pasti tidak ada, supaya tes tidak bergantung pada isi Sanity.
+  await page.goto("/artikel?q=zzqxjk");
+  await expect(page.getByRole("searchbox", { name: "Cari artikel" })).toHaveValue("zzqxjk");
+  await expect(page.getByText("Tidak ada artikel untuk")).toBeVisible();
+  await page.getByRole("link", { name: "Lihat semua artikel" }).click();
+  await expect(page).toHaveURL(/\/artikel$/);
+  await expect(page.getByRole("searchbox", { name: "Cari artikel" })).toHaveValue("");
+});

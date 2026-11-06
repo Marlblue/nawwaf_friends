@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import ArticleList from "@/components/ArticleList";
+import ArticleSearch from "@/components/ArticleSearch";
 import PageHero from "@/components/PageHero";
 import PageTransition from "@/components/PageTransition";
 import { articlePageHref, paginateArticles } from "@/lib/articles";
@@ -38,6 +39,10 @@ export default async function ArtikelHalamanPage({ params }: PageProps<"/artikel
     <PageTransition>
       <PageHero eyebrow="Blog" title="Artikel" subtitle={`Halaman ${page} dari ${hasil.totalPages}`} />
       <div className="container-x pb-20">
+        <div className="mb-12 sm:mb-16">
+          {/* Bukan live: hasil pencarian ada di /artikel?q=, halaman lain. Lihat ArticleSearch. */}
+          <ArticleSearch live={false} />
+        </div>
         <ArticleList {...hasil} />
       </div>
     </PageTransition>
