@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
-    "test": "tsx --test \"lib/**/*.test.ts\" \"app/**/*.test.ts\"",
+    "test": "tsx --test \"lib/**/*.test.ts\" \"app/**/*.test.ts\" \"scripts/**/*.test.ts\"",
     "test:e2e": "playwright test",
     "cek:audit": "node scripts/audit-runtime-deps.mjs",
     "build:cpanel": "node scripts/generate-image-variants.mjs && next build && node scripts/pack-cpanel.mjs"

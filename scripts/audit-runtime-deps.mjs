@@ -111,7 +111,8 @@ async function main() {
   return 1;
 }
 
-// Cuma saat dipanggil langsung, supaya fungsinya bisa diimpor tanpa menembak registry.
+// Cuma saat dipanggil langsung, supaya scripts/audit-runtime-deps.test.ts bisa mengimpor
+// touchesRequestPath tanpa menembak registry.
 if (import.meta.main) {
   main().then(
     (code) => process.exit(code),
