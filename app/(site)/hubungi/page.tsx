@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "@/components/SiteImage";
 import Link from "next/link";
-import { Check, ChevronRight, Clock, Facebook, Instagram, MapPin, Megaphone, Moped, Phone, Threads, Tiktok, Users, Whatsapp } from "@/components/Icons";
+import { Check, ChevronRight, Clock, Facebook, Instagram, MapPin, Megaphone, Moped, Phone, Threads, Tiktok, Users, Utensils, Whatsapp } from "@/components/Icons";
 import PageTransition from "@/components/PageTransition";
 import SuasanaSlider from "@/components/SuasanaSlider";
 import { revealDelay } from "@/lib/motion";
@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 type QuickLink = { href: string; label: string; note?: string; Icon: typeof Whatsapp; external?: boolean };
 
 const quickLinks: QuickLink[] = [
+  { href: "/menu", label: "Lihat Menu", note: "Daftar lengkap menu & harga.", Icon: Utensils },
   { href: "/venue", label: "Reservasi R. Meeting & Kajian", note: "Untuk rapat, kajian, dan kumpul komunitas.", Icon: Users },
   { href: "/hubungi/kolaborasi", label: "Kolaborasi KOL & Influencer", note: "Food review & konten kuliner.", Icon: Megaphone },
   { href: "/hubungi/komunitas", label: "Kolaborasi Komunitas", note: "Gathering & acara komunitas.", Icon: Users },
