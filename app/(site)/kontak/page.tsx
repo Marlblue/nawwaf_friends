@@ -8,8 +8,10 @@ import { addressText, openingHoursLines, site, waLink } from "@/lib/site";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/kontak" },
-  title: "Kontak",
-  description: "Hubungi Nawwaf & Friends untuk pesan antar, catering, aqiqah, dan booking venue.",
+  // Dicari sebagai "nawwaf & friends kabupaten bogor" (posisi 8): judul memuat lokasi,
+  // deskripsi memuat alamat & telepon supaya bisa terjawab langsung dari hasil pencarian.
+  title: { absolute: `Kontak & Alamat ${site.name}, ${site.address.locality.split(",")[0]} ${site.address.city}` },
+  description: `Alamat, jam buka, telepon ${site.phone}, dan WhatsApp ${site.name} di ${site.address.street}, ${site.address.locality}, ${site.address.city}. Pesan antar, catering, aqiqah, dan venue.`,
 };
 
 export default function KontakPage() {

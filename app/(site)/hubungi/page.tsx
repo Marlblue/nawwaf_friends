@@ -12,8 +12,12 @@ import { rooms, venueGallery } from "@/lib/venue";
 // untuk dipasang di bio Instagram/Threads. Sengaja tidak masuk nav utama.
 export const metadata: Metadata = {
   alternates: { canonical: "/hubungi" },
-  title: "Hubungi Kami",
-  description: "Semua tautan penting Nawwaf & Friends dalam satu halaman: pesan via WhatsApp, menu, catering, aqiqah, venue, sosial media, dan lokasi.",
+  // Walau tidak di nav, Google memasang halaman ini di posisi 1-3 untuk "abu nawaf",
+  // "abu nawwaf", dan "abu nawaf kota wisata" dengan CTR 0%: judul "Hubungi Kami"
+  // tidak menyebut nama yang dicari. Jangan di-noindex, ranking brand itu ada di sini.
+  title: { absolute: "Abu Nawwaf Arabian Food Kota Wisata Cibubur | Nawwaf & Friends" },
+  description:
+    "Pesan Nasi Mandhi, nampan kambing, aqiqah, atau booking ruang meeting via WhatsApp. Gratis ongkir Kota Wisata & Cikeas (min. Rp150.000). Menu, lokasi, dan sosial media.",
 };
 
 type QuickLink = { href: string; label: string; note?: string; Icon: typeof Whatsapp; external?: boolean };

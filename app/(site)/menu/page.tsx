@@ -6,8 +6,11 @@ import PageTransition from "@/components/PageTransition";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/menu" },
-  title: "Menu & Katalog Produk",
-  description: "Katalog lengkap menu Nawwaf & Friends: porsian, nampan ayam & kambing, snack, dessert, dan minuman. Pesan antar online.",
+  // /menu halaman dengan tayangan terbanyak (posisi 4); orang yang membukanya mencari
+  // nama hidangan dan harganya, jadi keduanya disebut di judul.
+  title: { absolute: "Menu & Harga Nawwaf & Friends: Nasi Mandhi, Kebuli, Nampan Kambing" },
+  description:
+    "Daftar menu dan harga Abu Nawwaf Arabian Food: nasi mandhi, kebuli, porsian, nampan ayam & kambing, snack, dessert, dan minuman. Pesan antar online via WhatsApp.",
 };
 
 // Halaman statis: ?q= dan ?kategori= dibaca di browser, bukan lewat searchParams, supaya
