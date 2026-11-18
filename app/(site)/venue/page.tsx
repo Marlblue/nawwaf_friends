@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Check, Users } from "@/components/Icons";
 import PageHero from "@/components/PageHero";
 import PageTransition from "@/components/PageTransition";
+import RoomSlider from "@/components/RoomSlider";
 import VenueGallery from "@/components/VenueGallery";
 import { revealDelay } from "@/lib/motion";
 import { waLink } from "@/lib/site";
@@ -11,8 +12,8 @@ import { rooms, venueGallery, venuePackages } from "@/lib/venue";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/venue" },
-  title: "Venue - Ruang Meeting & Private Room",
-  description: "Sewa ruang meeting dan private room di Nawwaf & Friends, lengkap dengan hidangan Arabian food.",
+  title: "Venue - Ruang Meeting, Private Room & Outdoor",
+  description: "Sewa ruang meeting, private room, dan area outdoor di Nawwaf & Friends, lengkap dengan hidangan Arabian food.",
 };
 
 export default function VenuePage() {
@@ -23,16 +24,22 @@ export default function VenuePage() {
       <PageHero
         eyebrow="Katalog venue"
         title="Venue & ruang acara"
-        subtitle="Ruang meeting dan private room untuk rapat, keluarga, maupun acara spesial, lengkap dengan menu khas Timur Tengah."
+        subtitle="Ruang meeting, private room, dan area outdoor untuk rapat, keluarga, maupun acara spesial, lengkap dengan menu khas Timur Tengah."
       />
 
       <div className="container-x overflow-x-clip">
         <div className="space-y-20 lg:space-y-28">
           {activeRooms.map((room, i) => (
             <article key={room.id} id={room.id} data-reveal className="grid scroll-mt-28 items-center gap-8 md:grid-cols-2 lg:gap-16">
-              <div className={`media aspect-[4/3] ${i % 2 ? "md:order-2" : ""}`}>
-                <Image src={room.image} alt={room.name} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
-                <span className="absolute left-4 top-4 rounded-full bg-cream px-3 py-1 text-xs font-medium">{room.tag}</span>
+              <div className={i % 2 ? "md:order-2" : ""}>
+                {room.extraImages?.length ? (
+                  <RoomSlider images={[room.image, ...room.extraImages]} alt={room.name} tag={room.tag} />
+                ) : (
+                  <div className="media aspect-[4/3]">
+                    <Image src={room.image} alt={room.name} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
+                    <span className="absolute left-4 top-4 rounded-full bg-cream px-3 py-1 text-xs font-medium">{room.tag}</span>
+                  </div>
+                )}
               </div>
               <div>
                 <h2 className="display-2">{room.name}</h2>

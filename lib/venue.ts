@@ -11,6 +11,8 @@ export type VenueRoom = {
   facilities: string[];
   idealFor: string[];
   image: string;
+  /** Foto tambahan; kalau ada, foto ruangan tampil sebagai slider. */
+  extraImages?: string[];
   enabled: boolean;
 };
 
@@ -33,10 +35,23 @@ export const rooms: VenueRoom[] = [
     tag: "Opsional",
     summary:
       "Ruang privat untuk makan bersama keluarga atau tamu penting. Nikmati nampan mandhi & kebuli dengan suasana lebih tenang.",
-    capacity: "Konfirmasi ke admin",
+    capacity: "Hingga 30 orang",
     facilities: ["Ruang privat ber-AC", "Penyajian nampan", "Pelayan khusus", "Dekorasi sederhana (by request)"],
     idealFor: ["Makan keluarga", "Syukuran & aqiqah", "Jamuan tamu"],
     image: "/private-room.webp",
+    enabled: true,
+  },
+  {
+    id: "outdoor",
+    name: "Area Outdoor",
+    tag: "Semi-outdoor",
+    summary:
+      "Area makan beratap di lantai atas dengan udara terbuka dan pemandangan hijau. Pas untuk acara santai dengan tamu lebih banyak.",
+    capacity: "80–100 orang",
+    facilities: ["Atap & kipas angin", "Meja & bangku kayu", "Wastafel", "Paket makan & minum"],
+    idealFor: ["Buka bersama", "Reuni & komunitas", "Acara keluarga besar"],
+    image: "/outdoor-atas-1.webp",
+    extraImages: ["/outdoor-atas-2.webp"],
     enabled: true,
   },
 ];
