@@ -16,18 +16,18 @@
   "dependencies": {
     "@next/third-parties": "16.4.6",
     "@portabletext/react": "^8.0.1",
-    "@sanity/image-url": "^2.1.1",
-    "@sanity/vision": "^6.23.0",
+    "@sanity/image-url": "^2.2.0",
+    "@sanity/vision": "^6.24.0",
     "next": "16.4.6",
-    "next-sanity": "^13.4.0",
+    "next-sanity": "^13.5.1",
     "react": "19.3.1",
     "react-dom": "19.3.1",
-    "sanity": "^6.23.0",
+    "sanity": "^6.24.0",
     "sharp": "^0.35.5",
     "styled-components": "^6.6.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.65.0",
+    "@playwright/test": "^1.65.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^24",
     "@types/react": "^19",
@@ -38,7 +38,7 @@
     "tsx": "^4.23.15",
     "typescript": "^6"
   },
-  "packageManager": "pnpm@11.20.0",
+  "packageManager": "pnpm@11.28.13",
   "engines": {
     "node": ">=24"
   }
