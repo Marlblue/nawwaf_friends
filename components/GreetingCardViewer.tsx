@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useId, useRef } from "react";
-import Image from "@/components/SiteImage";
 import { Close } from "@/components/Icons";
-import { GreetingCardPair } from "@/components/GiftSet";
+import { GreetingCardFace, GreetingCardPair } from "@/components/GiftSet";
 
 // Kartu ucapan di section Gift Set bisa diklik untuk dilihat besar.
 // Memakai <dialog> bawaan lewat showModal(): browser sudah mengurus fokus, Esc, tombol back
@@ -46,7 +45,7 @@ export default function GreetingCardViewer({ className = "" }: { className?: str
         ref={ref}
         {...({ closedby: "any" } as object)}
         aria-labelledby={titleId}
-        className="gift-card-dialog m-auto max-h-[calc(100dvh-24px)] w-[min(880px,calc(100vw-24px))] rounded-[24px] bg-kraft p-4 text-ink shadow-[0_30px_80px_-20px_rgb(0_0_0/0.6)] sm:p-6"
+        className="gift-card-dialog m-auto max-h-[calc(100dvh-24px)] w-[min(560px,calc(100vw-24px))] rounded-[24px] bg-kraft p-4 text-ink shadow-[0_30px_80px_-20px_rgb(0_0_0/0.6)] sm:p-6"
       >
         <div className="flex items-start justify-between gap-4">
           <div>
@@ -55,7 +54,7 @@ export default function GreetingCardViewer({ className = "" }: { className?: str
             <h2 id={titleId} className="text-lg font-bold text-brand-700 sm:text-xl">
               Kartu ucapan personal
             </h2>
-            <p className="mt-0.5 text-sm text-ink-soft">Contoh pesan. Tulis pesan Anda sendiri saat memesan, kami cetak di sisi dalam kartu.</p>
+            <p className="mt-0.5 text-sm text-ink-soft">Contoh pesan. Tulis pesan Anda sendiri saat memesan, kami cetak di kartu ini.</p>
           </div>
           <form method="dialog" className="shrink-0">
             <button
@@ -67,29 +66,9 @@ export default function GreetingCardViewer({ className = "" }: { className?: str
             </button>
           </form>
         </div>
-        <div className="mt-4 grid gap-4 sm:mt-5 sm:grid-cols-2 sm:gap-5">
-          <figure>
-            <Image
-              src="/images/gift-set/kartu-dalam.webp"
-              alt="Sisi dalam kartu ucapan: Dear Mama & Papa, terima kasih telah membesarkan kami dengan penuh kasih sayang. With love, Rizky & Aisyah."
-              width={800}
-              height={1126}
-              sizes="(min-width: 640px) 420px, 90vw"
-              className="h-auto w-full rounded-md shadow-[0_12px_28px_-14px_rgb(42_16_19/0.5)]"
-            />
-            <figcaption className="mt-2 text-center text-xs text-ink-soft">Sisi dalam</figcaption>
-          </figure>
-          <figure>
-            <Image
-              src="/images/gift-set/kartu-depan.webp"
-              alt="Sisi depan kartu ucapan: maroon dengan bingkai kubah emas dan logo Nawwaf & Friends."
-              width={800}
-              height={1126}
-              sizes="(min-width: 640px) 420px, 90vw"
-              className="h-auto w-full rounded-md shadow-[0_12px_28px_-14px_rgb(42_16_19/0.5)]"
-            />
-            <figcaption className="mt-2 text-center text-xs text-ink-soft">Sisi depan</figcaption>
-          </figure>
+        {/* Lebar kartu dibatasi tinggi layar, supaya kartu utuh terlihat tanpa scroll di laptop. */}
+        <div className="mx-auto mt-4 sm:mt-5" style={{ width: "min(100%, calc((100dvh - 180px) * 0.6725))" }}>
+          <GreetingCardFace sizes="(min-width: 640px) 480px, 90vw" className="rounded-md shadow-[0_16px_36px_-16px_rgb(42_16_19/0.55)]" />
         </div>
       </dialog>
     </>
