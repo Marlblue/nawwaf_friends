@@ -1,16 +1,49 @@
 import Image from "@/components/SiteImage";
 import { ArrowDown } from "@/components/Icons";
 
-// Kartu ucapan asli yang ikut di dalam box: sisi depan (maroon, bingkai kubah emas) di belakang,
-// sisi dalam berisi contoh pesan di depannya, ditumpuk miring seperti diletakkan di meja.
+// Kartu ucapan Nawwaf & Friends (dari file desain PDF-nya): bingkai kubah maroon dengan
+// ornamen emas. Desain cetaknya kosong ("Dear : ____"), jadi contoh pesannya ditulis sebagai
+// teks HTML di atas gambar: tetap tajam di ukuran berapa pun dan terbaca screen reader.
+// Ukuran & posisi teks memakai satuan cqw (lebar kartu), jadi ikut mengecil di thumbnail.
+// Posisi diambil dari koordinat PDF (267 x 396,75 pt).
+export function GreetingCardFace({ sizes, className = "", decorative = false }: { sizes: string; className?: string; decorative?: boolean }) {
+  return (
+    <span className={`relative block aspect-[801/1191] overflow-hidden [container-type:inline-size] ${className}`} aria-hidden={decorative || undefined}>
+      <Image
+        src="/images/gift-set/kartu-ucapan.webp"
+        alt={decorative ? "" : "Kartu ucapan Nawwaf & Friends: bingkai kubah maroon berornamen emas, logo, tulisan Bismillahirrahmanirrahim, dan kolom Dear."}
+        fill
+        sizes={sizes}
+        className="object-cover"
+      />
+      <span className="absolute inset-0 block font-[Georgia,'Times_New_Roman',serif] text-brand-700">
+        <span className="absolute left-[28%] top-[24.2%] block text-[4.2cqw] italic leading-none">Mama &amp; Papa</span>
+        <span className="absolute inset-x-[13%] top-[34%] block text-center text-[3.45cqw] leading-[1.6]">
+          <span className="block">
+            Terima kasih telah membesarkan kami dengan penuh kasih sayang, atas setiap pengorbanan, kesabaran, dan doa yang tak pernah terputus.
+          </span>
+          <span className="mt-[4cqw] block">
+            Semoga Allah senantiasa menjaga Mama dan Papa, melimpahkan kesehatan, kebahagiaan, serta keberkahan dalam setiap langkah.
+          </span>
+          <span className="mt-[8cqw] block italic">With love,</span>
+          <span className="block font-bold">Rizky &amp; Aisyah</span>
+        </span>
+      </span>
+    </span>
+  );
+}
+
+// Thumbnail di section Gift Set: kartu ucapan miring di depan, gift tag asli terselip di belakangnya.
 export function GreetingCardPair({ className = "" }: { className?: string }) {
   return (
     <span aria-hidden="true" className={`relative block aspect-[20/19] ${className}`}>
-      <span className="absolute left-0 top-[4%] block w-[54%] -rotate-6 overflow-hidden rounded-[4px] shadow-[0_14px_26px_-14px_rgb(42_16_19/0.6)]">
-        <Image src="/images/gift-set/kartu-depan.webp" alt="" width={800} height={1126} sizes="160px" className="block h-auto w-full" />
+      <span className="absolute right-[4%] top-[3%] block w-[28%] rotate-[10deg] drop-shadow-[0_12px_14px_rgb(42_16_19/0.35)]">
+        <span className="relative block aspect-[440/854]">
+          <Image src="/images/gift-set/hang-tag.webp" alt="" fill sizes="80px" unoptimized />
+        </span>
       </span>
-      <span className="absolute right-0 top-0 block w-[56%] rotate-3 overflow-hidden rounded-[4px] shadow-[0_18px_30px_-14px_rgb(42_16_19/0.55)]">
-        <Image src="/images/gift-set/kartu-dalam.webp" alt="" width={800} height={1126} sizes="170px" className="block h-auto w-full" />
+      <span className="absolute left-[8%] top-[1%] block w-[60%] -rotate-3 rounded-[4px] shadow-[0_18px_30px_-14px_rgb(42_16_19/0.6)]">
+        <GreetingCardFace sizes="180px" decorative className="rounded-[4px]" />
       </span>
     </span>
   );
