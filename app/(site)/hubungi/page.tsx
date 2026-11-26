@@ -4,8 +4,10 @@ import Link from "next/link";
 import { Check, ChevronRight, Clock, Facebook, Instagram, MapPin, Megaphone, Moped, Phone, Threads, Tiktok, Users, Utensils, Whatsapp } from "@/components/Icons";
 import PageTransition from "@/components/PageTransition";
 import SuasanaSlider from "@/components/SuasanaSlider";
+import GiftSetPriceList from "@/components/GiftSetPriceList";
+import { giftSetMinPrice, giftSetWa } from "@/lib/gift-set";
 import { revealDelay } from "@/lib/motion";
-import { addressText, site, waLink } from "@/lib/site";
+import { addressText, rupiah, site, waLink } from "@/lib/site";
 import { rooms, venueGallery } from "@/lib/venue";
 
 // Halaman "link in bio": semua tautan penting dalam satu halaman ringkas,
@@ -86,6 +88,39 @@ export default function HubungiPage() {
         </header>
 
         <div className="mx-auto mt-6 max-w-xl space-y-3">
+          {/* Highlight: Signature Gift Set */}
+          <div data-reveal className="overflow-hidden rounded-3xl bg-kraft shadow-[0_16px_36px_-22px_rgb(42_16_19/0.4)]">
+            <div className="relative aspect-[1600/770]">
+              <Image
+                src="/images/gift-set/gift-box.webp"
+                alt="Box kado Abu Nawwaf berpita maroon dengan kartu ucapan Nawwaf & Friends"
+                fill
+                sizes="(min-width: 640px) 576px, 100vw"
+                preload
+                className="object-cover"
+              />
+            </div>
+            <div className="px-5 pb-5 pt-4">
+              <h2 className="text-xl font-bold leading-tight tracking-[-0.01em] text-brand-700">Nawwaf Signature Gift Set</h2>
+              <p className="mt-1 text-sm text-ink-soft">
+                Nampan mandhi &amp; kebuli dalam box kado, plus kartu ucapan personal. Mulai{" "}
+                <strong className="font-bold tabular-nums text-brand">{rupiah(giftSetMinPrice)}</strong>.
+              </p>
+              <a href={giftSetWa} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-4 w-full">
+                <Whatsapp width={18} height={18} /> Pesan Gift Set
+              </a>
+              <details className="group mt-3 rounded-2xl bg-white/60 open:bg-white/80">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-2 rounded-2xl px-4 py-3 text-sm font-semibold text-brand [&::-webkit-details-marker]:hidden">
+                  Lihat 10 pilihan &amp; harga
+                  <ChevronRight width={16} height={16} className="shrink-0 transition-transform group-open:rotate-90" />
+                </summary>
+                <div className="px-4 pb-4">
+                  <GiftSetPriceList compact />
+                </div>
+              </details>
+            </div>
+          </div>
+
           {/* Banner pesan antar */}
           <Link href="/menu" data-reveal className="group block rounded-3xl border border-black/10 bg-sand px-5 py-4 transition hover:border-ink">
             <span className="flex flex-wrap items-center gap-1.5">

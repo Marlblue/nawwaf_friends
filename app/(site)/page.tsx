@@ -6,7 +6,12 @@ import GallerySlider from "@/components/GallerySlider";
 import { ArrowRight, Bag, Check, MapPin, Truck, Utensils, Whatsapp } from "@/components/Icons";
 import PageTransition from "@/components/PageTransition";
 import ArticleCover from "@/components/ArticleCover";
+import { GiftSetHeroChip, GiftSetHeroTag } from "@/components/GiftSet";
+import GiftSetPriceList from "@/components/GiftSetPriceList";
+import GreetingCardViewer from "@/components/GreetingCardViewer";
+import GiftTagSway from "@/components/GiftTagSway";
 import { formatDate } from "@/lib/articles";
+import { giftSetMinPrice, giftSetWa } from "@/lib/gift-set";
 import { bestSellers, minPrice } from "@/lib/menu";
 import { revealDelay } from "@/lib/motion";
 import { getLatestArticles } from "@/lib/sanity/queries";
@@ -48,7 +53,7 @@ export default async function Home() {
       {/* Hero */}
       <section className="pb-20 pt-4 sm:pt-6">
         <div className="container-x text-center">
-          <HeroBanner>
+          <HeroBanner corner={<GiftSetHeroTag minPrice={rupiah(giftSetMinPrice)} />}>
             <p className="eyebrow hero-rise whitespace-nowrap rounded-full border border-white/25 bg-white/15 px-3 py-1 text-xs text-white backdrop-blur-md sm:px-4 sm:py-1.5 sm:text-sm">
               <span className="truck-wind text-accent">
                 <svg className="truck-wind-lines" width="16" height="20" viewBox="0 0 16 20" aria-hidden="true">
@@ -72,7 +77,9 @@ export default async function Home() {
                 Reservasi Sekarang
               </a>
             </div>
+            <GiftSetHeroChip minPrice={rupiah(giftSetMinPrice)} />
           </HeroBanner>
+          <GiftTagSway />
 
           <div className="hero-rise mt-14 flex flex-col justify-between gap-2 border-b border-black/10 pb-4 text-left [--delay:.16s] sm:mt-20 sm:flex-row sm:items-end">
             <div>
@@ -116,50 +123,56 @@ export default async function Home() {
               );
             })}
           </ul>
+        </div>
+      </section>
 
-          {/* Promo */}
-          <div data-reveal className="mt-12 grid items-center gap-6 overflow-hidden rounded-[28px] border border-black/8 bg-sand p-4 text-left sm:mt-16 sm:gap-8 sm:rounded-[32px] shadow-[0_16px_40px_-20px_rgb(42_16_19/0.18)] sm:p-10 lg:grid-cols-[1.35fr_1fr] lg:gap-12 lg:p-12">
-            <div className="min-w-0 px-1 pb-2 sm:p-0">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand/25 bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-brand">
-                🔥 Penawaran Spesial Bulan Ini
-              </span>
-              <h2 className="mt-3 text-[26px] font-bold leading-tight sm:mt-4 sm:text-[42px] lg:text-[34px] xl:text-[42px]">
-                Paket Promo Berkah <span className="text-brand">Nampan Sultan</span>
-              </h2>
-              <div className="mt-4 rounded-2xl border border-black/10 bg-white px-4 py-3 sm:mt-5 sm:inline-block">
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-soft">Hemat hingga 25% + gratis ongkos kirim</p>
-                <p className="mt-1 flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-                  <span className="text-xs text-muted line-through">Rp 385.000</span>
-                  <span className="text-xl font-bold sm:text-2xl">Mulai Rp 299.000</span>
-                  <span className="rounded-full bg-sand px-2 py-0.5 text-[11px] font-medium text-brand">Porsi 5-10 Orang</span>
-                </p>
-              </div>
-              <div className="mt-5 flex flex-col gap-3 sm:mt-6 sm:flex-row sm:items-center sm:gap-6 lg:flex-col lg:items-start lg:gap-3 xl:flex-row xl:items-center xl:gap-6">
-                <a
-                  href={waLink("Halo Nawwaf & Friends, saya mau klaim Paket Promo Berkah Nampan Sultan.")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-primary w-full whitespace-nowrap px-4 text-center text-sm sm:w-auto sm:self-start sm:px-6 sm:text-[15px]"
-                >
-                  Klaim Promo Nampan Sekarang <ArrowRight width={18} height={18} className="shrink-0" />
+      {/* Signature Gift Set: panel krem berpita maroon, mengikuti box kado aslinya */}
+      <section id="gift-set" className="container-x scroll-mt-24 pb-20 lg:pb-28">
+        <div data-reveal className="overflow-hidden rounded-[28px] bg-kraft shadow-[0_24px_48px_-28px_rgb(42_16_19/0.35)] sm:rounded-[32px]">
+          <div className="grid items-center gap-8 p-5 pb-0 sm:p-10 sm:pb-0 lg:grid-cols-[5fr_7fr] lg:gap-12 lg:p-12 lg:pb-0">
+            <div className="max-w-md">
+              <h2 className="text-[30px] font-bold leading-[1.1] tracking-[-0.02em] text-brand-700 text-balance sm:text-[44px]">Nawwaf Signature Gift Set</h2>
+              <p className="mt-3 text-[17px] leading-snug text-ink-soft sm:text-lg">Untuk mereka yang selalu memberikan yang terbaik.</p>
+              <p className="mt-5 text-[15px] leading-relaxed text-ink-soft">
+                Nampan mandhi &amp; kebuli dalam box kado berpita, lengkap dengan kartu ucapan berisi pesan Anda sendiri. Untuk orang tua, kerabat, atau rekan kantor.
+              </p>
+              <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+                <a href={giftSetWa} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+                  <Whatsapp width={18} height={18} /> Pesan Gift Set
                 </a>
-                <p className="text-center text-sm text-ink-soft sm:max-w-[240px] sm:text-left">
-                  ⚡ <strong className="font-semibold text-ink">Berlaku terbatas</strong> untuk 20 pemesan pertama hari ini.
+                <p className="text-sm text-ink-soft">
+                  Mulai <strong className="font-bold tabular-nums text-brand">{rupiah(giftSetMinPrice)}</strong>
                 </p>
               </div>
             </div>
-
-            <div className="relative order-first aspect-[4/3] overflow-hidden rounded-[20px] sm:rounded-[24px] lg:order-last lg:aspect-[4/3.4] shadow-[0_20px_40px_-16px_rgb(42_16_19/0.35)]">
-              <Image src="/images/menu/kebuli-full-kambing.webp" alt="Nampan nasi kebuli kambing" fill sizes="(min-width: 1024px) 520px, 90vw" className="object-cover" />
-              <span className="absolute right-3 top-3 rounded-full sm:right-4 sm:top-4 border border-black/10 bg-white/90 px-3 py-1 text-[11px] font-semibold text-brand backdrop-blur-sm">
-                ★ Porsi Nampan Akbar
-              </span>
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-4 pt-12 text-white sm:p-5 sm:pt-16">
-                <p className="text-xs text-white/85">Sajian Mandhi &amp; Kebuli Autentik</p>
-                <p className="text-sm font-bold">Cita Rasa Kerajaan Abu Nawwaf</p>
-              </div>
+            <div className="relative -mx-5 -mt-5 aspect-[1600/770] max-lg:order-first sm:mx-0 sm:mt-0 sm:overflow-hidden sm:rounded-[20px]">
+              <Image
+                src="/images/gift-set/gift-box.webp"
+                alt="Dua box kado kraft Abu Nawwaf berpita maroon dengan hang tag Nawwaf & Friends, kartu ucapan, dan surat ucapan"
+                fill
+                sizes="(min-width: 1024px) 760px, 100vw"
+                className="object-cover"
+              />
             </div>
           </div>
+
+          <div className="grid gap-10 p-5 pt-10 sm:p-10 lg:p-12 xl:grid-cols-[1fr_280px] xl:gap-14">
+            <GiftSetPriceList />
+            <aside className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8 xl:flex-col xl:items-start xl:gap-5 xl:border-l xl:border-brand/15 xl:pl-10">
+              <GreetingCardViewer className="w-[220px] shrink-0 xl:w-full" />
+              <div>
+                <h3 className="text-lg font-bold text-brand-700">Kartu ucapan personal</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">
+                  Tulis pesan untuk penerima saat memesan. Kami cetak di kartu dan selipkan di dalam box.
+                </p>
+              </div>
+            </aside>
+          </div>
+
+          <p className="flex items-center justify-center gap-2.5 bg-brand px-5 py-3.5 text-center text-sm font-semibold text-white sm:text-[15px]">
+            <Truck width={20} height={20} className="shrink-0 text-accent" />
+            Gratis ongkir area Kota Wisata dan sekitarnya
+          </p>
         </div>
       </section>
 
@@ -235,6 +248,52 @@ export default async function Home() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="container-x pb-20 lg:pb-28">
+        {/* Promo Nampan Sultan */}
+        <div data-reveal className="grid items-center gap-6 overflow-hidden rounded-[28px] border border-black/8 bg-sand p-4 text-left sm:gap-8 sm:rounded-[32px] shadow-[0_16px_40px_-20px_rgb(42_16_19/0.18)] sm:p-10 lg:grid-cols-[1.35fr_1fr] lg:gap-12 lg:p-12">
+          <div className="min-w-0 px-1 pb-2 sm:p-0">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-brand/25 bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-brand">
+              🔥 Penawaran Spesial Bulan Ini
+            </span>
+            <h2 className="mt-3 text-[26px] font-bold leading-tight sm:mt-4 sm:text-[42px] lg:text-[34px] xl:text-[42px]">
+              Paket Promo Berkah <span className="text-brand">Nampan Sultan</span>
+            </h2>
+            <div className="mt-4 rounded-2xl border border-black/10 bg-white px-4 py-3 sm:mt-5 sm:inline-block">
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-soft">Hemat hingga 25% + gratis ongkos kirim</p>
+              <p className="mt-1 flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+                <span className="text-xs text-muted line-through">Rp 385.000</span>
+                <span className="text-xl font-bold sm:text-2xl">Mulai Rp 299.000</span>
+                <span className="rounded-full bg-sand px-2 py-0.5 text-[11px] font-medium text-brand">Porsi 5-10 Orang</span>
+              </p>
+            </div>
+            <div className="mt-5 flex flex-col gap-3 sm:mt-6 sm:flex-row sm:items-center sm:gap-6 lg:flex-col lg:items-start lg:gap-3 xl:flex-row xl:items-center xl:gap-6">
+              <a
+                href={waLink("Halo Nawwaf & Friends, saya mau klaim Paket Promo Berkah Nampan Sultan.")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary w-full whitespace-nowrap px-4 text-center text-sm sm:w-auto sm:self-start sm:px-6 sm:text-[15px]"
+              >
+                Klaim Promo Nampan Sekarang <ArrowRight width={18} height={18} className="shrink-0" />
+              </a>
+              <p className="text-center text-sm text-ink-soft sm:max-w-[240px] sm:text-left">
+                ⚡ <strong className="font-semibold text-ink">Berlaku terbatas</strong> untuk 20 pemesan pertama hari ini.
+              </p>
+            </div>
+          </div>
+
+          <div className="relative order-first aspect-[4/3] overflow-hidden rounded-[20px] sm:rounded-[24px] lg:order-last lg:aspect-[4/3.4] shadow-[0_20px_40px_-16px_rgb(42_16_19/0.35)]">
+            <Image src="/images/menu/kebuli-full-kambing.webp" alt="Nampan nasi kebuli kambing" fill sizes="(min-width: 1024px) 520px, 90vw" className="object-cover" />
+            <span className="absolute right-3 top-3 rounded-full sm:right-4 sm:top-4 border border-black/10 bg-white/90 px-3 py-1 text-[11px] font-semibold text-brand backdrop-blur-sm">
+              ★ Porsi Nampan Akbar
+            </span>
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-4 pt-12 text-white sm:p-5 sm:pt-16">
+              <p className="text-xs text-white/85">Sajian Mandhi &amp; Kebuli Autentik</p>
+              <p className="text-sm font-bold">Cita Rasa Kerajaan Abu Nawwaf</p>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Delivery */}

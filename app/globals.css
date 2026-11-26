@@ -18,6 +18,7 @@
   --color-brand-700: #5e0d15;
   --color-accent: #f9ae40; /* amber logo */
   --color-accent-600: #e8952a;
+  --color-kraft: #f6ede4; /* krem hangat latar flyer & box Gift Set */
 
   --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 
@@ -778,5 +779,140 @@ html[data-reveal-ready] [data-reveal][data-revealed] {
   html[data-reveal-ready] [data-reveal] {
     opacity: 1;
     translate: none;
+  }
+}
+
+/* ---------- Hang tag Gift Set di hero ----------
+   Dua sumber gerak yang tidak saling menimpa, keduanya bertumpu di ujung tali (transform-origin):
+   - `transform`: ayunan sekali saat halaman dibuka (keyframes di bawah).
+   - `rotate`: --sway dari GiftTagSway.tsx (ikut terayun saat halaman di-scroll) ditambah --tilt
+     saat hover. --tilt didaftarkan lewat @property supaya bisa ditransisikan sendiri; `rotate`
+     sengaja tanpa transisi agar simulasi pegasnya tidak tertunda. */
+@property --tilt {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.gift-tag,
+.gift-tag-mini {
+  transform-origin: 50% 0;
+  rotate: calc(var(--sway, 0deg) + var(--tilt));
+  will-change: rotate;
+}
+
+.gift-tag {
+  animation: giftTagSwing 2.4s var(--ease) 0.5s backwards;
+  transition: --tilt 0.6s var(--ease);
+}
+
+.gift-tag:hover {
+  --tilt: -2.5deg;
+}
+
+@keyframes giftTagSwing {
+  0% {
+    transform: translateY(-110%) rotate(0deg);
+  }
+  30% {
+    transform: translateY(0) rotate(7deg);
+  }
+  55% {
+    transform: rotate(-4deg);
+  }
+  78% {
+    transform: rotate(1.5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* ---------- Dialog kartu ucapan Gift Set ---------- */
+/* Halaman di belakang tidak ikut ter-scroll saat dialog terbuka (tanpa mengunci overflow body). */
+.gift-card-dialog:modal {
+  overscroll-behavior: contain;
+}
+
+.gift-card-dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background-color: rgb(20 6 8 / 0.72);
+  backdrop-filter: blur(4px);
+}
+
+/* Muncul: fade + sedikit membesar; tetap terlihat saat menutup sampai transisinya selesai. */
+.gift-card-dialog,
+.gift-card-dialog::backdrop {
+  transition:
+    opacity 0.3s var(--ease),
+    scale 0.3s var(--ease),
+    overlay 0.3s allow-discrete,
+    display 0.3s allow-discrete;
+  opacity: 0;
+}
+
+.gift-card-dialog {
+  scale: 0.96;
+}
+
+.gift-card-dialog[open],
+.gift-card-dialog[open]::backdrop {
+  opacity: 1;
+  scale: 1;
+}
+
+@starting-style {
+  .gift-card-dialog[open],
+  .gift-card-dialog[open]::backdrop {
+    opacity: 0;
+  }
+  .gift-card-dialog[open] {
+    scale: 0.96;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gift-card-dialog,
+  .gift-card-dialog::backdrop {
+    transition: none;
+  }
+}
+
+/* Gift tag mini di kartu box kraft (hero, layar kecil): ayunan pembuka, scroll & hover
+   memakai aturan yang sama dengan .gift-tag di atas. */
+.gift-tag-mini {
+  animation: giftTagMiniSwing 2.2s var(--ease) 0.9s backwards;
+  transition: --tilt 0.5s var(--ease);
+}
+
+.gift-chip:hover .gift-tag-mini {
+  --tilt: 8deg;
+}
+
+@keyframes giftTagMiniSwing {
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(14deg);
+  }
+  45% {
+    transform: rotate(-8deg);
+  }
+  70% {
+    transform: rotate(3deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gift-tag,
+  .gift-tag-mini {
+    animation: none;
+    transition: none;
+    rotate: none;
   }
 }
