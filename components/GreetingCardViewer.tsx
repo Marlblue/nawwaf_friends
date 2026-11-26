@@ -50,9 +50,11 @@ export default function GreetingCardViewer({ className = "" }: { className?: str
       >
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 id={titleId} className="text-lg font-bold text-brand-700 sm:text-xl">
+            {/* h2, bukan h1: dialog ini tetap ada di DOM saat tertutup, dan beranda wajib punya
+                satu h1 saja (e2e/situs.spec.ts) */}
+            <h2 id={titleId} className="text-lg font-bold text-brand-700 sm:text-xl">
               Kartu ucapan personal
-            </h1>
+            </h2>
             <p className="mt-0.5 text-sm text-ink-soft">Contoh pesan. Tulis pesan Anda sendiri saat memesan, kami cetak di sisi dalam kartu.</p>
           </div>
           <form method="dialog" className="shrink-0">
