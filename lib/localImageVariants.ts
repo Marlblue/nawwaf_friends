@@ -6,6 +6,7 @@ export const VARIANT_LADDER = [256, 384, 480, 640, 828, 1080, 1280, 1600] as con
 export const localImageVariants: Record<string, number> = {
   "/aqiqah.webp": 1280,
   "/delivery.webp": 1280,
+  "/images/gift-set/gift-box-utuh.webp": 480,
   "/images/gift-set/gift-box.webp": 1280,
   "/images/gift-set/hang-tag.webp": 384,
   "/images/gift-set/kartu-ucapan.webp": 640,
@@ -26,8 +27,8 @@ export const localImageVariants: Record<string, number> = {
 export const localImageVersions: Record<string, string> = {
   "/aqiqah.webp": "d3b51577",
   "/delivery.webp": "0f99b776",
+  "/images/gift-set/gift-box-utuh.webp": "d92d5248",
   "/images/gift-set/gift-box.webp": "6eb4567e",
-  "/images/gift-set/hang-tag-window.png": "4ddde4ee",
   "/images/gift-set/hang-tag.webp": "bf07febe",
   "/images/gift-set/kartu-ucapan.webp": "77c02126",
   "/images/gift-set/kraft-lineart.webp": "e2f1302c",

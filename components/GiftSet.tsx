@@ -50,16 +50,9 @@ export function GreetingCardPair({ className = "" }: { className?: string }) {
 }
 
 // Highlight Gift Set di hero beranda: gift tag asli Nawwaf & Friends (dari file desainnya),
-// menggantung dari tepi atas hero dengan tali emas. Foto box tampil di dalam jendela kubah tag
-// lewat mask berbentuk jendela itu sendiri, jadi lengkungnya persis sama dengan cetakannya.
+// menggantung dari tepi atas hero dengan tali emas, dengan foto box utuh di jendela kubahnya.
 // Batas 1340px: di bawah itu tag mulai menabrak judul hero; layar kecil memakai GiftSetHeroChip.
-// Gambar tag & mask berlatar transparan, jadi tidak lewat optimizer (lihat SiteImage.tsx).
-const tagWindow = {
-  maskImage: "url(/images/gift-set/hang-tag-window.png)",
-  WebkitMaskImage: "url(/images/gift-set/hang-tag-window.png)",
-  maskSize: "100% 100%",
-  WebkitMaskSize: "100% 100%",
-} as const;
+// Gambar tag berlatar transparan, jadi tidak lewat optimizer (lihat SiteImage.tsx).
 
 export function GiftSetHeroTag({ minPrice }: { minPrice: string }) {
   return (
@@ -72,17 +65,28 @@ export function GiftSetHeroTag({ minPrice }: { minPrice: string }) {
       <span aria-hidden="true" className="absolute left-1/2 top-0 block h-[68px] w-[1.5px] -translate-x-1/2 bg-accent" />
       <span className="relative mt-10 block aspect-[440/854] drop-shadow-[0_20px_24px_rgb(0_0_0/0.5)]">
         <Image src="/images/gift-set/hang-tag.webp" alt="" fill sizes="196px" unoptimized />
-        <span aria-hidden="true" className="absolute inset-0 block" style={tagWindow}>
-          <span className="absolute inset-x-0 top-[21%] block h-[33%] overflow-hidden">
-            <Image src="/images/gift-set/gift-box.webp" alt="" fill sizes="196px" className="object-cover object-[28%_40%] transition-transform duration-700 group-hover:scale-110" />
+        {/* Isi jendela kubah, mengikuti bentuknya: "Baru" dan judul di bagian lengkung yang
+            menyempit, foto box utuh (object-contain, tidak terpotong) di bagian yang sudah
+            selebar jendela (mulai ±44% tinggi tag), harga di bawahnya. */}
+        <span className="absolute inset-x-[10%] top-[26.5%] block">
+          <span className="inline-block rounded-full bg-brand px-2 py-px text-[10px] font-semibold uppercase tracking-wider text-accent">Baru</span>
+          <span className="mt-1.5 block text-[15px] font-bold leading-[1.1] text-brand-700">
+            Signature
+            <br />
+            Gift Set
           </span>
         </span>
-        <span className="absolute inset-x-[10%] top-[56.5%] block">
-          <span className="inline-block rounded-full bg-brand px-2 py-px text-[10px] font-semibold uppercase tracking-wider text-accent">Baru</span>
-          <span className="mt-1 block text-[15px] font-bold leading-[1.15] text-brand-700">Signature Gift Set</span>
-          <span className="mt-1 block text-[12px] text-ink-soft">
-            Mulai <span className="font-semibold tabular-nums text-brand">{minPrice}</span>
-          </span>
+        <span className="absolute inset-x-[12%] top-[45%] block h-[24.5%]">
+          <Image
+            src="/images/gift-set/gift-box-utuh.webp"
+            alt=""
+            fill
+            sizes="110px"
+            className="object-contain drop-shadow-[0_6px_8px_rgb(42_16_19/0.3)] transition-transform duration-700 group-hover:scale-105"
+          />
+        </span>
+        <span className="absolute inset-x-[10%] top-[71.5%] block text-[12px] text-ink-soft">
+          Mulai <span className="font-semibold tabular-nums text-brand">{minPrice}</span>
         </span>
       </span>
     </a>
@@ -106,8 +110,8 @@ export function GiftSetHeroChip({ minPrice }: { minPrice: string }) {
         <span className="mx-auto block h-3.5 w-px bg-accent" />
         <span className="relative -mt-1.5 block aspect-[440/854] drop-shadow-[0_6px_6px_rgb(0_0_0/0.35)]">
           <Image src="/images/gift-set/hang-tag.webp" alt="" fill sizes="40px" unoptimized />
-          <span className="absolute inset-0 block" style={tagWindow}>
-            <Image src="/images/gift-set/gift-box.webp" alt="" fill sizes="40px" className="object-cover object-[28%_40%]" />
+          <span className="absolute inset-x-[12%] top-[45%] block h-[33%]">
+            <Image src="/images/gift-set/gift-box-utuh.webp" alt="" fill sizes="40px" className="object-contain" />
           </span>
         </span>
       </span>
