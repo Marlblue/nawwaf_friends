@@ -25,7 +25,8 @@ const AUTOPLAY_MS = 4500;
 const BATAS_TUNGGU_MS = 3000;
 
 // Kartu lebar di atas beranda: foto latar berganti pelan (fade), konten hero di atasnya
-export default function HeroBanner({ children }: { children: React.ReactNode }) {
+// `corner`: elemen yang ditempel langsung ke kartu hero (di luar kolom konten tengah), mis. hang tag Gift Set.
+export default function HeroBanner({ children, corner }: { children: React.ReactNode; corner?: React.ReactNode }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [semuaFoto, setSemuaFoto] = useState(false);
@@ -69,6 +70,7 @@ export default function HeroBanner({ children }: { children: React.ReactNode }) 
       <div className="hero-banner-overlay" aria-hidden />
 
       <div className="relative z-10 flex w-full flex-col items-center">{children}</div>
+      {corner}
 
       <SliderDots
         count={photos.length}
